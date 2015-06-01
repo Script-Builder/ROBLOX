@@ -1,8 +1,8 @@
 a = {}
 
 
-a.Brickcolor = "Cool yellow"
-a.sbcolor = "Bright green"
+a.Brickcolor = "Bright violet"
+a.sbcolor = "Bright violet"
 a.c = ""
 a.cmds = {
 "dt","cmds","ban","kick","colors","ping","respawn","ff","shutdown","unff","uff","time",
@@ -2212,7 +2212,7 @@ end)
 function createTab(text,brickcolor,sccolor,mesh,mt)
 local part = Instance.new("Part", workspace)
 part.FormFactor = "Custom"
-part.Size = Vector3.new(3,2,1)
+part.Size = Vector3.new(3,3,3)
 part.BottomSurface = "Smooth"
 part.Material = "Concrete"
 part.TopSurface = "Smooth"
@@ -2232,7 +2232,7 @@ local cd = Instance.new("ClickDetector", part)
 cd.MaxActivationDistance = math.huge
 local sc = Instance.new("SelectionBox", part)
 sc.Adornee = part
-sc.Transparency = .3
+sc.Transparency = 0
 
 if sccolor ~=nil then
 sc.Color = BrickColor.new(sccolor)
@@ -2323,8 +2323,8 @@ CFrame.new(player.Character.Torso.Position)
 ,.15)) *CFrame.fromEulerAnglesXYZ(6,math.rad(x),math.rad(r))
 end
 
-r = r + .5
-x = x + 5
+r = r + 1
+x = x + 10
 
 end	
 end)()
