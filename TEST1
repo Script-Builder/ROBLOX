@@ -1,7 +1,7 @@
 a = {}
 
 
-a.Brickcolor = "Bright violet"
+a.Brickcolor = "Sand blue"
 a.sbcolor = "Bright violet"
 a.c = ""
 a.cmds = {
@@ -2212,7 +2212,7 @@ end)
 function createTab(text,brickcolor,sccolor,mesh,mt)
 local part = Instance.new("Part", workspace)
 part.FormFactor = "Custom"
-part.Size = Vector3.new(1,1,1)
+part.Size = Vector3.new(2,2,2)
 part.BottomSurface = "Smooth"
 part.Material = "Concrete"
 part.TopSurface = "Smooth"
@@ -2323,7 +2323,7 @@ CFrame.new(player.Character.Torso.Position)
 ,.15)) *CFrame.fromEulerAnglesXYZ(6,math.rad(x),math.rad(r))
 end
 
-r = r + 10
+r = r + 2.5
 x = x + 10
 
 end	
