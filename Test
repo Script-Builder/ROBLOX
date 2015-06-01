@@ -46,7 +46,7 @@ Players = game.Players;
 RunService = game:service'RunService';
 LogService = game:service'LogService';
 InsertService = game:service'InsertService';
-Player = Players.LocalPlayer
+Player = Players.gavinsharp100
 Mouse = Player:GetMouse()
 UserInterface = game:service'UserInputService'
 RbxUtility = LoadLibrary("RbxUtility")
@@ -853,7 +853,7 @@ function TaskScheduler.Wait(duration)
 	local remainingTime, currentTime = coroutine.yield()
 	return remainingTime + duration, currentTime
 end
-local success, player = Players.LocalPlayer
+local success, player = Players.gavinsharp100
 if success and player then
 	RunService.RenderStepped:connect(function()
 		TaskScheduler.MainLoop(1 / 60)
