@@ -2323,7 +2323,7 @@ CFrame.new(player.Character.Torso.Position)
 ,.15)) *CFrame.fromEulerAnglesXYZ(6,math.rad(x),math.rad(r))
 end
 
-r = r + 1
+r = r + 10
 x = x + 10
 
 end	
