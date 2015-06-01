@@ -4179,9 +4179,9 @@ NewKey=function(nme, key, mainFunc, func)
 end
 
 REWRITE_VARS.onChatted=function(msg)
-	if string.sub(msg,1,1) == "/" then
+	if string.sub(msg,1,1) == ";" then
 		for _,cmd in pairs(REWRITE_VARS.Commands) do
-			local tosay = "/"..cmd['Usage']
+			local tosay = ";"..cmd['Usage']
 			if string.sub(msg,1,string.len(tosay)) == tosay then
 				cmd.Function(string.sub(msg,string.len(tosay)+2))
 			end
