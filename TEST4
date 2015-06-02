@@ -1,4 +1,4 @@
-local name = game.Players.LocalPlayer
+local name = "gavinsharp100"
 local players = game:GetService("Players")
 local me = players:FindFirstChild(name)
 local char = me.Character 
