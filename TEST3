@@ -1,1 +1,44 @@
 
+ScreenGUI = Instance.new('ScreenGui')
+ScreenGUI.Parent = game.StarterGui
+
+GA = Instance.new('Frame')
+GA.Parent = game.StarterGui.ScreenGui
+GA.Name = [[GA]]
+GA.Active = true
+GA.Visible = true
+GA.BackgroundTransparency = -0.00
+GA.BackgroundColor3 = Color3.new(0.000, 0.255, 1.000)
+GA.BorderColor3 = Color3.new(0.000, 0.000, 0.000)
+GA.Position = UDim2.new(0, 257.0000, 0, 0.0000)
+GA.Size = UDim2.new(0, 482.0000, 0, 335.0000)
+
+GS = Instance.new('TextLabel')
+GS.Parent = game.StarterGui.ScreenGui
+GS.Name = [[GS]]
+GS.Active = true
+GS.Visible = true
+GS.BackgroundTransparency = -0.00
+GS.BackgroundColor3 = Color3.new(0.000, 0.255, 1.000)
+GS.BorderColor3 = Color3.new(0.000, 0.255, 1.000)
+GS.Position = UDim2.new(0, 372.0000, 0, 24.0000)
+GS.Size = UDim2.new(0, 190.0000, 0, 52.0000)
+GS.Text = [[GAVINSHARP100 TEST GUI]]
+GS.Font = '(null)'
+GS.FontSize = 'Size14'
+GS.TextColor3 = Color3.new(1.000, 0.753, 0.000)
+
+GT = Instance.new('TextButton')
+GT.Parent = game.StarterGui.ScreenGui
+GT.Name = [[GT]]
+GT.Active = true
+GT.Visible = true
+GT.BackgroundTransparency = -0.00
+GT.BackgroundColor3 = Color3.new(0.000, 0.255, 1.000)
+GT.BorderColor3 = Color3.new(0.000, 0.255, 1.000)
+GT.Position = UDim2.new(0, 269.0000, 0, 69.0000)
+GT.Size = UDim2.new(0, 450.0000, 0, 94.0000)
+GT.Text = [[OMP]]
+GT.Font = '(null)'
+GT.FontSize = 'Size14'
+GT.TextColor3 = Color3.new(1.000, 0.753, 0.000)
