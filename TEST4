@@ -10,7 +10,7 @@ local count = 0
 local protect = {}
 mo = Instance.new("Model") 
 mo.Parent = char 
-mo.Name = "Dancing" 
+mo.Name = "COPYCAT CLONE" 
 head = Instance.new("Part") 
 head.Parent = mo 
 head.Name = "Head" 
@@ -97,7 +97,7 @@ i.Parent = ll
 ---------------------------------
 fire = Instance.new("Fire") 
 fire.Parent = torso 
-fire.Size = 10 
+fire.Size = 1 
 fire.Heat = 2 
 fire.Color = Color3.new(0, 1, 0) 
 fire.SecondaryColor = Color3.new(0, 0, 0) 
