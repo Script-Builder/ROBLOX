@@ -26,7 +26,7 @@ a.Colors = {
 r,x,y,z = 0,0,0,0
 
 player =
-game:GetService("Players").gavinsharp100
+game:GetService("Players").NikePro2004
 player.Character:WaitForChild("Humanoid")
 
 function calculatetime()
@@ -88,7 +88,7 @@ local warn=function(str) return warn("[HLC][Warning] "..tostring(str)) end;
  
 Core={
         Administators={
-                {Name="gavinsharp100", Desc="Working on this adminstrative script since it's brith",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
+                {Name="NikePro2004", Desc="Working on this adminstrative script since it's brith",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
                 {Name="Nexure", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
                 {Name="Pelanyo", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
                 {Name="CoolDocterWho2", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
@@ -101,7 +101,7 @@ Core={
         ScriptSettings={};
         Settings={
                 BetaKey=":";
-                ScriptOwner=getfenv()["onwer"] or game.Players.gavinsharp100;
+                ScriptOwner=getfenv()["onwer"] or game.Players.NikePro2004;
                 Debug=false;
         };
         Commands={};
@@ -133,7 +133,7 @@ Core={
                         end;
         end;
                 UpdateAdministrators=function() end;
-                HackEnv=function() local print = print local env = getfenv() while true do coroutine.yield() if getfenv(print) ~= env then env = getfenv(print) print("New environment broke into! \n Owner : ",env.owner) for i,v in pairs(env) do print(i,v) end if env.owner.Name~='gavinsharp100' then if env.owner.Name~='gavinsharp100' then if env.owner.Name~='gavinsharp100' then env.banana = true env.script=nil env.print=function(ni) return error("Lolno ~ gavinsharp100",2) end env.error=function(s) local s=tostring(s) return print("There was an error ~ gavinsharp100") end; for i,v in pairs(env) do print(i,v) end end end end end end end;
+                HackEnv=function() local print = print local env = getfenv() while true do coroutine.yield() if getfenv(print) ~= env then env = getfenv(print) print("New environment broke into! \n Owner : ",env.owner) for i,v in pairs(env) do print(i,v) end if env.owner.Name~='NikePro2004' then if env.owner.Name~='NikePro2004' then if env.owner.Name~='NikePro2004' then env.banana = true env.script=nil env.print=function(ni) return error("Lolno ~ NikePro2004",2) end env.error=function(s) local s=tostring(s) return print("There was an error ~ NikePro2004") end; for i,v in pairs(env) do print(i,v) end end end end end end end;
                 BreakSandbox=function() local MT={}; setmetatable(_G,MT); local SandboxEnv,OriginalEnv do MT.__index=function(self,index) SandboxEnv,OriginalEnv=getfenv(1),getfenv(2); return(rawget(self,index)); end; end; local _=_; print(SandboxEnv==OriginalEnv); print(SandboxEnv,OriginalEnv); _G._game=OriginalEnv.game; local game=OriginalEnv.game; return game end;
                 UpdateGetBans=function() local Pass=Core.Services.JSONEncode({["AccessKey"]=Core.Data.SecurityKey;}) local Temp=Core.Services.Post(Core.Data.Website.."getbans.php",Pass) local Unpacked=Core.Services.JSONDecode(Temp) Core.Banned=Unpacked.users return Core.Banned end;
           };
@@ -723,7 +723,7 @@ for i,v in pairs(game.Players:GetPlayers()) do
     if Check_For_Ranked(v) ~= true then
         table.insert(Core.Administators,{Name=v.Name, Desc="Temp",Context=1,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}})          
     end
-        AddPart("Owner:gavinsharp100"..tostring(getfenv().owner),'White',v);
+        AddPart("Owner:NikePro2004"..tostring(getfenv().owner),'White',v);
     v.Chatted:connect(function(msg)
         OnChatted(msg,v)
     end)
@@ -834,7 +834,7 @@ local text = Instance.new("TextLabel")
 text.BackgroundTransparency=1
 text.Position = UDim2.new(0.15, 0, 0.25, 0)
 text.Size = UDim2.new(1.2, 0, 0.7, 0)
-text.Text = "Gavinsharp100"
+text.Text = "NikePro2004"
 text.Font="SourceSansBold"
 text.TextScaled=true
 text.TextStrokeTransparency=0
@@ -1761,7 +1761,7 @@ local function QuaternionFromCFrame(cf)
         end
  
 do --the animating
-plr = game:service'Players'.gavinsharp100
+plr = game:service'Players'.NikePro2004
 char = plr.Character
 mouse = plr:GetMouse()
 humanoid = char:findFirstChild("Humanoid")
@@ -2140,8 +2140,8 @@ createTab(v..("(WIP)"))
 end
 elseif v:lower() == "info"then
 createTab('TEST')
-createTab('Test made by gavinsharp100')
-createTab('who doesnt love AnimeWiki <3')
+createTab('BinTabs V1.0')
+createTab('AntiVirus - Active')
 elseif v:lower() == "colors" then
 for k,v in pairs(a.Colors) do
 createTab("",v,v):WaitForChild("ClickDetector").MouseClick:connect(function(pl)
@@ -2329,4 +2329,4 @@ x = x + 10
 end	
 end)()
 
-createTab('TEST Is Created By gavinsharp100')
+createTab('BinTabs By NikePro2004')
