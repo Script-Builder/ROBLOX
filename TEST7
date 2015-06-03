@@ -1,0 +1,4483 @@
+--MADE BY OneLegend (NOT THE SCRIPT) LOCAL SCRIPT: Go to line 3 and put your name where it says "ares200345"
+
+Player = game.Players.ares200345
+
+script.Parent = Player
+
+local pla = Instance.new("ScreenGui")
+
+pla.Parent = Player.PlayerGui
+
+pla.Name = "RoPlayer"
+
+local sound = Instance.new("Sound")
+
+sound.Name = "Sound"
+
+sound.Pitch = 1
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372259"
+
+sound.Volume = 0.5
+
+sound.Looped = true
+
+sound.archivable = false
+
+sound.Parent = game.Players 
+
+order = Instance.new("NumberValue")
+
+order.Parent = pla
+
+order.Value = 1
+
+local ss = Instance.new("Frame")
+
+ss.Parent = pla 
+
+ss.Position = UDim2.new(0,680,0,572) 
+
+ss.Size = UDim2.new(0,270,0,80) 
+
+ss.BackgroundColor3 = Color3.new(0,0,0)
+
+ss.BorderColor = BrickColor.new("New Yeller")
+
+local tyf = Instance.new("Frame")
+
+tyf.Parent = pla 
+
+tyf.Position = UDim2.new(0,680,0,612) 
+
+tyf.Size = UDim2.new(0,270,0,40) 
+
+tyf.BackgroundColor3 = Color3.new(0,0,0)
+
+tyf.BorderColor = BrickColor.new("New Yeller")
+
+local tyd = Instance.new("ImageButton")
+
+tyd.Parent = pla 
+
+tyd.Name = "play"
+
+tyd.Position = UDim2.new(0,780,0,618) 
+
+tyd.Size = UDim2.new(0,30,0,28) 
+
+tyd.Image = "http://www.roblox.com/asset/?id=37081943"
+
+tyd.BackgroundColor = BrickColor.new("Black")
+
+tyd.BorderColor = BrickColor.new("New Yeller")
+
+local tya = Instance.new("ImageButton")
+
+tya.Parent = pla 
+
+tya.Name = "pause"
+
+tya.Position = UDim2.new(0,780,0,618) 
+
+tya.Size = UDim2.new(0,30,0,28) 
+
+tya.Image = "http://www.roblox.com/asset/?id=37081951"
+
+tya.BackgroundColor = BrickColor.new("Black")
+
+tya.BorderColor = BrickColor.new("New Yeller")
+
+tya.Visible = false
+
+local tyv = Instance.new("ImageButton")
+
+tyv.Parent = pla 
+
+tyv.Name = "stop"
+
+tyv.Position = UDim2.new(0,820,0,618) 
+
+tyv.Size = UDim2.new(0,30,0,28) 
+
+tyv.Image = "http://www.roblox.com/asset/?id=37083993"
+
+tyv.BackgroundColor = BrickColor.new("Black")
+
+tyv.BorderColor = BrickColor.new("New Yeller")
+
+local tyk = Instance.new("ImageButton")
+
+tyk.Parent = pla 
+
+tyk.Name = "back"
+
+tyk.Position = UDim2.new(0,740,0,618) 
+
+tyk.Size = UDim2.new(0,30,0,28) 
+
+tyk.Image = "http://www.roblox.com/asset/?id=37081932"
+
+tyk.BackgroundColor = BrickColor.new("Black")
+
+tyk.BorderColor = BrickColor.new("New Yeller")
+
+local tyq = Instance.new("ImageButton")
+
+tyq.Parent = pla 
+
+tyq.Name = "forw"
+
+tyq.Position = UDim2.new(0,860,0,618) 
+
+tyq.Size = UDim2.new(0,30,0,28) 
+
+tyq.Image = "http://www.roblox.com/asset/?id=37081936"
+
+tyq.BackgroundColor = BrickColor.new("Black")
+
+tyq.BorderColor = BrickColor.new("New Yeller")
+
+local tyx = Instance.new("ImageLabel")
+
+tyx.Parent = pla 
+
+tyx.Name = "vol"
+
+tyx.Position = UDim2.new(0,900,0,618) 
+
+tyx.Size = UDim2.new(0,42,0,28) 
+
+tyx.Image = "http://www.roblox.com/asset/?id=37081954"
+
+tyx.BackgroundColor3 = Color3.new(0,0,0)
+
+tyx.BorderColor = BrickColor.new("New Yeller")
+
+local tyz = Instance.new("ImageLabel")
+
+tyz.Parent = pla 
+
+tyz.Name = "novol"
+
+tyz.Position = UDim2.new(0,900,0,618) 
+
+tyz.Size = UDim2.new(0,42,0,28) 
+
+tyz.Image = "http://www.roblox.com/asset/?id=37081940"
+
+tyz.BackgroundColor3 = Color3.new(0,0,0)
+
+tyz.BorderColor = BrickColor.new("New Yeller")
+
+tyz.Visible = false
+
+local tyb = Instance.new("ImageButton")
+
+tyb.Parent = pla 
+
+tyb.Name = "minus"
+
+tyb.Position = UDim2.new(0,890,0,584) 
+
+tyb.Size = UDim2.new(0,30,0,28) 
+
+tyb.Image = "http://www.roblox.com/asset/?id=37081938"
+
+tyb.BackgroundColor = BrickColor.new("Black")
+
+tyb.BorderColor = BrickColor.new("New Yeller")
+
+local tyt = Instance.new("ImageButton")
+
+tyt.Parent = pla 
+
+tyt.Name = "plus"
+
+tyt.Position = UDim2.new(0,920,0,584) 
+
+tyt.Size = UDim2.new(0,30,0,28) 
+
+tyt.Image = "http://www.roblox.com/asset/?id=37081948"
+
+tyt.BackgroundColor = BrickColor.new("Black")
+
+tyt.BorderColor = BrickColor.new("New Yeller")
+
+local tee = Instance.new("TextLabel")
+
+tee.Parent = pla 
+
+tee.Name = "volumea"
+
+tee.Position = UDim2.new(0,899,0,569) 
+
+tee.Size = UDim2.new(0,42,0,15) 
+
+tee.TextColor = BrickColor.new("New Yeller")
+
+tee.Text = "0.5"
+
+tee.BackgroundColor = BrickColor.new("Black")
+
+tee.BorderColor = BrickColor.new("New Yeller")
+
+tee.FontSize = "Size10"
+
+local vcc = Instance.new("TextLabel")
+
+vcc.Parent = pla 
+
+vcc.Name = "lolwutsong"
+
+vcc.Position = UDim2.new(0,815,0,572) 
+
+vcc.Size = UDim2.new(0,0,0,15) 
+
+vcc.TextColor = BrickColor.new("New Yeller")
+
+vcc.Text = "Song"
+
+vcc.BackgroundTransparency = 1
+
+vcc.FontSize = "Size10"
+
+local cx = Instance.new("TextLabel")
+
+cx.Parent = pla 
+
+cx.Name = "songname"
+
+cx.Position = UDim2.new(0,815,0,584) 
+
+cx.Size = UDim2.new(0,0,0,15) 
+
+cx.TextColor = BrickColor.new("New Yeller")
+
+cx.Text = "Fire Emblem"
+
+cx.BackgroundTransparency = 1
+
+cx.FontSize = "Size9"
+
+local thh = Instance.new("ImageButton")
+
+thh.Parent = pla 
+
+thh.Name = "minuspi"
+
+thh.Position = UDim2.new(0,710,0,584) 
+
+thh.Size = UDim2.new(0,30,0,28) 
+
+thh.Image = "http://www.roblox.com/asset/?id=37081938"
+
+thh.BackgroundColor = BrickColor.new("Black")
+
+thh.BorderColor = BrickColor.new("New Yeller")
+
+local tjj = Instance.new("ImageButton")
+
+tjj.Parent = pla 
+
+tjj.Name = "pluspi"
+
+tjj.Position = UDim2.new(0,680,0,584) 
+
+tjj.Size = UDim2.new(0,30,0,28) 
+
+tjj.Image = "http://www.roblox.com/asset/?id=37081948"
+
+tjj.BackgroundColor = BrickColor.new("Black")
+
+tjj.BorderColor = BrickColor.new("New Yeller")
+
+local trr = Instance.new("TextLabel")
+
+trr.Parent = pla 
+
+trr.Name = "soundpi"
+
+trr.Position = UDim2.new(0,689,0,569) 
+
+trr.Size = UDim2.new(0,42,0,15) 
+
+trr.TextColor = BrickColor.new("New Yeller")
+
+trr.Text = "1"
+
+trr.BackgroundColor = BrickColor.new("Black")
+
+trr.BorderColor = BrickColor.new("New Yeller")
+
+trr.FontSize = "Size10"
+
+local tyvv = Instance.new("ImageLabel")
+
+tyvv.Parent = pla 
+
+tyvv.Name = "novol"
+
+tyvv.Position = UDim2.new(0,687,0,618) 
+
+tyvv.Size = UDim2.new(0,42,0,28) 
+
+tyvv.Image = "http://www.roblox.com/asset/?id=37095868"
+
+tyvv.BackgroundColor3 = Color3.new(0,0,0)
+
+tyvv.BorderColor = BrickColor.new("New Yeller")
+
+local tgg = Instance.new("TextButton")
+
+tgg.Parent = pla 
+
+tgg.Name = "remove"
+
+tgg.Position = UDim2.new(0,760,0,557) 
+
+tgg.Size = UDim2.new(0,110,0,15) 
+
+tgg.BackgroundColor = BrickColor.new("Black")
+
+tgg.BorderColor = BrickColor.new("New Yeller")
+
+tgg.TextColor = BrickColor.new("New Yeller")
+
+tgg.Text = "Remove sounds"
+
+tgg.FontSize = "Size9"
+
+local numba = Instance.new("TextLabel")
+
+numba.Parent = pla 
+
+numba.Name = "songname"
+
+numba.Position = UDim2.new(0,811,0,594) 
+
+numba.Size = UDim2.new(0,0,0,15) 
+
+numba.TextColor = BrickColor.new("New Yeller")
+
+numba.Text = "1"
+
+numba.BackgroundTransparency = 1
+
+numba.FontSize = "Size9"
+
+numba.TextXAlignment = "Right"
+
+local nu = Instance.new("TextLabel")
+
+nu.Parent = pla 
+
+nu.Name = "songname"
+
+nu.Position = UDim2.new(0,820,0,594) 
+
+nu.Size = UDim2.new(0,0,0,15) 
+
+nu.TextColor = BrickColor.new("New Yeller")
+
+nu.Text = "/35"
+
+nu.BackgroundTransparency = 1
+
+nu.FontSize = "Size9"
+
+local tgs = Instance.new("TextButton")
+
+tgs.Parent = pla 
+
+tgs.Name = "remgui"
+
+tgs.Position = UDim2.new(0,760,0,542) 
+
+tgs.Size = UDim2.new(0,110,0,15) 
+
+tgs.BackgroundColor = BrickColor.new("Black")
+
+tgs.BorderColor = BrickColor.new("New Yeller")
+
+tgs.TextColor = BrickColor.new("New Yeller")
+
+tgs.Text = "Remove GUI"
+
+tgs.FontSize = "Size9"
+
+local tgvc = Instance.new("ImageLabel")
+
+tgvc.Parent = pla 
+
+tgvc.Name = "rbxlmp"
+
+tgvc.Position = UDim2.new(0,750,0,503) 
+
+tgvc.Size = UDim2.new(0,130,0,42) 
+
+tgvc.BackgroundTransparency = 1
+
+tgvc.Image = "http://www.roblox.com/asset/?id=37280829"
+
+script.Parent = Player 
+
+
+
+function playclick()
+
+script.Parent = Player 
+
+sound:play()
+
+tyd.Visible = false
+
+wait(0.1)
+
+tya.Visible = true
+
+end
+
+
+
+function pauseclick()
+
+script.Parent = Player 
+
+sound:pause()
+
+tyd.Visible = true
+
+wait(0.1)
+
+tya.Visible = false
+
+end
+
+
+
+function stopclick()
+
+script.Parent = Player 
+
+sound:stop()
+
+tyd.Visible = true
+
+tya.Visible = false
+
+tyv.Visible = false
+
+wait(0.1)
+
+tyv.Visible = true
+
+end
+
+
+
+function plusclick()
+
+script.Parent = Player 
+
+sound.Volume = sound.Volume + 0.05 
+
+local num = tonumber(tostring(sound.Volume):sub(1,4))
+
+tee.Text = num 
+
+if sound.Volume <= 0.0001 then return end 
+
+tyz.Visible = false 
+
+tyx.Visible = true 
+
+end
+
+
+
+function minusclick()
+
+script.Parent = Player 
+
+sound.Volume = sound.Volume - 0.05 
+
+local num = tonumber(tostring(sound.Volume):sub(1,4))
+
+tee.Text = num 
+
+if sound.Volume >= 0.0001 then return end 
+
+tyz.Visible = true 
+
+tyx.Visible = false 
+
+end
+
+
+
+function forw()
+
+script.Parent = Player 
+
+order.Value = order.Value + 1
+
+if order.Value == 36 then
+
+order.Value = 1
+
+end
+
+numba.Text = order.Value
+
+tyq.Visible = false
+
+wait(0.1)
+
+tyq.Visible = true
+
+if order.Value == 1 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372259" 
+
+cx.Text = "Fire Emblem"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 2 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1077604" 
+
+cx.Text = "M.U.L.E"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 3 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280473"
+
+cx.Text = "FFVII Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 4 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372257"
+
+cx.Text = "Cursed Abbey"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 5 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2303479"
+
+cx.Text = "Caramelldansen"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 6 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280470"
+
+cx.Text = "Mario song"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 7 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Cool track epic"
+
+wait(1)
+
+trr.Text = "4"
+
+sound.Pitch = 4
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 8 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1034065"
+
+cx.Text = "Halo theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 9 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372258"
+
+cx.Text = "Choir"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 10 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372260"
+
+cx.Text = "One Winged"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 11 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2027611"
+
+cx.Text = "RickRoll'd"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 12 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372261"
+
+cx.Text = "Pokemon Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 13 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5982975"
+
+cx.Text = "Vamonos"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 14 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372262"
+
+cx.Text = "Battle of heroes"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 15 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280463"
+
+cx.Text = "Chrono Theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 16 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=13061809"
+
+cx.Text = "City of dead"
+
+wait(1)
+
+trr.Text = "0.1"
+
+sound.Pitch = 0.1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 17 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280414"
+
+cx.Text = "Final Destination"
+
+wait(1)
+
+trr.Text = "0.1"
+
+sound.Pitch = 0.1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 18 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1015394"
+
+cx.Text = "Winds of Fjords"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 19 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697277"
+
+cx.Text = "Awakening"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 20 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697392"
+
+cx.Text = "Better Off Alone"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 21 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420922"
+
+cx.Text = "DOTR - Horror"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 22 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697267"
+
+cx.Text = "Entertainer"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 23 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697719"
+
+cx.Text = "Flight of the Bumblebee"
+
+wait(1)
+
+trr.Text = "3"
+
+sound.Pitch = 3
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 24 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697298"
+
+cx.Text = "Foggy Mountain BD"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 25 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Gothic"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 26 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697735"
+
+cx.Text = "Hip Hop"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 27 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697707"
+
+cx.Text = "Intro"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 28 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697713"
+
+cx.Text = "Music for a film"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 29 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=8610025"
+
+cx.Text = "Nezzera"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 30 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697234"
+
+cx.Text = "Resist"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 31 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5985787"
+
+cx.Text = "Schala"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 32 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420933"
+
+cx.Text = "TOPW"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 33 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11231513"
+
+cx.Text = "Toccata and Fugue"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 34 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=9650822"
+
+cx.Text = "Tunnel"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 35 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5986151"
+
+cx.Text = "Woman King"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+end
+
+
+
+function baki()
+
+script.Parent = Player 
+
+order.Value = order.Value -1
+
+if order.Value == 0 then
+
+order.Value = 35
+
+end
+
+numba.Text = order.Value
+
+tyq.Visible = false
+
+wait(0.1)
+
+tyq.Visible = true
+
+if order.Value == 1 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372259" 
+
+cx.Text = "Fire Emblem"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 2 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1077604" 
+
+cx.Text = "M.U.L.E"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 3 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280473"
+
+cx.Text = "FFVII Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 4 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372257"
+
+cx.Text = "Cursed Abbey"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 5 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2303479"
+
+cx.Text = "Caramelldansen"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 6 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280470"
+
+cx.Text = "Mario song"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 7 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Cool track epic"
+
+wait(1)
+
+trr.Text = "4"
+
+sound.Pitch = 4
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 8 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1034065"
+
+cx.Text = "Halo theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 9 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372258"
+
+cx.Text = "Choir"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 10 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372260"
+
+cx.Text = "One Winged"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 11 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2027611"
+
+cx.Text = "RickRoll'd"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 12 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372261"
+
+cx.Text = "Pokemon Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 13 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5982975"
+
+cx.Text = "Vamonos"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 14 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372262"
+
+cx.Text = "Battle of heroes"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 15 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280463"
+
+cx.Text = "Chrono Theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 16 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=13061809"
+
+cx.Text = "City of dead"
+
+wait(1)
+
+trr.Text = "0.1"
+
+sound.Pitch = 0.1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 17 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280414"
+
+cx.Text = "Final Destination"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 18 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1015394"
+
+cx.Text = "Winds of Fjords"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 19 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697277"
+
+cx.Text = "Awakening"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 20 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697392"
+
+cx.Text = "Better Off Alone"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 21 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420922"
+
+cx.Text = "DOTR - Horror"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 22 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697267"
+
+cx.Text = "Entertainer"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 23 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697719"
+
+cx.Text = "Flight of the Bumblebee"
+
+wait(1)
+
+trr.Text = "3"
+
+sound.Pitch = 3
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 24 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697298"
+
+cx.Text = "Foggy Mountain BD"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 25 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Gothic"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 26 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697735"
+
+cx.Text = "Hip Hop"
+
+wait(1)
+
+trr.Text = "3"
+
+sound.Pitch = 3
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 27 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697707"
+
+cx.Text = "Intro"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 28 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697713"
+
+cx.Text = "Music for a film"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 29 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=8610025"
+
+cx.Text = "Nezzera"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 30 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697234"
+
+cx.Text = "Resist"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 31 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5985787"
+
+cx.Text = "Schala"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 32 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420933"
+
+cx.Text = "TOPW"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 33 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11231513"
+
+cx.Text = "Toccata and Fugue"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 34 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=9650822"
+
+cx.Text = "Tunnel"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 35 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5986151"
+
+cx.Text = "Woman King"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+end
+
+
+
+function pluspi()
+
+script.Parent = Player 
+
+sound.Pitch = sound.Pitch + 0.1 
+
+local numn = tonumber(tostring(sound.Pitch):sub(1,4))
+
+trr.Text = numn 
+
+end
+
+
+
+function minuspi()
+
+script.Parent = Player 
+
+sound.Pitch = sound.Pitch - 0.1 
+
+local numnv = tonumber(tostring(sound.Pitch):sub(1,4))
+
+trr.Text = numnv 
+
+end
+
+
+
+function remove()
+
+local souds = game.Workspace:GetChildren() 
+
+for i = 1, #souds do 
+
+if (souds[i].className == "Sound") then 
+
+souds[i]:stop()
+
+wait(0.05)
+
+souds[i]:remove() 
+
+end
+
+end
+
+local guu = Instance.new("TextLabel")
+
+guu.Parent = pla 
+
+guu.Text = "Removal succesful."
+
+guu.Position = UDim2.new(0,370,0,100) 
+
+guu.Size = UDim2.new(0,300,0,30) 
+
+guu.FontSize = "Size10" 
+
+guu.BackgroundColor = BrickColor.new("Really black")
+
+guu.TextColor = BrickColor.new("New Yeller")
+
+guu.BorderColor = BrickColor.new("New Yeller")
+
+wait(1.5) 
+
+guu:remove() 
+
+end
+
+
+
+function ragga()
+
+local soujs = game.Workspace:GetChildren() 
+
+for i = 1, #soujs do 
+
+if (soujs[i].className == "Sound") then 
+
+soujs[i]:stop()
+
+wait(0.05)
+
+soujs[i]:remove() 
+
+end
+
+end
+
+local ghf = Instance.new("TextLabel")
+
+ghf.Parent = pla 
+
+ghf.Text = "Removal succesful."
+
+ghf.Position = UDim2.new(0,370,0,100) 
+
+ghf.Size = UDim2.new(0,300,0,30) 
+
+ghf.FontSize = "Size10" 
+
+ghf.BackgroundColor = BrickColor.new("Really black")
+
+ghf.TextColor = BrickColor.new("New Yeller")
+
+ghf.BorderColor = BrickColor.new("New Yeller")
+
+wait(1) 
+
+Player.PlayerGui.RoPlayer.Parent = game.Lighting 
+
+end
+
+
+
+tyv.MouseButton1Click:connect(stopclick)
+
+tyd.MouseButton1Click:connect(playclick)
+
+tya.MouseButton1Click:connect(pauseclick)
+
+tyt.MouseButton1Click:connect(plusclick)
+
+tyb.MouseButton1Click:connect(minusclick)
+
+tyq.MouseButton1Click:connect(forw)
+
+tyk.MouseButton1Click:connect(baki)
+
+thh.MouseButton1Click:connect(minuspi)
+
+tjj.MouseButton1Click:connect(pluspi)
+
+tgg.MouseButton1Click:connect(remove) 
+
+tgs.MouseButton1Click:connect(ragga) Player = game.Players.xSoulStealerx
+
+script.Parent = Player 
+
+local pla = Instance.new("ScreenGui")
+
+pla.Parent = Player.PlayerGui
+
+pla.Name = "RoPlayer"
+
+local sound = Instance.new("Sound")
+
+sound.Name = "Sound"
+
+sound.Pitch = 1
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372259"
+
+sound.Volume = 0.5
+
+sound.Looped = true
+
+sound.archivable = false
+
+sound.Parent = game.Players 
+
+order = Instance.new("NumberValue")
+
+order.Parent = pla
+
+order.Value = 1
+
+local ss = Instance.new("Frame")
+
+ss.Parent = pla 
+
+ss.Position = UDim2.new(0,680,0,572) 
+
+ss.Size = UDim2.new(0,270,0,80) 
+
+ss.BackgroundColor3 = Color3.new(0,0,0)
+
+ss.BorderColor = BrickColor.new("New Yeller")
+
+local tyf = Instance.new("Frame")
+
+tyf.Parent = pla 
+
+tyf.Position = UDim2.new(0,680,0,612) 
+
+tyf.Size = UDim2.new(0,270,0,40) 
+
+tyf.BackgroundColor3 = Color3.new(0,0,0)
+
+tyf.BorderColor = BrickColor.new("New Yeller")
+
+local tyd = Instance.new("ImageButton")
+
+tyd.Parent = pla 
+
+tyd.Name = "play"
+
+tyd.Position = UDim2.new(0,780,0,618) 
+
+tyd.Size = UDim2.new(0,30,0,28) 
+
+tyd.Image = "http://www.roblox.com/asset/?id=37081943"
+
+tyd.BackgroundColor = BrickColor.new("Black")
+
+tyd.BorderColor = BrickColor.new("New Yeller")
+
+local tya = Instance.new("ImageButton")
+
+tya.Parent = pla 
+
+tya.Name = "pause"
+
+tya.Position = UDim2.new(0,780,0,618) 
+
+tya.Size = UDim2.new(0,30,0,28) 
+
+tya.Image = "http://www.roblox.com/asset/?id=37081951"
+
+tya.BackgroundColor = BrickColor.new("Black")
+
+tya.BorderColor = BrickColor.new("New Yeller")
+
+tya.Visible = false
+
+local tyv = Instance.new("ImageButton")
+
+tyv.Parent = pla 
+
+tyv.Name = "stop"
+
+tyv.Position = UDim2.new(0,820,0,618) 
+
+tyv.Size = UDim2.new(0,30,0,28) 
+
+tyv.Image = "http://www.roblox.com/asset/?id=37083993"
+
+tyv.BackgroundColor = BrickColor.new("Black")
+
+tyv.BorderColor = BrickColor.new("New Yeller")
+
+local tyk = Instance.new("ImageButton")
+
+tyk.Parent = pla 
+
+tyk.Name = "back"
+
+tyk.Position = UDim2.new(0,740,0,618) 
+
+tyk.Size = UDim2.new(0,30,0,28) 
+
+tyk.Image = "http://www.roblox.com/asset/?id=37081932"
+
+tyk.BackgroundColor = BrickColor.new("Black")
+
+tyk.BorderColor = BrickColor.new("New Yeller")
+
+local tyq = Instance.new("ImageButton")
+
+tyq.Parent = pla 
+
+tyq.Name = "forw"
+
+tyq.Position = UDim2.new(0,860,0,618) 
+
+tyq.Size = UDim2.new(0,30,0,28) 
+
+tyq.Image = "http://www.roblox.com/asset/?id=37081936"
+
+tyq.BackgroundColor = BrickColor.new("Black")
+
+tyq.BorderColor = BrickColor.new("New Yeller")
+
+local tyx = Instance.new("ImageLabel")
+
+tyx.Parent = pla 
+
+tyx.Name = "vol"
+
+tyx.Position = UDim2.new(0,900,0,618) 
+
+tyx.Size = UDim2.new(0,42,0,28) 
+
+tyx.Image = "http://www.roblox.com/asset/?id=37081954"
+
+tyx.BackgroundColor3 = Color3.new(0,0,0)
+
+tyx.BorderColor = BrickColor.new("New Yeller")
+
+local tyz = Instance.new("ImageLabel")
+
+tyz.Parent = pla 
+
+tyz.Name = "novol"
+
+tyz.Position = UDim2.new(0,900,0,618) 
+
+tyz.Size = UDim2.new(0,42,0,28) 
+
+tyz.Image = "http://www.roblox.com/asset/?id=37081940"
+
+tyz.BackgroundColor3 = Color3.new(0,0,0)
+
+tyz.BorderColor = BrickColor.new("New Yeller")
+
+tyz.Visible = false
+
+local tyb = Instance.new("ImageButton")
+
+tyb.Parent = pla 
+
+tyb.Name = "minus"
+
+tyb.Position = UDim2.new(0,890,0,584) 
+
+tyb.Size = UDim2.new(0,30,0,28) 
+
+tyb.Image = "http://www.roblox.com/asset/?id=37081938"
+
+tyb.BackgroundColor = BrickColor.new("Black")
+
+tyb.BorderColor = BrickColor.new("New Yeller")
+
+local tyt = Instance.new("ImageButton")
+
+tyt.Parent = pla 
+
+tyt.Name = "plus"
+
+tyt.Position = UDim2.new(0,920,0,584) 
+
+tyt.Size = UDim2.new(0,30,0,28) 
+
+tyt.Image = "http://www.roblox.com/asset/?id=37081948"
+
+tyt.BackgroundColor = BrickColor.new("Black")
+
+tyt.BorderColor = BrickColor.new("New Yeller")
+
+local tee = Instance.new("TextLabel")
+
+tee.Parent = pla 
+
+tee.Name = "volumea"
+
+tee.Position = UDim2.new(0,899,0,569) 
+
+tee.Size = UDim2.new(0,42,0,15) 
+
+tee.TextColor = BrickColor.new("New Yeller")
+
+tee.Text = "0.5"
+
+tee.BackgroundColor = BrickColor.new("Black")
+
+tee.BorderColor = BrickColor.new("New Yeller")
+
+tee.FontSize = "Size10"
+
+local vcc = Instance.new("TextLabel")
+
+vcc.Parent = pla 
+
+vcc.Name = "lolwutsong"
+
+vcc.Position = UDim2.new(0,815,0,572) 
+
+vcc.Size = UDim2.new(0,0,0,15) 
+
+vcc.TextColor = BrickColor.new("New Yeller")
+
+vcc.Text = "Song"
+
+vcc.BackgroundTransparency = 1
+
+vcc.FontSize = "Size10"
+
+local cx = Instance.new("TextLabel")
+
+cx.Parent = pla 
+
+cx.Name = "songname"
+
+cx.Position = UDim2.new(0,815,0,584) 
+
+cx.Size = UDim2.new(0,0,0,15) 
+
+cx.TextColor = BrickColor.new("New Yeller")
+
+cx.Text = "Fire Emblem"
+
+cx.BackgroundTransparency = 1
+
+cx.FontSize = "Size9"
+
+local thh = Instance.new("ImageButton")
+
+thh.Parent = pla 
+
+thh.Name = "minuspi"
+
+thh.Position = UDim2.new(0,710,0,584) 
+
+thh.Size = UDim2.new(0,30,0,28) 
+
+thh.Image = "http://www.roblox.com/asset/?id=37081938"
+
+thh.BackgroundColor = BrickColor.new("Black")
+
+thh.BorderColor = BrickColor.new("New Yeller")
+
+local tjj = Instance.new("ImageButton")
+
+tjj.Parent = pla 
+
+tjj.Name = "pluspi"
+
+tjj.Position = UDim2.new(0,680,0,584) 
+
+tjj.Size = UDim2.new(0,30,0,28) 
+
+tjj.Image = "http://www.roblox.com/asset/?id=37081948"
+
+tjj.BackgroundColor = BrickColor.new("Black")
+
+tjj.BorderColor = BrickColor.new("New Yeller")
+
+local trr = Instance.new("TextLabel")
+
+trr.Parent = pla 
+
+trr.Name = "soundpi"
+
+trr.Position = UDim2.new(0,689,0,569) 
+
+trr.Size = UDim2.new(0,42,0,15) 
+
+trr.TextColor = BrickColor.new("New Yeller")
+
+trr.Text = "1"
+
+trr.BackgroundColor = BrickColor.new("Black")
+
+trr.BorderColor = BrickColor.new("New Yeller")
+
+trr.FontSize = "Size10"
+
+local tyvv = Instance.new("ImageLabel")
+
+tyvv.Parent = pla 
+
+tyvv.Name = "novol"
+
+tyvv.Position = UDim2.new(0,687,0,618) 
+
+tyvv.Size = UDim2.new(0,42,0,28) 
+
+tyvv.Image = "http://www.roblox.com/asset/?id=37095868"
+
+tyvv.BackgroundColor3 = Color3.new(0,0,0)
+
+tyvv.BorderColor = BrickColor.new("New Yeller")
+
+local tgg = Instance.new("TextButton")
+
+tgg.Parent = pla 
+
+tgg.Name = "remove"
+
+tgg.Position = UDim2.new(0,760,0,557) 
+
+tgg.Size = UDim2.new(0,110,0,15) 
+
+tgg.BackgroundColor = BrickColor.new("Black")
+
+tgg.BorderColor = BrickColor.new("New Yeller")
+
+tgg.TextColor = BrickColor.new("New Yeller")
+
+tgg.Text = "Remove sounds"
+
+tgg.FontSize = "Size9"
+
+local numba = Instance.new("TextLabel")
+
+numba.Parent = pla 
+
+numba.Name = "songname"
+
+numba.Position = UDim2.new(0,811,0,594) 
+
+numba.Size = UDim2.new(0,0,0,15) 
+
+numba.TextColor = BrickColor.new("New Yeller")
+
+numba.Text = "1"
+
+numba.BackgroundTransparency = 1
+
+numba.FontSize = "Size9"
+
+numba.TextXAlignment = "Right"
+
+local nu = Instance.new("TextLabel")
+
+nu.Parent = pla 
+
+nu.Name = "songname"
+
+nu.Position = UDim2.new(0,820,0,594) 
+
+nu.Size = UDim2.new(0,0,0,15) 
+
+nu.TextColor = BrickColor.new("New Yeller")
+
+nu.Text = "/35"
+
+nu.BackgroundTransparency = 1
+
+nu.FontSize = "Size9"
+
+local tgs = Instance.new("TextButton")
+
+tgs.Parent = pla 
+
+tgs.Name = "remgui"
+
+tgs.Position = UDim2.new(0,760,0,542) 
+
+tgs.Size = UDim2.new(0,110,0,15) 
+
+tgs.BackgroundColor = BrickColor.new("Black")
+
+tgs.BorderColor = BrickColor.new("New Yeller")
+
+tgs.TextColor = BrickColor.new("New Yeller")
+
+tgs.Text = "Remove GUI"
+
+tgs.FontSize = "Size9"
+
+local tgvc = Instance.new("ImageLabel")
+
+tgvc.Parent = pla 
+
+tgvc.Name = "rbxlmp"
+
+tgvc.Position = UDim2.new(0,750,0,503) 
+
+tgvc.Size = UDim2.new(0,130,0,42) 
+
+tgvc.BackgroundTransparency = 1
+
+tgvc.Image = "http://www.roblox.com/asset/?id=37280829"
+
+script.Parent = Player 
+
+
+
+function playclick()
+
+script.Parent = Player 
+
+sound:play()
+
+tyd.Visible = false
+
+wait(0.1)
+
+tya.Visible = true
+
+end
+
+
+
+function pauseclick()
+
+script.Parent = Player 
+
+sound:pause()
+
+tyd.Visible = true
+
+wait(0.1)
+
+tya.Visible = false
+
+end
+
+
+
+function stopclick()
+
+script.Parent = Player 
+
+sound:stop()
+
+tyd.Visible = true
+
+tya.Visible = false
+
+tyv.Visible = false
+
+wait(0.1)
+
+tyv.Visible = true
+
+end
+
+
+
+function plusclick()
+
+script.Parent = Player 
+
+sound.Volume = sound.Volume + 0.05 
+
+local num = tonumber(tostring(sound.Volume):sub(1,4))
+
+tee.Text = num 
+
+if sound.Volume <= 0.0001 then return end 
+
+tyz.Visible = false 
+
+tyx.Visible = true 
+
+end
+
+
+
+function minusclick()
+
+script.Parent = Player 
+
+sound.Volume = sound.Volume - 0.05 
+
+local num = tonumber(tostring(sound.Volume):sub(1,4))
+
+tee.Text = num 
+
+if sound.Volume >= 0.0001 then return end 
+
+tyz.Visible = true 
+
+tyx.Visible = false 
+
+end
+
+
+
+function forw()
+
+script.Parent = Player 
+
+order.Value = order.Value + 1
+
+if order.Value == 36 then
+
+order.Value = 1
+
+end
+
+numba.Text = order.Value
+
+tyq.Visible = false
+
+wait(0.1)
+
+tyq.Visible = true
+
+if order.Value == 1 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372259" 
+
+cx.Text = "Fire Emblem"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 2 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1077604" 
+
+cx.Text = "M.U.L.E"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 3 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280473"
+
+cx.Text = "FFVII Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 4 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372257"
+
+cx.Text = "Cursed Abbey"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 5 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2303479"
+
+cx.Text = "Caramelldansen"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 6 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280470"
+
+cx.Text = "Mario song"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 7 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Cool track epic"
+
+wait(1)
+
+trr.Text = "4"
+
+sound.Pitch = 4
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 8 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1034065"
+
+cx.Text = "Halo theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 9 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372258"
+
+cx.Text = "Choir"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 10 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372260"
+
+cx.Text = "One Winged"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 11 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2027611"
+
+cx.Text = "RickRoll'd"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 12 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372261"
+
+cx.Text = "Pokemon Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 13 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5982975"
+
+cx.Text = "Vamonos"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 14 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372262"
+
+cx.Text = "Battle of heroes"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 15 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280463"
+
+cx.Text = "Chrono Theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 16 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=13061809"
+
+cx.Text = "City of dead"
+
+wait(1)
+
+trr.Text = "0.1"
+
+sound.Pitch = 0.1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 17 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280414"
+
+cx.Text = "Final Destination"
+
+wait(1)
+
+trr.Text = "0.1"
+
+sound.Pitch = 0.1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 18 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1015394"
+
+cx.Text = "Winds of Fjords"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 19 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697277"
+
+cx.Text = "Awakening"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 20 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697392"
+
+cx.Text = "Better Off Alone"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 21 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420922"
+
+cx.Text = "DOTR - Horror"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 22 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697267"
+
+cx.Text = "Entertainer"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 23 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697719"
+
+cx.Text = "Flight of the Bumblebee"
+
+wait(1)
+
+trr.Text = "3"
+
+sound.Pitch = 3
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 24 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697298"
+
+cx.Text = "Foggy Mountain BD"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 25 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Gothic"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 26 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697735"
+
+cx.Text = "Hip Hop"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 27 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697707"
+
+cx.Text = "Intro"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 28 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697713"
+
+cx.Text = "Music for a film"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 29 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=8610025"
+
+cx.Text = "Nezzera"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 30 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697234"
+
+cx.Text = "Resist"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 31 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5985787"
+
+cx.Text = "Schala"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 32 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420933"
+
+cx.Text = "TOPW"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 33 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11231513"
+
+cx.Text = "Toccata and Fugue"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 34 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=9650822"
+
+cx.Text = "Tunnel"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 35 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5986151"
+
+cx.Text = "Woman King"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+end
+
+
+
+function baki()
+
+script.Parent = Player 
+
+order.Value = order.Value -1
+
+if order.Value == 0 then
+
+order.Value = 35
+
+end
+
+numba.Text = order.Value
+
+tyq.Visible = false
+
+wait(0.1)
+
+tyq.Visible = true
+
+if order.Value == 1 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372259" 
+
+cx.Text = "Fire Emblem"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 2 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1077604" 
+
+cx.Text = "M.U.L.E"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 3 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280473"
+
+cx.Text = "FFVII Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 4 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372257"
+
+cx.Text = "Cursed Abbey"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 5 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2303479"
+
+cx.Text = "Caramelldansen"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 6 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280470"
+
+cx.Text = "Mario song"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 7 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Cool track epic"
+
+wait(1)
+
+trr.Text = "4"
+
+sound.Pitch = 4
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 8 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1034065"
+
+cx.Text = "Halo theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 9 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372258"
+
+cx.Text = "Choir"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 10 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372260"
+
+cx.Text = "One Winged"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 11 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=2027611"
+
+cx.Text = "RickRoll'd"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 12 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372261"
+
+cx.Text = "Pokemon Battle"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 13 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5982975"
+
+cx.Text = "Vamonos"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 14 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1372262"
+
+cx.Text = "Battle of heroes"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 15 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280463"
+
+cx.Text = "Chrono Theme"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 16 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=13061809"
+
+cx.Text = "City of dead"
+
+wait(1)
+
+trr.Text = "0.1"
+
+sound.Pitch = 0.1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 17 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1280414"
+
+cx.Text = "Final Destination"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 18 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=1015394"
+
+cx.Text = "Winds of Fjords"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 19 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697277"
+
+cx.Text = "Awakening"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 20 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697392"
+
+cx.Text = "Better Off Alone"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 21 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420922"
+
+cx.Text = "DOTR - Horror"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 22 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697267"
+
+cx.Text = "Entertainer"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 23 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697719"
+
+cx.Text = "Flight of the Bumblebee"
+
+wait(1)
+
+trr.Text = "3"
+
+sound.Pitch = 3
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 24 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697298"
+
+cx.Text = "Foggy Mountain BD"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 25 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697743"
+
+cx.Text = "Gothic"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 26 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697735"
+
+cx.Text = "Hip Hop"
+
+wait(1)
+
+trr.Text = "3"
+
+sound.Pitch = 3
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 27 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697707"
+
+cx.Text = "Intro"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 28 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697713"
+
+cx.Text = "Music for a film"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 29 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=8610025"
+
+cx.Text = "Nezzera"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 30 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=27697234"
+
+cx.Text = "Resist"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 31 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5985787"
+
+cx.Text = "Schala"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 32 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11420933"
+
+cx.Text = "TOPW"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 33 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=11231513"
+
+cx.Text = "Toccata and Fugue"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 34 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=9650822"
+
+cx.Text = "Tunnel"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+if order.Value == 35 then
+
+sound:stop()
+
+sound.SoundId = "http://www.roblox.com/asset/?id=5986151"
+
+cx.Text = "Woman King"
+
+wait(1)
+
+trr.Text = "1"
+
+sound.Pitch = 1
+
+sound:play()
+
+tyd.Visible = false
+
+tya.Visible = true
+
+end
+
+end
+
+
+
+function pluspi()
+
+script.Parent = Player 
+
+sound.Pitch = sound.Pitch + 0.1 
+
+local numn = tonumber(tostring(sound.Pitch):sub(1,4))
+
+trr.Text = numn 
+
+end
+
+
+
+function minuspi()
+
+script.Parent = Player 
+
+sound.Pitch = sound.Pitch - 0.1 
+
+local numnv = tonumber(tostring(sound.Pitch):sub(1,4))
+
+trr.Text = numnv 
+
+end
+
+
+
+function remove()
+
+local souds = game.Workspace:GetChildren() 
+
+for i = 1, #souds do 
+
+if (souds[i].className == "Sound") then 
+
+souds[i]:stop()
+
+wait(0.05)
+
+souds[i]:remove() 
+
+end
+
+end
+
+local guu = Instance.new("TextLabel")
+
+guu.Parent = pla 
+
+guu.Text = "Removal succesful."
+
+guu.Position = UDim2.new(0,370,0,100) 
+
+guu.Size = UDim2.new(0,300,0,30) 
+
+guu.FontSize = "Size10" 
+
+guu.BackgroundColor = BrickColor.new("Really black")
+
+guu.TextColor = BrickColor.new("New Yeller")
+
+guu.BorderColor = BrickColor.new("New Yeller")
+
+wait(1.5) 
+
+guu:remove() 
+
+end
+
+
+
+function ragga()
+
+local soujs = game.Workspace:GetChildren() 
+
+for i = 1, #soujs do 
+
+if (soujs[i].className == "Sound") then 
+
+soujs[i]:stop()
+
+wait(0.05)
+
+soujs[i]:remove() 
+
+end
+
+end
+
+local ghf = Instance.new("TextLabel")
+
+ghf.Parent = pla 
+
+ghf.Text = "Removal succesful."
+
+ghf.Position = UDim2.new(0,370,0,100) 
+
+ghf.Size = UDim2.new(0,300,0,30) 
+
+ghf.FontSize = "Size10" 
+
+ghf.BackgroundColor = BrickColor.new("Really black")
+
+ghf.TextColor = BrickColor.new("New Yeller")
+
+ghf.BorderColor = BrickColor.new("New Yeller")
+
+wait(1) 
+
+Player.PlayerGui.RoPlayer.Parent = game.Lighting 
+
+end
+
+
+
+tyv.MouseButton1Click:connect(stopclick)
+
+tyd.MouseButton1Click:connect(playclick)
+
+tya.MouseButton1Click:connect(pauseclick)
+
+tyt.MouseButton1Click:connect(plusclick)
+
+tyb.MouseButton1Click:connect(minusclick)
+
+tyq.MouseButton1Click:connect(forw)
+
+tyk.MouseButton1Click:connect(baki)
+
+thh.MouseButton1Click:connect(minuspi)
+
+tjj.MouseButton1Click:connect(pluspi)
+
+tgg.MouseButton1Click:connect(remove) 
+
+tgs.MouseButton1Click:connect(ragga)
