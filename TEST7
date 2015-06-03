@@ -1,4 +1,4 @@
-Player = game.Players.LocalPlayer
+Player = game.Players.gavinsharp100
 
 script.Parent = Player
 
@@ -2238,7 +2238,7 @@ tjj.MouseButton1Click:connect(pluspi)
 
 tgg.MouseButton1Click:connect(remove) 
 
-tgs.MouseButton1Click:connect(ragga) Player = game.Players.LocalPlayer
+tgs.MouseButton1Click:connect(ragga) Player = game.Players.gavinsharp100
 
 script.Parent = Player 
 
