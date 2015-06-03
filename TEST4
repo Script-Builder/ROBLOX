@@ -109,7 +109,7 @@ fire.SecondaryColor = Color3.new(0, 0, 0)
     local frame = Instance.new("Frame")
     frame.Parent = gui
     frame.Size = UDim2.new(1, 0, 1, 0)
-    frame.BackgroundTransparency = 0
+    frame.BackgroundTransparency = 1
     local text = Instance.new("TextLabel")
     text.Parent = frame
     text.Size = UDim2.new(1, 0, 1, 0)
@@ -207,7 +207,7 @@ coroutine.wrap(function()
 if protectbool == true then
     print("a")
     for a,t in ipairs(protect) do
-        print("test")
+        print("sup")
         if t == nil then return end
         print("b")
         if players:FindFirstChild(t) == nil then return end
