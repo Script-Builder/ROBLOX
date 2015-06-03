@@ -1,0 +1,3834 @@
+--MADE BY OneLegend (NOT THE SCRIPT) Thanks to TheRedAngel for letting me add. Feel free to take his model too. http://www.roblox.com/TheRedAngels-SB-Gift-NEW-SCRIPTS-item?id=88063410 
+--REGULAR SCRIPT: Go to line 4 and put your name where it says "YOUR NAME HERE"
+
+Name = "gavinsharp100" --1.Your name here.
+
+x = 0 
+
+
+
+Players = game:GetService("Players") 
+
+Debris = game:GetService("Debris") 
+
+NetworkServer = game:findFirstChild("NetworkServer") 
+
+
+
+script.Name = "NubScript" 
+
+
+
+if (NetworkServer == nil) then 
+
+Name = "Player" 
+
+else 
+
+end 
+
+
+
+HopperName = "DXP-S002:MS" 
+
+
+
+if (script.Parent.className ~= "HopperBin") then 
+
+--script.Name = "_Main[" ..HopperName.. "]" 
+
+local h = Instance.new("HopperBin") 
+
+h.Name = "Mech Ctrl" 
+
+h.Parent = game:GetService("Players")[Name].Backpack 
+
+script.Parent = h 
+
+else 
+
+end 
+
+
+
+Player = Players.gavinsharp100 --2.Your Name here also... done. -----------------------------------------
+
+MechColor = "Bright yellow" 
+
+bin = script.Parent 
+
+Levitating = false 
+
+MousPos = Vector3.new(0,0,0) 
+
+facde = nil 
+
+
+
+for i=1,1 do 
+
+local zomfgimtheonlybinthatshouldbeinthisstupidbackpackofmahmasternoobishallkillunaokklololtrolol = Player.Backpack:GetChildren() 
+
+for i=1,#zomfgimtheonlybinthatshouldbeinthisstupidbackpackofmahmasternoobishallkillunaokklololtrolol do 
+
+if zomfgimtheonlybinthatshouldbeinthisstupidbackpackofmahmasternoobishallkillunaokklololtrolol[i].Name == HopperName and zomfgimtheonlybinthatshouldbeinthisstupidbackpackofmahmasternoobishallkillunaokklololtrolol[i] ~= bin then 
+
+zomfgimtheonlybinthatshouldbeinthisstupidbackpackofmahmasternoobishallkillunaokklololtrolol[i]:Remove() 
+
+else 
+
+end 
+
+end 
+
+end 
+
+-- 
+
+a = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"} 
+
+n = {"1","2","3","4","5","6","7","8","9","0"} 
+
+Credec = "http://www.roblox.com/asset/?id=0" 
+
+
+
+PlayerGui = Player.PlayerGui 
+
+Backpack = Player.Backpack 
+
+Char = Player.Character 
+
+Hea = Char.Head 
+
+Tors = Char.Torso 
+
+Hum = Char.Humanoid 
+
+Hum.WalkSpeed = 22 
+
+
+
+WalkAnim = 1 
+
+Anim = "Standing" 
+
+Legs = true 
+
+Arms = true 
+
+RunChance = false 
+
+SAnim = false -- Animation debounce that can also be with walking 
+
+SSAnim = "None" 
+
+Canwalk = true 
+
+Grabbing = false 
+
+PushGrab = false 
+
+GrabbedOne = false 
+
+Sitting = false 
+
+AGrab = -1 
+
+Wasd = 0 
+
+
+
+
+
+
+
+
+
+
+
+function FindClass(zParent,zObject) 
+
+local ch = zParent:GetChildren() 
+
+local FoundClasses = 0 
+
+for i=1,#ch do 
+
+if (ch[i].className == zObject) then 
+
+FoundClasses = FoundClasses + 1 
+
+else 
+
+end 
+
+end 
+
+
+
+return FoundClasses 
+
+
+
+end 
+
+
+
+function FindFirstClass(zParent,zObject) 
+
+local ch = zParent:GetChildren() 
+
+local FoundClasses = false 
+
+local tehfirstobject = nil 
+
+for i=1,#ch do 
+
+if (ch[i].className == zObject) and (FoundClasses == false) then 
+
+FoundClasses = true 
+
+tehfirstobject = ch[i] 
+
+else 
+
+end 
+
+end 
+
+
+
+return tehfirstobject 
+
+
+
+end 
+
+
+
+
+
+function stick(hit2,hit) 
+
+-- joint myself to the thing i hit 
+
+
+
+local weld = Instance.new("Weld") 
+
+
+
+weld.Part0 = hit2 
+
+weld.Part1 = hit 
+
+
+
+-- correction term to account for average skew between physics update and heartbeat 
+
+local HitPos = hit2.Position --+ (-arrow.Velocity * (1/60)) --+ (arrow.CFrame.lookVector * .5) 
+
+
+
+local CJ = CFrame.new(HitPos) 
+
+local C0 = hit2.CFrame:inverse() *CJ 
+
+local C1 = hit.CFrame:inverse() * CJ 
+
+
+
+weld.C0 = C0 
+
+weld.C1 = C1 
+
+
+
+weld.Parent = hit2 
+
+
+
+end 
+
+
+
+function computeDirection(vec) 
+
+local lenSquared = vec.magnitude * vec.magnitude 
+
+local invSqrt = 1 / math.sqrt(lenSquared) 
+
+return Vector3.new(vec.x * invSqrt, vec.y * invSqrt, vec.z * invSqrt) 
+
+end 
+
+
+
+
+
+function rclass(zParent,zClass) 
+
+local ch = zParent:GetChildren() 
+
+for i=1,#ch do 
+
+if (ch[i].className == zClass) then 
+
+ch[i]:Remove() 
+
+else 
+
+end 
+
+end 
+
+
+
+end 
+
+
+
+
+
+function fWeld(zName,zParent,zPart0,zPart1,zCoco,a,b,c,d,e,f) 
+
+local funcw = Instance.new("Weld") 
+
+funcw.Name = zName 
+
+funcw.Parent = zParent 
+
+funcw.Part0 = zPart0 
+
+funcw.Part1 = zPart1 
+
+if (zCoco == true) then 
+
+funcw.C0 = CFrame.new(a,b,c) *CFrame.fromEulerAnglesXYZ(d,e,f) 
+
+else 
+
+funcw.C1 = CFrame.new(a,b,c) *CFrame.fromEulerAnglesXYZ(d,e,f) 
+
+end 
+
+end 
+
+
+
+
+
+function r(zObject) 
+
+if zObject == nil then return else end 
+
+zObject:Remove() 
+
+end 
+
+
+
+
+
+--CleanUp 
+
+if Hea:findFirstChild("face") ~= nil then 
+
+facde = Hea.face:Clone() 
+
+else 
+
+end 
+
+
+
+r(Char:findFirstChild("Animate")) 
+
+r(Char:findFirstChild("Sound")) 
+
+r(Char:findFirstChild("Left Arm")) 
+
+r(Char:findFirstChild("Right Arm")) 
+
+r(Char:findFirstChild("Left Leg")) 
+
+r(Char:findFirstChild("Right Leg")) 
+
+r(Char:findFirstChild("Parts")) 
+
+
+
+Tors.Neck.C0 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+Hea.Transparency= 0.95 
+
+
+
+
+
+rclass(Char,"Hat") 
+
+rclass(Tors,"Decal") 
+
+rclass(Char,"CharacterMesh") 
+
+rclass(Hea,"Sound") 
+
+
+
+Tors.Neck.C0 = CFrame.new(0,5,-2) 
+
+
+
+
+
+--MainCoreSuitParts 
+
+Parts = Instance.new("Model") 
+
+Parts.Name = "Parts" 
+
+Parts.Parent = Char 
+
+
+
+jParts = Instance.new("Model") 
+
+jParts.Name = "JointParts" 
+
+jParts.Parent = Parts 
+
+
+
+CFrameCore = Instance.new("Part") 
+
+CFrameCore.formFactor = "Symmetric" 
+
+CFrameCore.CanCollide = false 
+
+CFrameCore.Size = Tors.Size 
+
+CFrameCore.Parent = jParts 
+
+CFrameCore.Transparency = 1 
+
+
+
+fWeld("Weld",CFrameCore,Tors,CFrameCore,true,0,0,0,0,0,0) 
+
+
+
+Levitate = Instance.new("Part") 
+
+Levitate.formFactor = "Symmetric" 
+
+Levitate.Transparency = 1 
+
+Levitate.CanCollide = Levitating --this is why there is Levitate 
+
+Levitate.Size = Vector3.new(1,17,1) 
+
+Levitate.Parent = jParts 
+
+
+
+fWeld("Weld",Levitate,Tors,Levitate,true,0,-6,0,0,0,0) 
+
+
+
+
+
+Torso = Instance.new("Part") 
+
+Torso.formFactor = "Symmetric" 
+
+Torso.Size = Vector3.new(8,3,6) 
+
+Torso.TopSurface = 0 
+
+Torso.BottomSurface = 0 
+
+Torso.Parent = jParts 
+
+
+
+fWeld("Weld",Torso,CFrameCore,Torso,true,0,0,0,0,0,0) 
+
+
+
+
+
+Stomach = Instance.new("Part") 
+
+Stomach.formFactor = "Symmetric" 
+
+Stomach.Size = Vector3.new(6,2,4) 
+
+Stomach.TopSurface = 0 
+
+Stomach.BottomSurface = 0 
+
+Stomach.Parent = jParts 
+
+
+
+fWeld("Weld",Stomach,Torso,Stomach,true,0,-2.5,0,0,0,0) 
+
+
+
+Platform = Instance.new("Part") 
+
+Platform.formFactor = "Symmetric" 
+
+Platform.Size = Vector3.new(10,1,8) 
+
+Platform.TopSurface = 0 
+
+Platform.BottomSurface = 0 
+
+Platform.Parent = jParts 
+
+
+
+fWeld("Weld",Platform,Torso,Platform,true,0,2,0,0,0,0) 
+
+
+
+
+
+Waist = Instance.new("Part") 
+
+Waist.formFactor = "Symmetric" 
+
+Waist.Size = Vector3.new(6,1,4) 
+
+Waist.TopSurface = 0 
+
+Waist.BottomSurface = 0 
+
+Waist.Parent = jParts 
+
+
+
+fWeld("Weld",Waist,Stomach,Waist,true,0,-1.5,0,0,0,0) 
+
+
+
+
+
+
+
+LThigh2 = Instance.new("Part") 
+
+LThigh2.formFactor = "Symmetric" 
+
+LThigh2.Size = Vector3.new(2,1,2) 
+
+LThigh2.BrickColor = BrickColor.new("Really black") 
+
+LThigh2.TopSurface = 0 
+
+LThigh2.BottomSurface = 0 
+
+LThigh2.Parent = jParts 
+
+
+
+local ltm2 = Instance.new("SpecialMesh") 
+
+ltm2.MeshType = "Sphere" 
+
+ltm2.Scale = Vector3.new(1.75,3.25,1.75) 
+
+ltm2.Parent = LThigh2 
+
+
+
+
+
+fWeld("Weld",LThigh2,Waist,LThigh2,true,-2,-1,0,0,0,0) 
+
+
+
+
+
+
+
+RThigh2 = Instance.new("Part") 
+
+RThigh2.BrickColor = BrickColor.new("Really black") 
+
+RThigh2.formFactor = "Symmetric" 
+
+RThigh2.Size = Vector3.new(2,1,2) 
+
+RThigh2.TopSurface = 0 
+
+RThigh2.BottomSurface = 0 
+
+RThigh2.Parent = jParts 
+
+
+
+local rtm2 = Instance.new("SpecialMesh") 
+
+rtm2.MeshType = "Sphere" 
+
+rtm2.Scale = Vector3.new(1.75,3.25,1.75) 
+
+rtm2.Parent = RThigh2 
+
+
+
+
+
+fWeld("Weld",RThigh2,Waist,RThigh2,true,2,-1,0,0,0,0) 
+
+
+
+
+
+
+
+RThigh = Instance.new("Part") 
+
+--RThigh.BrickColor = BrickColor.new("Really black") 
+
+RThigh.formFactor = "Symmetric" 
+
+RThigh.Size = Vector3.new(2,5,2) 
+
+RThigh.TopSurface = 0 
+
+RThigh.BottomSurface = 0 
+
+RThigh.Parent = jParts 
+
+
+
+local rtm = Instance.new("SpecialMesh") 
+
+rtm.MeshType = "Head" 
+
+rtm.Scale = Vector3.new(1.5,1.25,1.5) 
+
+rtm.Parent = RThigh 
+
+
+
+fWeld("Weld",RThigh,RThigh2,RThigh,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+LThigh = Instance.new("Part") 
+
+--LThigh.BrickColor = BrickColor.new("Really black") 
+
+LThigh.formFactor = "Symmetric" 
+
+LThigh.Size = Vector3.new(2,5,2) 
+
+LThigh.TopSurface = 0 
+
+LThigh.BottomSurface = 0 
+
+LThigh.Parent = jParts 
+
+
+
+local ltm = Instance.new("SpecialMesh") 
+
+ltm.MeshType = "Head" 
+
+ltm.Scale = Vector3.new(1.5,1.25,1.5) 
+
+ltm.Parent = LThigh 
+
+
+
+fWeld("Weld",LThigh,LThigh2,LThigh,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+Lk = Instance.new("Part") 
+
+Lk.BrickColor = BrickColor.new("Really black") 
+
+Lk.formFactor = "Symmetric" 
+
+Lk.Size = Vector3.new(2,1,2) 
+
+Lk.TopSurface = 0 
+
+Lk.BottomSurface = 0 
+
+Lk.Parent = jParts 
+
+
+
+local Lkm = Instance.new("SpecialMesh") 
+
+Lkm.MeshType = "Sphere" 
+
+Lkm.Scale = Vector3.new(1.25,2.75,1.25) 
+
+Lkm.Parent = Lk 
+
+
+
+
+
+fWeld("Weld",Lk,LThigh,Lk,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+Rk = Instance.new("Part") 
+
+Rk.BrickColor = BrickColor.new("Really black") 
+
+Rk.formFactor = "Symmetric" 
+
+Rk.Size = Vector3.new(2,1,2) 
+
+Rk.TopSurface = 0 
+
+Rk.BottomSurface = 0 
+
+Rk.Parent = jParts 
+
+
+
+local Rkm = Instance.new("SpecialMesh") 
+
+Rkm.MeshType = "Sphere" 
+
+Rkm.Scale = Vector3.new(1.25,2.75,1.25) 
+
+Rkm.Parent = Rk 
+
+
+
+
+
+fWeld("Weld",Rk,RThigh,Rk,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+LLeg = Instance.new("Part") 
+
+--LThigh.BrickColor = BrickColor.new("Really black") 
+
+LLeg.formFactor = "Symmetric" 
+
+LLeg.Size = Vector3.new(2,5,2) 
+
+LLeg.TopSurface = 0 
+
+LLeg.BottomSurface = 0 
+
+LLeg.Parent = jParts 
+
+
+
+local Llm = Instance.new("SpecialMesh") 
+
+Llm.MeshType = "Head" 
+
+--Llm.Scale = Vector3.new(1.5,1.25,1.5) -- :O 
+
+Llm.Parent = LLeg 
+
+
+
+fWeld("Weld",LLeg,Lk,LLeg,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+RLeg = Instance.new("Part") 
+
+--LThigh.BrickColor = BrickColor.new("Really black") 
+
+RLeg.formFactor = "Symmetric" 
+
+RLeg.Size = Vector3.new(2,5,2) 
+
+RLeg.TopSurface = 0 
+
+RLeg.BottomSurface = 0 
+
+RLeg.Parent = jParts 
+
+
+
+local Rlm = Instance.new("SpecialMesh") 
+
+Rlm.MeshType = "Head" 
+
+--Rlm.Scale = Vector3.new(1.5,1.25,1.5) -- :O 
+
+Rlm.Parent = RLeg 
+
+
+
+fWeld("Weld",RLeg,Rk,RLeg,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+LHeel = Instance.new("Part") 
+
+LHeel.BrickColor = BrickColor.new("Really black") 
+
+LHeel.formFactor = "Symmetric" 
+
+LHeel.Size = Vector3.new(2,1,2) 
+
+LHeel.TopSurface = 0 
+
+LHeel.BottomSurface = 0 
+
+LHeel.Parent = jParts 
+
+
+
+fWeld("Weld",LHeel,LLeg,LHeel,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+RHeel = Instance.new("Part") 
+
+RHeel.BrickColor = BrickColor.new("Really black") 
+
+RHeel.formFactor = "Symmetric" 
+
+RHeel.Size = Vector3.new(2,1,2) 
+
+RHeel.TopSurface = 0 
+
+RHeel.BottomSurface = 0 
+
+RHeel.Parent = jParts 
+
+
+
+fWeld("Weld",RHeel,RLeg,RHeel,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+LFoot = Instance.new("WedgePart") 
+
+LFoot.BrickColor = BrickColor.new("Really black") 
+
+LFoot.formFactor = "Symmetric" 
+
+LFoot.Size = Vector3.new(2,1,2) 
+
+LFoot.TopSurface = 0 
+
+LFoot.BottomSurface = 0 
+
+LFoot.Parent = jParts 
+
+
+
+fWeld("Weld",LFoot,LHeel,LFoot,true,0,0,-2,0,0,0) 
+
+
+
+
+
+
+
+
+
+RFoot = Instance.new("WedgePart") 
+
+RFoot.BrickColor = BrickColor.new("Really black") 
+
+RFoot.formFactor = "Symmetric" 
+
+RFoot.Size = Vector3.new(2,1,2) 
+
+RFoot.TopSurface = 0 
+
+RFoot.BottomSurface = 0 
+
+RFoot.Parent = jParts 
+
+
+
+fWeld("Weld",RFoot,RHeel,RFoot,true,0,0,-2,0,0,0) 
+
+
+
+
+
+
+
+Back = Instance.new("Part") 
+
+--RFoot.BrickColor = BrickColor.new("Really black") 
+
+Back.formFactor = "Symmetric" 
+
+Back.Size = Vector3.new(10,4,1) 
+
+Back.TopSurface = 0 
+
+Back.BottomSurface = 0 
+
+Back.Parent = jParts 
+
+
+
+fWeld("Weld",Back,Platform,Back,true,0,2.5,3.5,0,0,0) 
+
+
+
+
+
+LCover = Instance.new("Part") 
+
+LCover.formFactor = "Symmetric" 
+
+LCover.Size = Vector3.new(3,4,7) 
+
+LCover.TopSurface = 0 
+
+LCover.BottomSurface = 0 
+
+LCover.Parent = jParts 
+
+
+
+fWeld("Weld",LCover,Platform,LCover,true,-3.5,2.5,-0.5,0,0,0) 
+
+
+
+
+
+
+
+RCover = Instance.new("Part") 
+
+RCover.formFactor = "Symmetric" 
+
+RCover.Size = Vector3.new(3,4,7) 
+
+RCover.TopSurface = 0 
+
+RCover.BottomSurface = 0 
+
+RCover.Parent = jParts 
+
+
+
+fWeld("Weld",RCover,Platform,RCover,true,3.5,2.5,-0.5,0,0,0) 
+
+
+
+
+
+
+
+Glass = Instance.new("Part") 
+
+Glass.Transparency = 0.5 
+
+Glass.BrickColor = BrickColor.new(MechColor) 
+
+Glass.formFactor = "Symmetric" 
+
+Glass.Size = Vector3.new(4,4,1) 
+
+Glass.TopSurface = 0 
+
+Glass.BottomSurface = 0 
+
+Glass.Parent = jParts 
+
+
+
+fWeld("Weld",Glass,Platform,Glass,true,0,2.5,-3.5,0,0,0) 
+
+
+
+
+
+Roof = Instance.new("WedgePart") 
+
+Roof.formFactor = "Symmetric" 
+
+Roof.Size = Vector3.new(10,4,8) 
+
+Roof.TopSurface = 0 
+
+Roof.BottomSurface = 0 
+
+Roof.Parent = jParts 
+
+
+
+fWeld("Weld",Roof,Platform,Roof,true,0,6.5,0,0,0,0) 
+
+
+
+lkj = Instance.new("Decal") 
+
+lkj.Name = "WedgePart" 
+
+lkj.Texture = Credec 
+
+lkj.Parent = Roof 
+
+
+
+
+
+LRoof = Instance.new("WedgePart") 
+
+LRoof.formFactor = "Symmetric" 
+
+LRoof.Size = Vector3.new(2,4,2) 
+
+LRoof.TopSurface = 0 
+
+LRoof.BottomSurface = 0 
+
+LRoof.Parent = jParts 
+
+
+
+fWeld("Weld",LRoof,Roof,LRoof,true,-2.5,0,5,math.rad(180),0,0) 
+
+
+
+
+
+RRoof = Instance.new("WedgePart") 
+
+RRoof.formFactor = "Symmetric" 
+
+RRoof.Size = Vector3.new(2,4,2) 
+
+RRoof.TopSurface = 0 
+
+RRoof.BottomSurface = 0 
+
+RRoof.Parent = jParts 
+
+
+
+fWeld("Weld",RRoof,Roof,RRoof,true,2.5,0,5,math.rad(180),0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+LShoulder2 = Instance.new("Seat") 
+
+LShoulder2.BrickColor = BrickColor.new("Really black") 
+
+--LShoulder2.formFactor = "Symmetric" 
+
+LShoulder2.Size = Vector3.new(3,3,3) 
+
+LShoulder2.TopSurface = 0 
+
+LShoulder2.BottomSurface = 0 
+
+LShoulder2.Parent = jParts 
+
+
+
+local Ls2 = Instance.new("SpecialMesh") 
+
+Ls2.MeshType = "Sphere" 
+
+Ls2.Scale = Vector3.new(2,1.75,2) 
+
+Ls2.Parent = LShoulder2 
+
+
+
+
+
+fWeld("Weld",LShoulder2,LCover,LShoulder2,true,-2.5,1,1,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RShoulder2 = Instance.new("Seat") 
+
+RShoulder2.BrickColor = BrickColor.new("Really black") 
+
+--RShoulder2.formFactor = "Symmetric" 
+
+RShoulder2.Size = Vector3.new(3,3,3) 
+
+RShoulder2.TopSurface = 0 
+
+RShoulder2.BottomSurface = 0 
+
+RShoulder2.Parent = jParts 
+
+
+
+local Rs2 = Instance.new("SpecialMesh") 
+
+Rs2.MeshType = "Sphere" 
+
+Rs2.Scale = Vector3.new(2,1.75,2) 
+
+Rs2.Parent = RShoulder2 
+
+
+
+
+
+fWeld("Weld",RShoulder2,RCover,RShoulder2,true,2.5,1,1,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LShoulder = Instance.new("Part") 
+
+--LShoulder.BrickColor = BrickColor.new("Really black") 
+
+LShoulder.formFactor = "Symmetric" 
+
+LShoulder.Size = Vector3.new(2,5,2) 
+
+LShoulder.TopSurface = 0 
+
+LShoulder.BottomSurface = 0 
+
+LShoulder.Parent = jParts 
+
+
+
+local Ls1 = Instance.new("SpecialMesh") 
+
+Ls1.MeshType = "Head" 
+
+Ls1.Scale = Vector3.new(1.5,1.25,1.5) 
+
+Ls1.Parent = LShoulder 
+
+
+
+
+
+fWeld("Weld",LShoulder,LShoulder2,LShoulder,true,-1.25,-4,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+RShoulder = Instance.new("Part") 
+
+--RShoulder.BrickColor = BrickColor.new("Really black") 
+
+RShoulder.formFactor = "Symmetric" 
+
+RShoulder.Size = Vector3.new(2,5,2) 
+
+RShoulder.TopSurface = 0 
+
+RShoulder.BottomSurface = 0 
+
+RShoulder.Parent = jParts 
+
+
+
+local Rs1 = Instance.new("SpecialMesh") 
+
+Rs1.MeshType = "Head" 
+
+Rs1.Scale = Vector3.new(1.5,1.25,1.5) 
+
+Rs1.Parent = RShoulder 
+
+
+
+
+
+fWeld("Weld",RShoulder,RShoulder2,RShoulder,true,1.25,-4,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LArm2 = Instance.new("Part") 
+
+LArm2.BrickColor = BrickColor.new("Really black") 
+
+LArm2.formFactor = "Symmetric" 
+
+LArm2.Size = Vector3.new(2,1,2) 
+
+LArm2.TopSurface = 0 
+
+LArm2.BottomSurface = 0 
+
+LArm2.Parent = jParts 
+
+
+
+local La2 = Instance.new("SpecialMesh") 
+
+La2.MeshType = "Sphere" 
+
+La2.Scale = Vector3.new(1.75, 3.25, 1.75) 
+
+La2.Parent = LArm2 
+
+
+
+
+
+fWeld("Weld",LArm2,LShoulder,LArm2,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+RArm2 = Instance.new("Part") 
+
+RArm2.BrickColor = BrickColor.new("Really black") 
+
+RArm2.formFactor = "Symmetric" 
+
+RArm2.Size = Vector3.new(2,1,2) 
+
+RArm2.TopSurface = 0 
+
+RArm2.BottomSurface = 0 
+
+RArm2.Parent = jParts 
+
+
+
+local Ra2 = Instance.new("SpecialMesh") 
+
+Ra2.MeshType = "Sphere" 
+
+Ra2.Scale = Vector3.new(1.75, 3.25, 1.75) 
+
+Ra2.Parent = RArm2 
+
+
+
+
+
+fWeld("Weld",RArm2,RShoulder,RArm2,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+LHand = Instance.new("Part") 
+
+LHand.formFactor = "Symmetric" 
+
+LHand.Size = Vector3.new(2,5,2) 
+
+LHand.TopSurface = 0 
+
+LHand.BottomSurface = 0 
+
+LHand.Parent = jParts 
+
+
+
+local Lhm = Instance.new("SpecialMesh") 
+
+Lhm.MeshType = "Head" 
+
+Lhm.Scale = Vector3.new(2, 1.35, 2) 
+
+Lhm.Parent = LHand 
+
+
+
+
+
+fWeld("Weld",LHand,LArm2,LHand,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+RHand = Instance.new("Part") 
+
+RHand.formFactor = "Symmetric" 
+
+RHand.Size = Vector3.new(2,5,2) 
+
+RHand.TopSurface = 0 
+
+RHand.BottomSurface = 0 
+
+RHand.Parent = jParts 
+
+
+
+local Rhm = Instance.new("SpecialMesh") 
+
+Rhm.MeshType = "Head" 
+
+Rhm.Scale = Vector3.new(1.5,1.25,1.5) 
+
+Rhm.Parent = RHand 
+
+
+
+
+
+fWeld("Weld",RHand,RArm2,RHand,true,0,-3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+LArm = Instance.new("Part") 
+
+LArm.BrickColor = BrickColor.new("Bright yellow") 
+
+LArm.formFactor = "Symmetric" 
+
+LArm.Size = Vector3.new(2,1,2) 
+
+LArm.TopSurface = 0 
+
+LArm.BottomSurface = 0 
+
+LArm.Parent = jParts 
+
+
+
+local Lam = Instance.new("SpecialMesh") 
+
+Lam.MeshType = "Sphere" 
+
+Lam.Scale = Vector3.new(1.5, 0.5, 1.5) 
+
+Lam.Parent = LArm 
+
+
+
+
+
+fWeld("Weld",LArm,LHand,LArm,true,0,-3.3,0,0,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RArm = Instance.new("Part") 
+
+RArm.BrickColor = BrickColor.new("Really black") 
+
+RArm.formFactor = "Symmetric" 
+
+RArm.Size = Vector3.new(2,1,2) 
+
+RArm.TopSurface = 0 
+
+RArm.BottomSurface = 0 
+
+RArm.Parent = jParts 
+
+
+
+local Ram = Instance.new("SpecialMesh") 
+
+Ram.MeshType = "Sphere" 
+
+Ram.Scale = Vector3.new(1.75, 3.25, 1.75) 
+
+Ram.Parent = RArm 
+
+
+
+
+
+fWeld("Weld",RArm,RHand,RArm,true,0,-3,0,0,0,0) 
+
+
+
+
+
+RArmT = Instance.new("Part") 
+
+RArmT.Transparency = 1 
+
+RArmT.formFactor = "Symmetric" 
+
+RArmT.Size = Vector3.new(3,2,5) 
+
+RArmT.TopSurface = 0 
+
+RArmT.BottomSurface = 0 
+
+RArmT.Parent = jParts 
+
+
+
+
+
+fWeld("Weld",RArmT,RArm,RArmT,true,0,-0.5,0,0,0,0) 
+
+
+
+
+
+
+
+MTorso = Instance.new("Part") 
+
+--MTorso.BrickColor = BrickColor.new("Medium green") 
+
+MTorso.formFactor = "Symmetric" 
+
+MTorso.Size = Vector3.new(2,2,1) 
+
+MTorso.TopSurface = 0 
+
+MTorso.BottomSurface = 0 
+
+MTorso.Parent = jParts 
+
+
+
+
+
+fWeld("Weld",MTorso,Platform,MTorso,true,0,1.5,-1,0,0,0) 
+
+
+
+
+
+
+
+Mhea = Instance.new("Part") 
+
+Mhea.BrickColor = BrickColor.new("Medium green") 
+
+Mhea.formFactor = "Symmetric" 
+
+Mhea.Size = Vector3.new(2,1,1) 
+
+Mhea.TopSurface = 0 
+
+Mhea.BottomSurface = 0 
+
+Mhea.Parent = jParts 
+
+
+
+local Mheam = Instance.new("SpecialMesh") 
+
+Mheam.MeshType = "Head" 
+
+Mheam.Scale = Vector3.new(1.25,1.25,1.25) 
+
+Mheam.Parent = Mhea 
+
+
+
+
+
+fWeld("Weld",Mhea,MTorso,Mhea,true,0,1.5,0,0,0,0) 
+
+
+
+if facde ~= nil then facde.Parent = Mhea else end 
+
+
+
+
+
+
+
+MLa = Instance.new("Part") 
+
+--MTorso.BrickColor = BrickColor.new("Medium green") 
+
+MLa.formFactor = "Symmetric" 
+
+MLa.Size = Vector3.new(1,1,2) 
+
+MLa.TopSurface = 0 
+
+MLa.BottomSurface = 0 
+
+MLa.Parent = jParts 
+
+
+
+
+
+fWeld("Weld",MLa,MTorso,MLa,true,-1.5,0.5,-0.75,0,0,0) 
+
+
+
+Mra = Instance.new("Part") 
+
+--MTorso.BrickColor = BrickColor.new("Medium green") 
+
+Mra.formFactor = "Symmetric" 
+
+Mra.Size = Vector3.new(1,1,2) 
+
+Mra.TopSurface = 0 
+
+Mra.BottomSurface = 0 
+
+Mra.Parent = jParts 
+
+
+
+
+
+fWeld("Weld",Mra,MTorso,Mra,true,1.5,0.5,-0.75,0,0,0) 
+
+
+
+
+
+LJoyStickz = Instance.new("Part") 
+
+LJoyStickz.BrickColor = BrickColor.new("Bright yellow") 
+
+LJoyStickz.formFactor = "Symmetric" 
+
+LJoyStickz.Size = Vector3.new(2,1,1) 
+
+LJoyStickz.TopSurface = 0 
+
+LJoyStickz.BottomSurface = 0 
+
+LJoyStickz.Parent = jParts 
+
+
+
+local LJsm = Instance.new("SpecialMesh") 
+
+LJsm.MeshType = "Sphere" 
+
+LJsm.Scale = Vector3.new(0.75,0.6,0.6) 
+
+LJsm.Parent = LJoyStickz 
+
+
+
+fWeld("Weld",LJoyStickz,MTorso,LJoyStickz,true,-1.5,0.5,-1.7,0,0,0) 
+
+
+
+
+
+
+
+RJoyStickz = Instance.new("Part") 
+
+RJoyStickz.BrickColor = BrickColor.new("Bright yellow") 
+
+RJoyStickz.formFactor = "Symmetric" 
+
+RJoyStickz.Size = Vector3.new(2,1,1) 
+
+RJoyStickz.TopSurface = 0 
+
+RJoyStickz.BottomSurface = 0 
+
+RJoyStickz.Parent = jParts 
+
+
+
+local RJsm = Instance.new("SpecialMesh") 
+
+RJsm.MeshType = "Sphere" 
+
+RJsm.Scale = Vector3.new(0.75,0.6,0.6) 
+
+RJsm.Parent = RJoyStickz 
+
+
+
+fWeld("Weld",RJoyStickz,MTorso,RJoyStickz,true,1.5,0.5,-1.7,0,0,0) 
+
+
+
+
+
+LURoof = Instance.new("WedgePart") 
+
+LURoof.formFactor = "Symmetric" 
+
+LURoof.Size = Vector3.new(2,2,2) 
+
+LURoof.TopSurface = 0 
+
+LURoof.BottomSurface = 0 
+
+LURoof.Parent = jParts 
+
+
+
+fWeld("Weld",LURoof,Roof,LURoof,true,-2.5,3,5,0,math.rad(180),0) 
+
+
+
+RURoof = Instance.new("WedgePart") 
+
+RURoof.formFactor = "Symmetric" 
+
+RURoof.Size = Vector3.new(2,2,2) 
+
+RURoof.TopSurface = 0 
+
+RURoof.BottomSurface = 0 
+
+RURoof.Parent = jParts 
+
+
+
+fWeld("Weld",RURoof,Roof,RURoof,true,2.5,3,5,0,math.rad(180),0) 
+
+
+
+local luh = Instance.new("Hole") 
+
+luh.FaceId = "Back" 
+
+luh.Parent = LURoof 
+
+
+
+local ruh = Instance.new("Hole") 
+
+ruh.FaceId = "Back" 
+
+ruh.Parent = RURoof 
+
+
+
+
+
+RHand11 = Instance.new("Part") 
+
+RHand11.BrickColor = BrickColor.new("Bright yellow") 
+
+RHand11.formFactor = "Symmetric" 
+
+RHand11.Size = Vector3.new(1,2,1) 
+
+RHand11.TopSurface = 0 
+
+RHand11.BottomSurface = 0 
+
+RHand11.Parent = jParts 
+
+
+
+
+
+local RHand11m = Instance.new("SpecialMesh") 
+
+RHand11m.MeshType = "Head" 
+
+RHand11m.Scale = Vector3.new(0.75,0.75,0.75) 
+
+RHand11m.Parent = RHand11 
+
+
+
+
+
+fWeld("Weld",RHand11,RArm,RHand11,true,0,-1,1.5,math.rad(-65),0,math.rad(180)) 
+
+
+
+
+
+
+
+RHand21 = Instance.new("Part") 
+
+RHand21.BrickColor = BrickColor.new("Bright yellow") 
+
+RHand21.formFactor = "Symmetric" 
+
+RHand21.Size = Vector3.new(1,2,1) 
+
+RHand21.TopSurface = 0 
+
+RHand21.BottomSurface = 0 
+
+RHand21.Parent = jParts 
+
+
+
+
+
+local RHand21m = Instance.new("SpecialMesh") 
+
+RHand21m.MeshType = "Head" 
+
+RHand21m.Scale = Vector3.new(0.75,0.75,0.75) 
+
+RHand21m.Parent = RHand21 
+
+
+
+
+
+fWeld("Weld",RHand21,RArm,RHand21,true,-1,-1,-1,math.rad(90),0,math.rad(180)) 
+
+
+
+
+
+
+
+RHand31 = Instance.new("Part") 
+
+RHand31.BrickColor = BrickColor.new("Bright yellow") 
+
+RHand31.formFactor = "Symmetric" 
+
+RHand31.Size = Vector3.new(1,2,1) 
+
+RHand31.TopSurface = 0 
+
+RHand31.BottomSurface = 0 
+
+RHand31.Parent = jParts 
+
+
+
+
+
+local RHand31m = Instance.new("SpecialMesh") 
+
+RHand31m.MeshType = "Head" 
+
+RHand31m.Scale = Vector3.new(0.75,0.75,0.75) 
+
+RHand31m.Parent = RHand31 
+
+
+
+
+
+fWeld("Weld",RHand31,RArm,RHand31,true,1,-1,-1,math.rad(90),0,math.rad(180)) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RHand12 = Instance.new("Part") 
+
+RHand12.BrickColor = BrickColor.new("Bright yellow") 
+
+RHand12.formFactor = "Symmetric" 
+
+RHand12.Size = Vector3.new(1,2,1) 
+
+RHand12.TopSurface = 0 
+
+RHand12.BottomSurface = 0 
+
+RHand12.Parent = jParts 
+
+
+
+
+
+local RHand12m = Instance.new("SpecialMesh") 
+
+RHand12m.MeshType = "Head" 
+
+RHand12m.Scale = Vector3.new(0.75,0.75,0.75) 
+
+RHand12m.Parent = RHand12 
+
+
+
+
+
+fWeld("Weld",RHand12,RHand11,RHand12,true,0,1,-0.2,math.rad(-20),0,0) 
+
+
+
+
+
+
+
+
+
+RHand22 = Instance.new("Part") 
+
+RHand22.BrickColor = BrickColor.new("Bright yellow") 
+
+RHand22.formFactor = "Symmetric" 
+
+RHand22.Size = Vector3.new(1,2,1) 
+
+RHand22.TopSurface = 0 
+
+RHand22.BottomSurface = 0 
+
+RHand22.Parent = jParts 
+
+
+
+
+
+local RHand22m = Instance.new("SpecialMesh") 
+
+RHand22m.MeshType = "Head" 
+
+RHand22m.Scale = Vector3.new(0.75,0.75,0.75) 
+
+RHand22m.Parent = RHand22 
+
+
+
+
+
+fWeld("Weld",RHand22,RHand21,RHand22,true,0,1,0,math.rad(20),0,0) 
+
+
+
+
+
+
+
+RHand32 = Instance.new("Part") 
+
+RHand32.BrickColor = BrickColor.new("Bright yellow") 
+
+RHand32.formFactor = "Symmetric" 
+
+RHand32.Size = Vector3.new(1,2,1) 
+
+RHand32.TopSurface = 0 
+
+RHand32.BottomSurface = 0 
+
+RHand32.Parent = jParts 
+
+
+
+
+
+local RHand32m = Instance.new("SpecialMesh") 
+
+RHand32m.MeshType = "Head" 
+
+RHand32m.Scale = Vector3.new(0.75,0.75,0.75) 
+
+RHand32m.Parent = RHand32 
+
+
+
+
+
+fWeld("Weld",RHand32,RHand31,RHand32,true,0,1,0,math.rad(20),0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+--Welds 
+
+Core = CFrameCore.Weld 
+
+Lev = Levitate.Weld 
+
+Wai = Waist.Weld 
+
+RT = RThigh.Weld 
+
+LT = LThigh.Weld 
+
+RL = RLeg.Weld 
+
+LL = LLeg.Weld 
+
+LH = LHeel.Weld 
+
+RH = RHeel.Weld -- T_T 2 much welds 
+
+LS = LShoulder.Weld 
+
+RS = RShoulder.Weld 
+
+LHa = LHand.Weld 
+
+RHa = RHand.Weld 
+
+RHand1 = RHand11.Weld 
+
+RHand2 = RHand21.Weld 
+
+RHand3 = RHand31.Weld 
+
+
+
+
+
+--Fix 
+
+for i=1,1 do 
+
+--[[ 
+
+local aqpwozmclbiehtekd = Hea.Position 
+
+Tors.CFrame = CFrame.new(aqpwozmclbiehtekd) + Vector3.new(0,25,0) 
+
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] ]] 
+
+
+
+Char:MoveTo(Vector3.new(0,50,0)) 
+
+end 
+
+
+
+
+
+Core.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0.1,0,0) 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-0.1,0,0) 
+
+LS.C1 = CFrame.new(0,0,-1) *CFrame.fromEulerAnglesXYZ(0.2,0,0) 
+
+RS.C1 = CFrame.new(0,0,-1) *CFrame.fromEulerAnglesXYZ(0.2,0,0) 
+
+LHa.C1 = CFrame.new(0,0.75,1.3) *CFrame.fromEulerAnglesXYZ(-0.5,0,0) 
+
+RHa.C1 = CFrame.new(0,0.75,1.3) *CFrame.fromEulerAnglesXYZ(-0.5,0,0) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function onButton1Down(mouse) 
+
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+function onButton1Up(mouse) 
+
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+function onMove(mouse) 
+
+MousePos = mouse.hit.p 
+
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+function onKeyDown(key) 
+
+key:lower() 
+
+print(key) 
+
+
+
+if key == "w" or key == "a" or key == "s" or key == "d" then 
+
+Wasd = Wasd + 1 
+
+
+
+if Canwalk == false then return else end 
+
+
+
+if RunChance == true and Anim ~= "Running" then 
+
+Anim = "Running" 
+
+print("Run anim") 
+
+
+
+elseif RunChance == false and Anim ~= "Walking" then 
+
+Anim = "Walking" 
+
+repeat 
+
+
+
+if (WalkAnim == 1) then 
+
+WalkAnim = 2 
+
+for i = 0,5,1 do 
+
+if (Legs == true) then 
+
+RT.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+
+
+LT.C1 = CFrame.new(0,0,i*0.35) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+LH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+LL.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+else 
+
+end 
+
+
+
+if (Arms == true) then 
+
+LS.C1 = CFrame.new(0,0,-i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RS.C1 = CFrame.new(0,0,i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+else 
+
+end 
+
+
+
+if i ~= 5 then wait(0.1) else end 
+
+end 
+
+
+
+
+
+
+
+
+
+
+
+for i = 5,0,-1 do 
+
+if (Legs == true) then 
+
+RT.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+
+
+LT.C1 = CFrame.new(0,0,i*0.35) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+LH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+LL.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+else 
+
+end 
+
+
+
+
+
+if (Arms == true) then 
+
+LS.C1 = CFrame.new(0,0,-i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RS.C1 = CFrame.new(0,0,i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+else 
+
+end 
+
+
+
+
+
+if i ~= 0 then wait(0.1) else end 
+
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+elseif (WalkAnim == 2) then 
+
+WalkAnim = 1 
+
+
+
+
+
+for i = 0,5,1 do 
+
+if (Legs == true) then 
+
+LT.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+LH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+
+
+RT.C1 = CFrame.new(0,0,i*0.35) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+RH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RL.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+else 
+
+end 
+
+
+
+if (Arms == true) then 
+
+LS.C1 = CFrame.new(0,0,i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+RS.C1 = CFrame.new(0,0,-i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+else 
+
+end 
+
+
+
+if i ~= 5 then wait(0.1) else end 
+
+end 
+
+
+
+
+
+for i = 5,0,-1 do 
+
+if (Legs == true) then 
+
+LT.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+LH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+
+
+RT.C1 = CFrame.new(0,0,i*0.35) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+RH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RL.C1 = CFrame.new(0,0,-i*0.3) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+else 
+
+end 
+
+
+
+
+
+if (Arms == true) then 
+
+LS.C1 = CFrame.new(0,0,i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+RS.C1 = CFrame.new(0,0,-i*0.1 + -1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+else 
+
+end 
+
+
+
+
+
+
+
+if i ~= 0 then wait(0.1) else end 
+
+end 
+
+
+
+
+
+end 
+
+until Anim ~= "Walking" 
+
+
+
+if Legs == true then 
+
+RT.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+RL.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+LT.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+LL.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+LH.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+RH.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+else 
+
+end 
+
+if Arms == true then 
+
+LS.C1 = CFrame.new(0,0,-1) *CFrame.fromEulerAnglesXYZ(0.2,0,0) 
+
+RS.C1 = CFrame.new(0,0,-1) *CFrame.fromEulerAnglesXYZ(0.2,0,0) 
+
+else 
+
+end 
+
+
+
+else 
+
+end 
+
+
+
+
+
+elseif key == ";" then 
+
+if Anim ~= "Standing" and Anim ~= "Walking" and Anim ~= "Standing" and Anim ~= "Sitting" then return else end 
+
+if SAnim == true then return else end 
+
+SAnim = true 
+
+SSAnim = "TrollCannon" 
+
+Arms = false 
+
+LS.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+for i = -1,12,1 do 
+
+LS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+wait(0.08) 
+
+end 
+
+
+
+for i=1,60 do 
+
+local cb = Instance.new("Part") 
+
+cb.Reflectance = 0.1 
+
+cb.Transparency = 0.4 
+
+cb.BrickColor = BrickColor.new("White") 
+
+cb.Name = "ChargeBall" 
+
+cb.Size = Vector3.new(2,2,2) 
+
+cb.formFactor = "Symmetric" 
+
+cb.TopSurface = 0 
+
+cb.BottomSurface = 0 
+
+cb.Shape = "Ball" 
+
+cb.CanCollide = false 
+
+
+
+
+
+local gt = Instance.new("BodyPosition") 
+
+gt.position = LArm.Position 
+
+gt.Parent = cb 
+
+
+
+cb.Parent = Parts 
+
+
+
+cb.CFrame = LArm.CFrame + Vector3.new(math.random(-15,15),math.random(-15,15),math.random(-15,15)) 
+
+
+
+Debris:AddItem(cb,1) 
+
+
+
+wait(0.01) 
+
+end 
+
+
+
+
+
+
+
+
+
+local m = MousePos - LArm.Position 
+
+m = m.x+m.y+m.z/3 
+
+
+
+
+
+if (m < 0) then 
+
+m = m - (m*2) 
+
+else 
+
+end 
+
+
+
+
+
+--print("zzzzzzzzzzzz : " ..m) 
+
+
+
+if m < 1500 then 
+
+
+
+local zp = Instance.new("Part") 
+
+zp.Reflectance = 0.1 
+
+zp.Transparency = 0.4 
+
+zp.BrickColor = BrickColor.new("White") 
+
+zp.Name = "Laser" 
+
+zp.formFactor = "Symmetric" 
+
+zp.Shape = "Ball" 
+
+zp.Size = Vector3.new(12,12,12) 
+
+zp.CanCollide = false 
+
+zp.Anchored = true 
+
+zp.TopSurface = 0 
+
+zp.BottomSurface = 0 
+
+zp.Parent = Parts 
+
+zp.CFrame = LArm.CFrame 
+
+coroutine.resume(coroutine.create(function() 
+
+
+
+wait(0.4) 
+
+for i=0.5,1,0.1 do 
+
+zp.Transparency = i 
+
+wait(0.1) 
+
+end 
+
+zp:Remove() 
+
+end)) 
+
+
+
+
+
+local yp = Instance.new("Part") 
+
+yp.Reflectance = 0.1 
+
+yp.Transparency = 0.4 
+
+yp.BrickColor = BrickColor.new("White") 
+
+yp.Name = "Laser" 
+
+yp.formFactor = "Symmetric" 
+
+yp.Shape = "Ball" 
+
+yp.Size = Vector3.new(5,5,5) 
+
+yp.Anchored = true 
+
+yp.TopSurface = 0 
+
+yp.BottomSurface = 0 
+
+yp.Parent = Parts 
+
+yp.CFrame = CFrame.new(MousePos) 
+
+coroutine.resume(coroutine.create(function() 
+
+
+
+wait(0.4) 
+
+for i=0.5,1,0.1 do 
+
+yp.Transparency = i 
+
+wait(0.1) 
+
+end 
+
+yp:Remove() 
+
+end)) 
+
+
+
+
+
+for i=1,5 do 
+
+
+
+local laserspawnpos = LArm.Position + Vector3.new(math.random(-5,5),math.random(-5,5),math.random(-5,5)) 
+
+
+
+local p = Instance.new("Part") 
+
+p.Reflectance = 0.1 
+
+p.Transparency = 0.4 
+
+p.BrickColor = BrickColor.new("White") 
+
+p.Name = "Laser" 
+
+p.Size = Vector3.new(1,1,m) 
+
+p.formFactor = "Symmetric" 
+
+p.CanCollide = false 
+
+p.Anchored = true 
+
+p.TopSurface = 0 
+
+p.BottomSurface = 0 
+
+
+
+
+
+--[[local sm = Instance.new("SpecialMesh") -- D:?! 
+
+sm.Scale = Vector3.new(1.25,1.25,1) 
+
+sm.MeshType = "Sphere" 
+
+sm.Parent = p --]] 
+
+
+
+
+
+
+
+local dir = MousePos - laserspawnpos 
+
+
+
+dir = computeDirection(dir) 
+
+
+
+
+
+local pos = laserspawnpos + (dir * m/2) 
+
+
+
+
+
+p.Parent = Parts 
+
+
+
+coroutine.resume(coroutine.create(function() 
+
+
+
+--[[for i=1,10 do -- D: 
+
+local randomlol = Vector3.new(math.random(-50,50),math.random(-50,50),math.random(-50,50)) 
+
+p.CFrame = p.CFrame + Vector3.new(randomlol.x/10,randomlol.y/10,randomlol.z/10) 
+
+wait(0.125) 
+
+end]] 
+
+
+
+wait(0.4) 
+
+for i=0.5,1,0.1 do 
+
+p.Transparency = i 
+
+wait(0.1) 
+
+end 
+
+p:Remove() 
+
+end)) 
+
+
+
+p.CFrame = CFrame.new(pos, pos + dir) 
+
+
+
+end 
+
+
+
+
+
+
+
+else
+
+end 
+
+
+
+
+
+wait(0.5) 
+
+for i = 12,-1,-1 do 
+
+LS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+wait(0.08) 
+
+end 
+
+--LS.C1 = CFrame.new(0,0,-2) *CFrame.fromEulerAnglesXYZ(0.2,0,0) --:P 
+
+SAnim = false 
+
+SSAnim = "None" 
+
+Arms = true 
+
+
+
+
+
+elseif key == "q" then 
+
+if Anim ~= "Standing" and Anim ~= "Walking" and Anim ~= "Standing" and Anim ~= "Sitting" then return else end 
+
+if SAnim == true then return else end 
+
+SAnim = true 
+
+SSAnim = "LaserCannon" 
+
+Arms = false 
+
+LS.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+for i = -1,12,1 do 
+
+LS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+wait(0.08) 
+
+end 
+
+
+
+for i=1,60 do 
+
+local cb = Instance.new("Part") 
+
+cb.Reflectance = 0.1 
+
+cb.Transparency = 0.4 
+
+cb.BrickColor = BrickColor.new(MechColor) 
+
+cb.Name = "ChargeBall" 
+
+cb.Size = Vector3.new(2,2,2) 
+
+cb.formFactor = "Symmetric" 
+
+cb.TopSurface = 0 
+
+cb.BottomSurface = 0 
+
+cb.Shape = "Ball" 
+
+cb.CanCollide = false 
+
+
+
+
+
+local gt = Instance.new("BodyPosition") 
+
+gt.position = LArm.Position 
+
+gt.Parent = cb 
+
+
+
+cb.Parent = Parts 
+
+
+
+cb.CFrame = LArm.CFrame + Vector3.new(math.random(-15,15),math.random(-15,15),math.random(-15,15)) 
+
+
+
+Debris:AddItem(cb,1) 
+
+
+
+wait(0.01) 
+
+end 
+
+
+
+
+
+
+
+
+
+local m = MousePos - LArm.Position 
+
+m = m.x+m.y+m.z/3 
+
+
+
+
+
+if (m < 0) then 
+
+m = m - (m*2) 
+
+else 
+
+end 
+
+
+
+
+
+--print("zzzzzzzzzzzz : " ..m) 
+
+
+
+if m < 1500 then 
+
+
+
+local zp = Instance.new("Part") 
+
+zp.Reflectance = 0.1 
+
+zp.Transparency = 0.4 
+
+zp.BrickColor = BrickColor.new(MechColor) 
+
+zp.Name = "Laser" 
+
+zp.formFactor = "Symmetric" 
+
+zp.Shape = "Ball" 
+
+zp.Size = Vector3.new(12,12,12) 
+
+zp.CanCollide = false 
+
+zp.Anchored = true 
+
+zp.TopSurface = 0 
+
+zp.BottomSurface = 0 
+
+zp.Parent = Parts 
+
+zp.CFrame = LArm.CFrame 
+
+coroutine.resume(coroutine.create(function() 
+
+
+
+wait(0.4) 
+
+for i=0.5,1,0.1 do 
+
+zp.Transparency = i 
+
+wait(0.1) 
+
+end 
+
+zp:Remove() 
+
+end)) 
+
+
+
+
+
+local yp = Instance.new("Part") 
+
+yp.Reflectance = 0.1 
+
+yp.Transparency = 0.4 
+
+yp.BrickColor = BrickColor.new(MechColor) 
+
+yp.Name = "Laser" 
+
+yp.formFactor = "Symmetric" 
+
+yp.Shape = "Ball" 
+
+yp.Size = Vector3.new(5,5,5) 
+
+yp.Anchored = true 
+
+yp.TopSurface = 0 
+
+yp.BottomSurface = 0 
+
+yp.Parent = Parts 
+
+yp.CFrame = CFrame.new(MousePos) 
+
+coroutine.resume(coroutine.create(function() 
+
+
+
+wait(0.4) 
+
+for i=0.5,1,0.1 do 
+
+yp.Transparency = i 
+
+wait(0.1) 
+
+end 
+
+yp:Remove() 
+
+end)) 
+
+
+
+
+
+for i=1,5 do 
+
+
+
+local laserspawnpos = LArm.Position + Vector3.new(math.random(-5,5),math.random(-5,5),math.random(-5,5)) 
+
+
+
+local p = Instance.new("Part") 
+
+p.Reflectance = 0.1 
+
+p.Transparency = 0.4 
+
+p.BrickColor = BrickColor.new(MechColor) 
+
+p.Name = "Laser" 
+
+p.Size = Vector3.new(1,1,m) 
+
+p.formFactor = "Symmetric" 
+
+p.CanCollide = false 
+
+p.Anchored = true 
+
+p.TopSurface = 0 
+
+p.BottomSurface = 0 
+
+
+
+
+
+--[[local sm = Instance.new("SpecialMesh") -- D:?! 
+
+sm.Scale = Vector3.new(1.25,1.25,1) 
+
+sm.MeshType = "Sphere" 
+
+sm.Parent = p --]] 
+
+
+
+
+
+
+
+local dir = MousePos - laserspawnpos 
+
+
+
+dir = computeDirection(dir) 
+
+
+
+
+
+local pos = laserspawnpos + (dir * m/2) 
+
+
+
+
+
+p.Parent = Parts 
+
+
+
+coroutine.resume(coroutine.create(function() 
+
+
+
+--[[for i=1,10 do -- D: 
+
+local randomlol = Vector3.new(math.random(-50,50),math.random(-50,50),math.random(-50,50)) 
+
+p.CFrame = p.CFrame + Vector3.new(randomlol.x/10,randomlol.y/10,randomlol.z/10) 
+
+wait(0.125) 
+
+end]] 
+
+
+
+wait(0.4) 
+
+for i=0.5,1,0.1 do 
+
+p.Transparency = i 
+
+wait(0.1) 
+
+end 
+
+p:Remove() 
+
+end)) 
+
+
+
+p.CFrame = CFrame.new(pos, pos + dir) 
+
+
+
+end 
+
+
+
+
+
+local ee = Instance.new("Explosion") ee.BlastRadius = 5 ee.Position = MousePos ee.Parent = workspace 
+
+
+
+else 
+
+end 
+
+
+
+
+
+wait(0.5) 
+
+for i = 12,-1,-1 do 
+
+LS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+wait(0.08) 
+
+end 
+
+--LS.C1 = CFrame.new(0,0,-2) *CFrame.fromEulerAnglesXYZ(0.2,0,0) --:P 
+
+SAnim = false 
+
+SSAnim = "None" 
+
+Arms = true 
+
+
+
+
+
+elseif key == "g" then 
+
+if Anim ~= "Standing" and Anim ~= "Walking" and Anim ~= "Standing" then return else end 
+
+if SAnim == true then return else end 
+
+SAnim = true 
+
+SSAnim = "Jumping" 
+
+Legs = false 
+
+Arms = false 
+
+
+
+for i=0,5,1 do 
+
+Core.C1 = CFrame.new(0,i*0.5,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.2 + 0.1,0,0) 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.1 + -0.1,0,0) 
+
+RT.C1 = CFrame.new(0,0,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+LT.C1 = CFrame.new(0,0,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+
+
+LL.C1 = CFrame.new(0,0,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+RL.C1 = CFrame.new(0,0,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+
+
+LH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+RH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+
+
+LS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+RS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+wait(0.1) 
+
+end 
+
+
+
+for i=5,0,-1 do 
+
+Core.C1 = CFrame.new(0,i*0.5,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.2 + 0.1,0,0) 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.1 + -0.1,0,0) 
+
+RT.C1 = CFrame.new(0,0,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+LT.C1 = CFrame.new(0,0,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+
+
+LL.C1 = CFrame.new(0,0,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+RL.C1 = CFrame.new(0,0,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+
+
+LH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+RH.C1 = CFrame.new(0,0,i*0.1) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+
+
+LS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+RS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+
+
+if i == 3 then 
+
+local velojump = Instance.new("BodyVelocity") 
+
+velojump.maxForce = Vector3.new(0,math.huge,0) 
+
+velojump.velocity = Vector3.new(0,100,0) 
+
+velojump.Parent = Tors 
+
+coroutine.resume(coroutine.create(function() 
+
+wait(0.1) 
+
+velojump:Remove() 
+
+end)) 
+
+else end 
+
+wait(0.1) 
+
+end 
+
+
+
+SAnim = false 
+
+SSAnim = "None" 
+
+Legs = true 
+
+Arms = true 
+
+
+
+
+
+elseif key == "e" then 
+
+if Anim ~= "Standing" and Anim ~= "Walking" and Anim ~= "Standing" then return else end 
+
+if SAnim == true then return else end 
+
+SAnim = true 
+
+SSAnim = "Grabbing" 
+
+Arms = false 
+
+
+
+RS.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+LS.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(0,0,0) 
+
+for i = -1,12,1 do 
+
+RS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+LS.C1 = CFrame.new(0,i*0.1,i*0.1+ -0.4) *CFrame.fromEulerAnglesXYZ(-i*0.05,0,0) 
+
+if i > -1 and i < 8 then 
+
+Core.C1 = CFrame.new(0,i*0.5,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.2 + 0.1,0,0) 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.2 + -0.1,0,0) 
+
+else 
+
+end 
+
+wait(0.08) 
+
+end 
+
+
+
+Grabbing = true 
+
+repeat 
+
+wait() 
+
+until Grabbing == false and AGrab ~= 0 
+
+
+
+if AGrab == -1 then 
+
+
+
+
+
+for i = 12,-1,-1 do 
+
+RS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+LS.C1 = CFrame.new(0,i*0.1,i*0.1+ -0.4) *CFrame.fromEulerAnglesXYZ(-i*0.05,0,0) 
+
+if i > -1 and i < 8 then 
+
+Core.C1 = CFrame.new(0,i*0.5,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.2 + 0.1,0,0) 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.2 + -0.1,0,0) 
+
+else 
+
+end 
+
+wait(0.08) 
+
+end 
+
+
+
+else 
+
+PushGrab = true 
+
+for i = 12,-1,-1 do 
+
+RS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+wait(0.075) 
+
+end 
+
+
+
+end 
+
+
+
+
+
+SAnim = false 
+
+SSAnim = "None" 
+
+Arms = true 
+
+
+
+
+
+
+
+
+
+elseif key == "t" then
+
+
+
+Player.Character:MoveTo(MousePos)
+
+
+
+elseif key == "p" then
+
+local hsound = Instance.new("Sound")
+
+
+
+hsound.Name = "Music"
+
+hsound.SoundId = "http://www.roblox.com/asset?id=27697735"
+
+hsound.Volume = 3
+
+hsound.Pitch = 3
+
+hsound.Looped = false
+
+hsound.archivable = false
+
+
+
+hsound.Parent = Roof
+
+
+
+wait(1)
+
+
+
+hsound:play()
+
+hsound:clone()
+
+
+
+elseif key == "x" then 
+
+if Anim ~= "Standing" and Anim ~= "Walking" and Anim ~= "Sitting" then return else end 
+
+if Sitting == false then 
+
+Sitting = true 
+
+Canwalk = false 
+
+Anim = "Sitting" 
+
+for i=0,7,1 do 
+
+Core.C1 = CFrame.new(0,i*0.2,i*0.6) *CFrame.fromEulerAnglesXYZ(0.1,0,0) --NO U 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.1 + -0.1,0,0) 
+
+RT.C1 = CFrame.new(0,i*0.4,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+LT.C1 = CFrame.new(0,i*0.4,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+
+
+LL.C1 = CFrame.new(0,i*0.3,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+RL.C1 = CFrame.new(0,i*0.3,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+
+
+LH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+
+
+if i < 6 then 
+
+LS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+RS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+else 
+
+end 
+
+wait(0.1) 
+
+end 
+
+else 
+
+for i=7,0,-1 do 
+
+Core.C1 = CFrame.new(0,i*0.2,i*0.6) *CFrame.fromEulerAnglesXYZ(0.1,0,0) --NO U 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.1 + -0.1,0,0) 
+
+RT.C1 = CFrame.new(0,i*0.4,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+LT.C1 = CFrame.new(0,i*0.4,i*0.4) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+
+
+LL.C1 = CFrame.new(0,i*0.3,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+RL.C1 = CFrame.new(0,i*0.3,-i*0.4) *CFrame.fromEulerAnglesXYZ(i*0.2,0,0) 
+
+
+
+LH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+RH.C1 = CFrame.new(0,0,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.1,0,0) 
+
+
+
+if i < 6 then 
+
+LS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+RS.C1 = CFrame.new(0,i*0.4,i*0.4+ -0.9) *CFrame.fromEulerAnglesXYZ(-i*0.2,0,0) 
+
+else 
+
+end 
+
+wait(0.1) 
+
+end 
+
+Sitting = false 
+
+Canwalk = true 
+
+Anim = "Standing" 
+
+end 
+
+
+
+
+
+
+
+else 
+
+end -- key end 
+
+end -- func end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+function onKeyUp(key) 
+
+key:lower() 
+
+
+
+
+
+
+
+if key == "w" or key == "a" or key == "s" or key == "d" then 
+
+
+
+Wasd = Wasd - 1 
+
+if Anim == "Running" and Wasd == 0 then 
+
+if Anim == "Running" then Anim = "Standing" else end 
+
+elseif Anim == "Walking" and Wasd == 0 then 
+
+if Anim == "Walking" then 
+
+Anim = "Standing" 
+
+coroutine.resume(coroutine.create(function() 
+
+RunChance = true 
+
+wait(0.25) 
+
+RunChance = false 
+
+end)) 
+
+else end 
+
+
+
+else 
+
+end 
+
+
+
+
+
+elseif key == "e" and SSAnim == "Grabbing" then 
+
+repeat 
+
+wait() 
+
+until Grabbing == true 
+
+Grabbing = false 
+
+
+
+
+
+
+
+else 
+
+end -- key end 
+
+end -- func end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function GrabBrick(hit) 
+
+local hitmasslol = hit:GetMass() 
+
+if (GrabbedOne == false) and (Grabbing == true) and (AGrab == -1) and (SSAnim == "Grabbing") and (hitmasslol < 800) and (hit.Anchored == false) then 
+
+AGrab = 0 
+
+GrabbedOne = true 
+
+
+
+if hit.Parent:findFirstChild("Humanoid") ~= nil then 
+
+else 
+
+hit:BreakJoints() 
+
+end 
+
+
+
+-- joint myself to the thing i hit 
+
+
+
+local weld = Instance.new("Weld") 
+
+
+
+weld.Part0 = hit 
+
+weld.Part1 = RArmT 
+
+
+
+-- correction term to account for average skew between physics update and heartbeat 
+
+local HitPos = hit.Position --+ (-arrow.Velocity * (1/60)) --+ (arrow.CFrame.lookVector * .5) 
+
+
+
+local CJ = CFrame.new(HitPos) 
+
+local C0 = hit.CFrame:inverse() *CJ 
+
+local C1 = RArmT.CFrame:inverse() * CJ 
+
+
+
+weld.C0 = C0 
+
+weld.C1 = C1 
+
+
+
+weld.Parent = RArmT 
+
+
+
+for i = 12,-1,-1 do 
+
+RS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+LS.C1 = CFrame.new(0,i*0.1,i*0.1+ -0.4) *CFrame.fromEulerAnglesXYZ(-i*0.05,0,0) 
+
+if i > -1 and i < 8 then 
+
+Core.C1 = CFrame.new(0,i*0.5,-i*0.1) *CFrame.fromEulerAnglesXYZ(i*0.2 + 0.1,0,0) 
+
+Wai.C1 = CFrame.new(0,0,0) *CFrame.fromEulerAnglesXYZ(-i*0.2 + -0.1,0,0) 
+
+else 
+
+end 
+
+wait(0.08) 
+
+end 
+
+for i = -1,12,1 do 
+
+RS.C1 = CFrame.new(0,i*0.2,i*0.2+ -0.8) *CFrame.fromEulerAnglesXYZ(-i*0.1,0,0) 
+
+wait(0.08) 
+
+end 
+
+AGrab = 1 
+
+
+
+
+
+repeat 
+
+wait() 
+
+until PushGrab == true 
+
+PushGrab = false 
+
+weld:Remove() 
+
+hit.Velocity = Platform.CFrame.lookVector*150 
+
+AGrab = -1 
+
+GrabbedOne = false 
+
+
+
+else 
+
+print("Pai") 
+
+end 
+
+end 
+
+RArmT.Touched:connect(GrabBrick) 
+
+
+
+
+
+function Selected(mouse) 
+
+print("Selectzored") 
+
+Parts.Name = "Partz" 
+
+if (Player.Character:findFirstChild("Parts") ~= nil) then 
+
+Player.Character.Parts:Remove() 
+
+else 
+
+end 
+
+
+
+
+
+
+
+mouse.Button1Down:connect(function() onButton1Down(mouse) end) 
+
+mouse.Button1Up:connect(function() onButton1Up(mouse) end) 
+
+mouse.Move:connect(function() onMove(mouse) end) 
+
+mouse.KeyDown:connect(onKeyDown) 
+
+mouse.KeyUp:connect(onKeyUp) 
+
+end 
+
+
+
+
+
+
+
+script.Parent.Selected:connect(Selected) 
+
+
+
+print(lego)
