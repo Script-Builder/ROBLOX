@@ -1,7 +1,7 @@
 --MADE BY OneLegend (NOT THE SCRIPT) Thanks to TheRedAngel for letting me add. Feel free to take his model too. http://www.roblox.com/TheRedAngels-SB-Gift-NEW-SCRIPTS-item?id=88063410 
 --REGULAR SCRIPT: Go to line 4 and put your name where it says "YOUR NAME HERE"
 
-Name = "gavinsharp100" --1.Your name here.
+Name = "NikePro2004" --1.Your name here.
 
 x = 0 
 
@@ -51,7 +51,7 @@ end
 
 
 
-Player = Players.gavinsharp100 --2.Your Name here also... done. -----------------------------------------
+Player = Players.NikePro2004 --2.Your Name here also... done. -----------------------------------------
 
 MechColor = "Bright yellow" 
 
