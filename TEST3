@@ -42,3 +42,5 @@ GT.Text = [[OMP]]
 GT.Font = '(null)'
 GT.FontSize = 'Size14'
 GT.TextColor3 = Color3.new(1.000, 0.753, 0.000)
+
+GT.MouseButton1Down:connect(function()
