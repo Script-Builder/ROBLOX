@@ -1,6 +1,4 @@
---MADE BY OneLegend (NOT THE SCRIPT) LOCAL SCRIPT: Go to line 3 and put your name where it says "ares200345"
-
-Player = game.Players.ares200345
+Player = game.Players.LocalPlayer
 
 script.Parent = Player
 
