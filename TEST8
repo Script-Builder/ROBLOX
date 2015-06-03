@@ -1,0 +1,1835 @@
+Player = game:GetService("Players").LocalPlayer
+PlayerName=Player.Name
+Character = Player.Character
+PlayerGui = Player.PlayerGui
+Backpack = Player.Backpack
+Torso = Character.Torso
+Head = Character.Head
+Humanoid = Character.Humanoid
+LeftArm = Character["Left Arm"]
+LeftLeg = Character["Left Leg"]
+RightArm = Character["Right Arm"]
+RightLeg = Character["Right Leg"]
+LS = Torso["Left Shoulder"]
+LH = Torso["Left Hip"]
+RS = Torso["Right Shoulder"]
+RH = Torso["Right Hip"]
+Neck = Torso.Neck
+it=Instance.new
+vt=Vector3.new
+cf=CFrame.new
+euler=CFrame.fromEulerAnglesXYZ
+angles=CFrame.Angles
+necko=cf(0, 1, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+necko2=cf(0, -0.5, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+LHC0=cf(-1,-1,0,-0,-0,-1,0,1,0,1,0,0)
+RHC0=cf(1,-1,0,0,0,1,0,1,0,-1,-0,-0)
+attack = false
+attackdebounce = false
+debouncerockets=false
+debounceorb=false
+MMouse=nil
+idle=true
+doingidle=false
+doingwalk=false
+armwalk=false
+restarted=false
+holdrockets=false
+canidle=true
+aiming=false
+Mode="Robot"
+combo=0
+RootPart=Character.HumanoidRootPart
+--workspace.CurrentCamera.CameraSubject=RootPart
+--workspace.CurrentCamera.CameraType = "Track"
+RootJoint=RootPart.RootJoint
+RootCF=euler(-1.57,0,3.14)*cf(0,0,2.4)
+local RobotParts={}
+local RobotWelds={}
+local rocketlaunchparts={}
+do
+local PlayerColours = {
+BrickColor.new("Bright red"),
+BrickColor.new("Bright blue"),
+BrickColor.new("Earth green"),
+BrickColor.new("Bright violet"),
+BrickColor.new("Bright orange"),
+BrickColor.new("Bright yellow"),
+BrickColor.new("Light reddish violet"),
+BrickColor.new("Brick yellow"),
+}
+local GetNameValue
+function GetChatColour(Name)
+return PlayerColours[GetNameValue(Name) + 1]
+end
+function GetNameValue(Name)
+local Length = #Name
+local Value = 0
+for Index = 1, Length do
+local CharacterValue = string.byte(string.sub(Name, Index, Index))
+if (Length - Index + 1) % 4 < 2 then
+Value = Value + CharacterValue
+else
+Value = Value - CharacterValue
+end
+end
+return Value % 8
+end
+end
+print(GetChatColour(PlayerName))
+Color1=BrickColor.new("Navy blue")
+Color2="Medium stone grey"
+Color3="Dark stone grey"
+Color4="Really black"
+--player
+player = nil
+--save shoulders
+RSH, LSH = nil, nil
+--welds
+RW, LW , RWL, LWL = it("Weld"), it("Weld"), it("Weld"), it("Weld")
+RW.Name="Right Shoulder"
+LW.Name="Left Shoulder"
+RWL.Name="Right Hip"
+LWL.Name="Left Hip"
+if Character:findFirstChild("Roi",true) ~= nil then
+Character:findFirstChild("Roi",true).Parent = nil
+end
+if Character:findFirstChild("Right Fist",true) ~= nil then
+Character:findFirstChild("Right Fist",true).Parent = nil
+end
+if Character:findFirstChild("Left Fist",true) ~= nil then
+Character:findFirstChild("Left Fist",true).Parent = nil
+end
+if Character:findFirstChild("Block",true) ~= nil then
+Character:findFirstChild("Block",true).Parent = nil
+end
+function part(formfactor,parent,reflectance,transparency,brickcolor,name,size)
+local fp = it("Part")
+fp.Material = "SmoothPlastic"
+fp.formFactor = formfactor
+fp.Parent = parent
+fp.Reflectance = reflectance
+fp.Transparency = transparency
+fp.CanCollide = false
+fp.Locked=true
+fp.BrickColor = brickcolor
+fp.Name = name
+fp.Size = size
+fp.Position = Torso.Position
+fp.BottomSurface="SmoothNoOutlines"
+fp.TopSurface="SmoothNoOutlines"
+fp.RightSurface="SmoothNoOutlines"
+fp.LeftSurface="SmoothNoOutlines"
+fp:BreakJoints()
+table.insert(RobotParts,fp)
+return fp
+end
+function mesh(Mesh,part,meshtype,meshid,offset,scale)
+local mesh = it(Mesh)
+mesh.Parent = part
+if Mesh=="SpecialMesh" then
+mesh.MeshType = meshtype
+mesh.MeshId = meshid
+end
+mesh.Offset=offset
+mesh.Scale=scale
+return mesh
+end
+function weld(parent,part0,part1,c0)
+local weld = it("Weld")
+weld.Parent = parent
+weld.Part0 = part0
+weld.Part1 = part1
+weld.C0 = c0
+table.insert(RobotWelds,weld)
+return weld
+end
+local modelzorz = Instance.new("Model")
+modelzorz.Parent = Character
+modelzorz.Name = "Roi"
+fist1=Instance.new("Model")
+fist1.Parent=Character
+fist1.Name="Left Fist"
+fist2=Instance.new("Model")
+fist2.Parent=Character
+fist2.Name="Right Fist"
+Torso.CFrame=Torso.CFrame*cf(0,10,0)
+tors1=part(3,modelzorz,0,0,Color1,"Torso1",vt(1,1,1))
+RootJoint.Part1=tors1
+tors2=part(3,modelzorz,0,0,Color1,"Torso2",vt(1,1,1))
+tors3=part(3,modelzorz,0,0,BrickColor.new(Color2),"Torso3",vt(1,1,1))
+tors4=part(3,modelzorz,0,0,BrickColor.new(Color2),"Torso4",vt(1,1,1))
+tors5=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso5",vt(1,1,1))
+tors6=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso6",vt(1,1,1))
+tors7=part(3,modelzorz,0,0,Color1,"Torso7",vt(1,1,1))
+tors8=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso8",vt(1,1,1))
+tors9=part(3,modelzorz,0,0,Color1,"Torso9",vt(1,1,1))
+tors10=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso10",vt(1,1,1))
+tors11=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso11",vt(1,1,1))
+tors12=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso12",vt(1,1,1))
+tors13=part(3,modelzorz,0,0,Color1,"Torso13",vt(1,1,1))
+tors14=part(3,modelzorz,0,0,BrickColor.new(Color4),"Torso14",vt(1,1,1))
+tors15=part(3,modelzorz,0,0,BrickColor.new(Color4),"Torso15",vt(1,1,1))
+tors16=part(3,modelzorz,0,0,BrickColor.new(Color4),"Torso16",vt(1,1,1))
+tors17=part(3,modelzorz,0,0,BrickColor.new(Color3),"Torso17",vt(1,1,1))
+tors18=part(3,modelzorz,0,1,BrickColor.new("Really black"),"Torso Hitbox",vt(5,4,3.5))
+tors18.CanCollide=true
+lleg1=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Left Leg1",vt(1,1,1))
+lleg2=part(3,modelzorz,0,0,Color1,"Left Leg2",vt(1,1,1))
+lleg3=part(3,modelzorz,0,0,BrickColor.new(Color3),"Left Leg3",vt(1,1,1))
+lleg4=part(3,modelzorz,0,0,Color1,"Left Leg4",vt(1,1,1))
+lleg5=part(3,modelzorz,0,0,BrickColor.new(Color3),"Left Leg5",vt(1,1,1))
+lleg6=part(3,modelzorz,0,0,Color1,"Left Leg6",vt(1,1,1))
+lleg7=part(3,modelzorz,0,0,BrickColor.new(Color3),"Left Leg7",vt(1,1,1))
+lleg8=part(3,modelzorz,0,0,BrickColor.new(Color2),"Left Leg8",vt(1,1,1))
+lleg9=part(3,modelzorz,0,0,BrickColor.new(Color3),"Left Leg9",vt(1,1,1))
+lleg10=part(3,modelzorz,0,0,BrickColor.new(Color2),"Left Leg10",vt(1,1,1))
+lleg11=part(3,modelzorz,0,1,BrickColor.new("Really black"),"Left Leg Hitbox",vt(1.5,4,1.5))
+
+rleg1=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Right Leg1",vt(1,1,1))
+rleg2=part(3,modelzorz,0,0,Color1,"Right Leg2",vt(1,1,1))
+rleg3=part(3,modelzorz,0,0,BrickColor.new(Color3),"Right Leg3",vt(1,1,1))
+rleg4=part(3,modelzorz,0,0,Color1,"Right Leg4",vt(1,1,1))
+rleg5=part(3,modelzorz,0,0,BrickColor.new(Color3),"Right Leg5",vt(1,1,1))
+rleg6=part(3,modelzorz,0,0,Color1,"Right Leg6",vt(1,1,1))
+rleg7=part(3,modelzorz,0,0,BrickColor.new(Color3),"Right Leg7",vt(1,1,1))
+rleg8=part(3,modelzorz,0,0,BrickColor.new(Color2),"Right Leg8",vt(1,1,1))
+rleg9=part(3,modelzorz,0,0,BrickColor.new(Color3),"Right Leg9",vt(1,1,1))
+rleg10=part(3,modelzorz,0,0,BrickColor.new(Color2),"Right Leg10",vt(1,1,1))
+rleg11=part(3,modelzorz,0,1,BrickColor.new("Really black"),"Right Leg Hitbox",vt(1.5,4,1.5))
+
+larm1=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Left Arm1",vt(1,1,1))
+larm2=part(3,modelzorz,0,0,BrickColor.new(Color3),"Left Arm2",vt(1,1,1))
+larm3=part(3,modelzorz,0,1,BrickColor.new(Color4),"Left Arm3",vt(1,1,1)) --Scrapped to make way for new cannon
+numb=0.6
+for i=1,3 do
+larm4=part(3,modelzorz,0,1,BrickColor.new("Really black"),"Left Arm4",vt(1,1,1))
+larmmsh4=mesh("CylinderMesh",larm4,"","",vt(0,0,0),vt(0.5,1.01,0.5))
+larmwld4=weld(larm4,larm4,larm3,euler(1.57,0,0)*cf(numb,-0.1,0))
+numb=numb-0.6
+end
+larm5=part(3,modelzorz,0,1,BrickColor.new("Really black"),"Left Arm5",vt(1,1,1))
+larm6=part(3,modelzorz,0,0,Color1,"Left Arm6",vt(1,1,1))
+larm7=part(3,modelzorz,0,0,Color1,"Left Arm7",vt(1,1,1))
+larm8=part(3,modelzorz,0,0,Color1,"Left Arm8",vt(1,1,1))
+larm9=part(3,modelzorz,0,0,Color1,"Left Arm9",vt(1,1,1))
+larm10=part(3,modelzorz,0,0,Color1,"Left Arm10",vt(1,1,1))
+larm11=part(3,modelzorz,0,0,BrickColor.new(Color2),"Left Arm11",vt(1,1,1))
+larm12=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Left Arm12",vt(1,1,1))
+larm13=part(3,modelzorz,0,0,BrickColor.new(Color2),"Left Arm13",vt(1,1,1))
+larm14=part(3,modelzorz,0,0,BrickColor.new(Color4),"Left Arm14",vt(1,1,1))
+larm15=part(3,modelzorz,0,0,BrickColor.new(Color2),"Left Arm15",vt(1,1,1))
+larm16=part(3,modelzorz,0,0,BrickColor.new(Color2),"Left Arm16",vt(1,1,1))
+larm17=part(3,modelzorz,0,0,Color1,"Left Arm17",vt(1,1,1))
+lfist1=part(3,fist1,0,0,BrickColor.new(Color2),"Left Fist1",vt(1,1,1))
+lfist2=part(3,fist1,0,0,Color1,"Left Fist2",vt(1,1,1))
+lfist3=part(3,fist1,0,0,Color1,"Left Fist3",vt(1,1,1))
+lfist4=part(3,fist1,0,0,Color1,"Left Fist4",vt(1,1,1))
+lfist5=part(3,fist1,0,0,Color1,"Left Fist5",vt(1,1,1))
+lfist6=part(3,fist1,0,0,BrickColor.new(Color3),"Left Fist6",vt(1,1,1))
+lfist7=part(3,fist1,0,0,BrickColor.new(Color3),"Left Fist7",vt(1,1,1))
+lfist8=part(3,fist1,0,0,BrickColor.new(Color3),"Left Fist8",vt(1,1,1))
+lfist9=part(3,fist1,0,0,BrickColor.new(Color3),"Left Fist9",vt(1,1,1))
+lfist10=part(3,fist1,0,0,BrickColor.new(Color3),"Left Fist10",vt(1,1,1))
+lfist11=part(3,fist1,0,0,BrickColor.new(Color3),"Left Fist11",vt(1,1,1))
+lfist12=part(3,fist1,0,1,BrickColor.new("Really black"),"Left Fist Hitbox",vt(1.5,4,1.5))
+
+rarm1=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Right Arm1",vt(1,1,1))
+rarm2=part(3,modelzorz,0,0,BrickColor.new(Color3),"Right Arm2",vt(1,1,1))
+rarm3=part(3,modelzorz,0,0,BrickColor.new(Color4),"Right Arm3",vt(1,1,1))
+numb=0.6
+for i=1,3 do
+rarm4=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Right Arm4",vt(1,1,1))
+rarmmsh4=mesh("CylinderMesh",rarm4,"","",vt(0,0,0),vt(0.5,1.01,0.5))
+rarmwld4=weld(rarm4,rarm4,rarm3,euler(1.57,0,0)*cf(numb,-0.1,0))
+table.insert(rocketlaunchparts,rarm4)
+numb=numb-0.6
+end
+rarm5=part(3,modelzorz,0,1,BrickColor.new("Really black"),"Right Arm5",vt(1,1,1))
+rarm6=part(3,modelzorz,0,0,Color1,"Right Arm6",vt(1,1,1))
+rarm7=part(3,modelzorz,0,0,Color1,"Right Arm7",vt(1,1,1))
+rarm8=part(3,modelzorz,0,0,Color1,"Right Arm8",vt(1,1,1))
+rarm9=part(3,modelzorz,0,0,Color1,"Right Arm9",vt(1,1,1))
+rarm10=part(3,modelzorz,0,0,Color1,"Right Arm10",vt(1,1,1))
+rarm11=part(3,modelzorz,0,0,BrickColor.new(Color2),"Right Arm11",vt(1,1,1))
+rarm12=part(3,modelzorz,0,0,BrickColor.new("Really black"),"Right Arm12",vt(1,1,1))
+rarm13=part(3,modelzorz,0,0,BrickColor.new(Color2),"Right Arm13",vt(1,1,1))
+rfist1=part(3,fist2,0,0,BrickColor.new(Color2),"Right Fist1",vt(1,1,1))
+rfist2=part(3,fist2,0,0,Color1,"Right Fist2",vt(1,1,1))
+rfist3=part(3,fist2,0,0,Color1,"Right Fist3",vt(1,1,1))
+rfist4=part(3,fist2,0,0,Color1,"Right Fist4",vt(1,1,1))
+rfist5=part(3,fist2,0,0,Color1,"Right Fist5",vt(1,1,1))
+rfist6=part(3,fist2,0,0,BrickColor.new(Color3),"Right Fist6",vt(1,1,1))
+rfist7=part(3,fist2,0,0,BrickColor.new(Color3),"Right Fist7",vt(1,1,1))
+rfist8=part(3,fist2,0,0,BrickColor.new(Color3),"Right Fist8",vt(1,1,1))
+rfist9=part(3,fist2,0,0,BrickColor.new(Color3),"Right Fist9",vt(1,1,1))
+rfist10=part(3,fist2,0,0,BrickColor.new(Color3),"Right Fist10",vt(1,1,1))
+rfist11=part(3,fist2,0,0,BrickColor.new(Color3),"Right Fist11",vt(1,1,1))
+rfist12=part(3,fist2,0,1,BrickColor.new("Really black"),"Right Fist Hitbox",vt(1.5,4,1.5))
+torsmsh1=mesh("BlockMesh",tors1,"","",vt(0,0,0),vt(2,1.5,3))
+torsmsh2=mesh("BlockMesh",tors2,"","",vt(0,0,0),vt(3.3,1.3,2.8))
+torsmsh3=mesh("BlockMesh",tors3,"","",vt(0,0,0),vt(2.5,0.8,3))
+torsmsh4=mesh("BlockMesh",tors4,"","",vt(0,0,0),vt(2.4,0.7,1.5))
+torsmsh5=mesh("BlockMesh",tors5,"","",vt(0,0,0),vt(1,1,1.5))
+torsmsh6=mesh("BlockMesh",tors6,"","",vt(0,0,0),vt(2,0.6,2))
+torsmsh7=mesh("BlockMesh",tors7,"","",vt(0,0,0),vt(2.5,1.5,1))
+torsmsh8=mesh("BlockMesh",tors8,"","",vt(0,0,0),vt(2,1.5,0.9))
+torsmsh9=mesh("BlockMesh",tors9,"","",vt(0,0,0),vt(1.9,1,1))
+torsmsh10=mesh("BlockMesh",tors10,"","",vt(0,0,0),vt(1.5,1.3,1.3))
+torsmsh11=mesh("BlockMesh",tors11,"","",vt(0,0,0),vt(1.2,2,1.2))
+torsmsh12=mesh("BlockMesh",tors12,"","",vt(0,0,0),vt(1.2,1,1.4))
+torsmsh13=mesh("BlockMesh",tors13,"","",vt(0,0,0),vt(1,1,1.2))
+torsmsh14=mesh("BlockMesh",tors14,"","",vt(0,0,0),vt(0.2,1,1.2))
+torsmsh15=mesh("BlockMesh",tors15,"","",vt(0,0,0),vt(0.2,1,1.2))
+torsmsh16=mesh("BlockMesh",tors16,"","",vt(0,0,0),vt(0.2,1,1.2))
+torsmsh17=mesh("BlockMesh",tors17,"","",vt(0,0,0),vt(1.2,1.2,1))
+llegmsh1=mesh("BlockMesh",lleg1,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+llegmsh2=mesh("CylinderMesh",lleg2,"","",vt(0,0,0),vt(1.3,1.3,1.3))
+llegmsh3=mesh("CylinderMesh",lleg3,"","",vt(0,0,0),vt(1,1.4,1))
+llegmsh4=mesh("BlockMesh",lleg4,"","",vt(0,0,0),vt(1.2,1,1.2))
+llegmsh5=mesh("BlockMesh",lleg5,"","",vt(0,0,0),vt(0.9,1,0.9))
+llegmsh6=mesh("BlockMesh",lleg6,"","",vt(0,0,0),vt(0.8,1.2,0.8))
+llegmsh7=mesh("BlockMesh",lleg7,"","",vt(0,0,0),vt(1,1.2,1.5))
+llegmsh8=mesh("BlockMesh",lleg8,"","",vt(0,0,0),vt(1,0.8,1.4))
+llegmsh9=mesh("BlockMesh",lleg9,"","",vt(0,0,0),vt(1,0.4,1.3))
+llegmsh10=mesh("BlockMesh",lleg10,"","",vt(0,0,0),vt(1.5,2.5,0.8))
+rlegmsh1=mesh("BlockMesh",rleg1,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+rlegmsh2=mesh("CylinderMesh",rleg2,"","",vt(0,0,0),vt(1.3,1.3,1.3))
+rlegmsh3=mesh("CylinderMesh",rleg3,"","",vt(0,0,0),vt(1,1.4,1))
+rlegmsh4=mesh("BlockMesh",rleg4,"","",vt(0,0,0),vt(1.2,1,1.2))
+rlegmsh5=mesh("BlockMesh",rleg5,"","",vt(0,0,0),vt(0.9,1,0.9))
+rlegmsh6=mesh("BlockMesh",rleg6,"","",vt(0,0,0),vt(0.8,1.2,0.8))
+rlegmsh7=mesh("BlockMesh",rleg7,"","",vt(0,0,0),vt(1,1.2,1.5))
+rlegmsh8=mesh("BlockMesh",rleg8,"","",vt(0,0,0),vt(1,0.8,1.4))
+rlegmsh9=mesh("BlockMesh",rleg9,"","",vt(0,0,0),vt(1,0.4,1.3))
+rlegmsh10=mesh("BlockMesh",rleg10,"","",vt(0,0,0),vt(1.5,2.5,0.8))
+larmmsh1=mesh("BlockMesh",larm1,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+larmmsh2=mesh("BlockMesh",larm2,"","",vt(0,0,0),vt(3,0.5,2))
+larmmsh3=mesh("BlockMesh",larm3,"","",vt(0,0,0),vt(2,1,1))
+larmmsh5=mesh("BlockMesh",larm5,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+larmmsh6=mesh("BlockMesh",larm6,"","",vt(0,0,0),vt(3.1,1,0.5))
+larmmsh7=mesh("BlockMesh",larm7,"","",vt(0,0,0),vt(0.5,1,2.1))
+larmmsh8=mesh("BlockMesh",larm8,"","",vt(0,0,0),vt(0.5,1,2.1))
+larmmsh9=mesh("BlockMesh",larm9,"","",vt(0,0,0),vt(3.1,1,0.5))
+larmmsh10=mesh("BlockMesh",larm10,"","",vt(0,0,0),vt(3.1,0.5,2.5))
+larmmsh11=mesh("BlockMesh",larm11,"","",vt(0,0,0),vt(1,1.5,1))
+larmmsh12=mesh("BlockMesh",larm12,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+larmmsh13=mesh("BlockMesh",larm13,"","",vt(0,0,0),vt(1.2,1.9,1.2))
+larmmsh14=mesh("BlockMesh",larm14,"","",vt(0,0,0),vt(1.5,0.8,1))
+larmmsh15=mesh("BlockMesh",larm15,"","",vt(0,0,0),vt(0.2,1,0.2))
+larmmsh16=mesh("BlockMesh",larm16,"","",vt(0,0,0),vt(0.2,1,0.2))
+larmmsh17=mesh("SpecialMesh",larm17,"Sphere","",vt(0,0,0),vt(0.5,0.5,0.5))
+lfistmsh1=mesh("BlockMesh",lfist1,"","",vt(0,0,0),vt(1.3,1,1.3))
+lfistmsh2=mesh("BlockMesh",lfist2,"","",vt(0,0,0),vt(0.5,2,1.4))
+lfistmsh3=mesh("BlockMesh",lfist3,"","",vt(0,0,0),vt(0.5,2,1.4))
+lfistmsh4=mesh("BlockMesh",lfist4,"","",vt(0,0,0),vt(0.5,2,1.4))
+lfistmsh5=mesh("BlockMesh",lfist5,"","",vt(0,0,0),vt(1.2,1,1.4))
+lfistmsh6=mesh("BlockMesh",lfist6,"","",vt(0,0,0),vt(0.5,0.8,1.3))
+lfistmsh7=mesh("BlockMesh",lfist7,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+lfistmsh8=mesh("BlockMesh",lfist8,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+lfistmsh9=mesh("BlockMesh",lfist9,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+lfistmsh10=mesh("BlockMesh",lfist10,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+lfistmsh11=mesh("BlockMesh",lfist11,"","",vt(0,0,0),vt(0.3,0.6,0.3))
+rarmmsh1=mesh("BlockMesh",rarm1,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+rarmmsh2=mesh("BlockMesh",rarm2,"","",vt(0,0,0),vt(3,0.5,2))
+rarmmsh3=mesh("BlockMesh",rarm3,"","",vt(0,0,0),vt(2,1,1))
+rarmmsh5=mesh("BlockMesh",rarm5,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+rarmmsh6=mesh("BlockMesh",rarm6,"","",vt(0,0,0),vt(3.1,1,0.5))
+rarmmsh7=mesh("BlockMesh",rarm7,"","",vt(0,0,0),vt(0.5,1,2.1))
+rarmmsh8=mesh("BlockMesh",rarm8,"","",vt(0,0,0),vt(0.5,1,2.1))
+rarmmsh9=mesh("BlockMesh",rarm9,"","",vt(0,0,0),vt(3.1,1,0.5))
+rarmmsh10=mesh("BlockMesh",rarm10,"","",vt(0,0,0),vt(3.1,0.5,2.5))
+rarmmsh11=mesh("BlockMesh",rarm11,"","",vt(0,0,0),vt(1,1.5,1))
+rarmmsh12=mesh("BlockMesh",rarm12,"","",vt(0,0,0),vt(0.5,0.5,0.5))
+rarmmsh13=mesh("BlockMesh",rarm13,"","",vt(0,0,0),vt(1.2,1.9,1.2))
+rfistmsh1=mesh("BlockMesh",rfist1,"","",vt(0,0,0),vt(1.3,1,1.3))
+rfistmsh2=mesh("BlockMesh",rfist2,"","",vt(0,0,0),vt(0.5,2,1.4))
+rfistmsh3=mesh("BlockMesh",rfist3,"","",vt(0,0,0),vt(0.5,2,1.4))
+rfistmsh4=mesh("BlockMesh",rfist4,"","",vt(0,0,0),vt(0.5,2,1.4))
+rfistmsh5=mesh("BlockMesh",rfist5,"","",vt(0,0,0),vt(1.2,1,1.4))
+rfistmsh6=mesh("BlockMesh",rfist6,"","",vt(0,0,0),vt(0.5,0.8,1.3))
+rfistmsh7=mesh("BlockMesh",rfist7,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+rfistmsh8=mesh("BlockMesh",rfist8,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+rfistmsh9=mesh("BlockMesh",rfist9,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+rfistmsh10=mesh("BlockMesh",rfist10,"","",vt(0,0,0),vt(0.3,0.8,0.3))
+rfistmsh11=mesh("BlockMesh",rfist11,"","",vt(0,0,0),vt(0.3,0.6,0.3))
+local torswld1=weld(tors1,tors1,Torso,euler(0.2,0,0)*cf(-3,2.3,0))
+-- torswld1=weld(tors1,tors1,Torso,euler(0,0,0)*cf(0,-4,5))
+torswld2=weld(tors2,tors2,tors1,euler(0,0,0)*cf(0,0,0))
+torswld3=weld(tors3,tors3,tors2,euler(0,0,0)*cf(0,1,0.2))
+torswld4=weld(tors4,tors4,tors3,euler(0,0,0)*cf(0,0.5,-0.7))
+torswld5=weld(tors5,tors5,tors3,euler(0,0,0)*cf(0,0.8,0.2))
+torswld6=weld(tors6,tors6,tors5,euler(0,0,0)*cf(0,0.8,0))
+torswld7=weld(tors7,tors7,tors6,euler(0,0,0)*cf(0,0,0.8))
+torswld8=weld(tors8,tors8,tors7,euler(0,0,0)*cf(0,1.2,0))
+torswld9=weld(tors9,tors9,tors7,euler(1,0,0)*cf(0,0.2,0.3))
+torswld10=weld(tors10,tors10,tors8,euler(0.785,0,1.57)*cf(0,0,0))
+torswld11=weld(tors11,tors11,tors6,euler(0,0,0)*cf(0,0,-0.6))
+torswld12=weld(tors12,tors12,tors1,euler(0,0,0)*cf(0,-0.5,-0.2))
+torswld13=weld(tors13,tors13,tors12,euler(0,0,0)*cf(0,-0.5,0))
+torswld14=weld(tors14,tors14,tors13,euler(0,0,0)*cf(0.3,0.2,0.01))
+torswld15=weld(tors15,tors15,tors13,euler(0,0,0)*cf(0,0.2,0.01))
+torswld16=weld(tors16,tors16,tors13,euler(0,0,0)*cf(-0.3,0.2,0.01))
+torswld17=weld(tors17,tors17,tors13,euler(0,0,0)*cf(0,0,-0.4))
+torswld18=weld(tors18,tors18,tors1,euler(0,0,0)*cf(0,1,0))
+llegwld1=weld(lleg1,lleg1,tors6,euler(0,0,0)*cf(1.5,0,-0.5))
+llegwld2=weld(lleg2,lleg2,lleg1,euler(0,0,1.57)*cf(0,0,0))
+llegwld3=weld(lleg3,lleg3,lleg2,euler(0,0,0)*cf(0,0,0))
+llegwld4=weld(lleg4,lleg4,lleg2,euler(0,0,-1.57)*cf(0,0.4,0.8))
+llegwld5=weld(lleg5,lleg5,lleg4,euler(0.785,0,0)*cf(0,-0.4,0))
+llegwld6=weld(lleg6,lleg6,lleg4,euler(0,0,0)*cf(0,0.2,0.4))
+llegwld7=weld(lleg7,lleg7,lleg4,euler(0,0,0)*cf(0,1.1,-0.4))
+llegwld8=weld(lleg8,lleg8,lleg7,euler(0,0,0)*cf(0,1,0))
+llegwld9=weld(lleg9,lleg9,lleg8,euler(0,0,0)*cf(0,0.6,0))
+llegwld10=weld(lleg10,lleg10,lleg7,euler(0,0,0)*cf(0,0.5,0))
+llegwld11=weld(lleg11,lleg11,lleg7,euler(0,0,0)*cf(0,-0.2,0))
+rlegwld1=weld(rleg1,rleg1,tors6,euler(0,0,0)*cf(-1.5,0,-0.5))
+rlegwld2=weld(rleg2,rleg2,rleg1,euler(0,0,1.57)*cf(0,0,0))
+rlegwld3=weld(rleg3,rleg3,rleg2,euler(0,0,0)*cf(0,0,0))
+rlegwld4=weld(rleg4,rleg4,rleg2,euler(0,0,-1.57)*cf(0,-0.4,0.8))
+rlegwld5=weld(rleg5,rleg5,rleg4,euler(0.785,0,0)*cf(0,-0.4,0))
+rlegwld6=weld(rleg6,rleg6,rleg4,euler(0,0,0)*cf(0,0.2,0.4))
+rlegwld7=weld(rleg7,rleg7,rleg4,euler(0,0,0)*cf(0,1.1,-0.4))
+rlegwld8=weld(rleg8,rleg8,rleg7,euler(0,0,0)*cf(0,1,0))
+rlegwld9=weld(rleg9,rleg9,rleg8,euler(0,0,0)*cf(0,0.6,0))
+rlegwld10=weld(rleg10,rleg10,rleg7,euler(0,0,0)*cf(0,0.5,0))
+rlegwld11=weld(rleg11,rleg11,rleg7,euler(0,0,0)*cf(0,-0.2,0))
+larmwld1=weld(larm1,larm1,tors1,euler(0,0,0)*cf(3,0,0))
+larmwld2=weld(larm2,larm2,larm1,euler(0,0,0)*cf(0,0.2,0))
+larmwld3=weld(larm3,larm3,larm2,euler(0,0,0)*cf(0,-0.4,0))
+larmwld5=weld(larm5,larm5,larm1,euler(0,0,0)*cf(0,-0.4,-1))
+larmwld6=weld(larm6,larm6,larm5,euler(0,0,0)*cf(0,0,0))
+larmwld7=weld(larm7,larm7,larm5,euler(0,0,0)*cf(1.29,0,1))
+larmwld8=weld(larm8,larm8,larm5,euler(0,0,0)*cf(-1.29,0,1))
+larmwld9=weld(larm9,larm9,larm5,euler(0,0,0)*cf(0,0,2))
+larmwld10=weld(larm10,larm10,larm5,euler(0,0,0)*cf(0,-0.7,1))
+larmwld11=weld(larm11,larm11,larm2,euler(-0.5,0,0.2)*cf(0,0.8,0))
+larmwld12=weld(larm12,larm12,larm11,euler(0.5,0,-0.2)*cf(0,0.8,0))
+larmwld13=weld(larm13,larm13,larm12,cf(0,1,0)*euler(-1.2,0,0.2))
+larmwld14=weld(larm14,larm14,larm2,euler(0,0,0)*cf(0,-0.2,0))
+larmwld15=weld(larm15,larm15,larm14,euler(0,0,0.5)*cf(-0.4,-0.5,0))
+larmwld16=weld(larm16,larm16,larm14,euler(0,0,-0.5)*cf(0.4,-0.5,0))
+larmwld17=weld(larm17,larm17,larm14,euler(0,0,0)*cf(0,-1,0))
+lfistwld1=weld(lfist1,lfist1,larm13,euler(0,0,0)*cf(0,1,0))
+lfistwld2=weld(lfist2,lfist2,lfist1,euler(0,0,0)*cf(0.5,-1,0))
+lfistwld3=weld(lfist3,lfist3,lfist1,euler(0,1.57,0)*cf(0,-1,0.5))
+lfistwld4=weld(lfist4,lfist4,lfist1,euler(0,1.57,0)*cf(0,-1,-0.5))
+lfistwld5=weld(lfist5,lfist5,lfist1,euler(-0.2,0,0)*cf(0,0.7,0))
+lfistwld6=weld(lfist6,lfist6,lfist5,euler(0,0,-0.2)*cf(0.2,0.7,0))
+lfistwld7=weld(lfist7,lfist7,lfist6,euler(0,0,-0.2)*cf(0,0.6,0.5))
+lfistwld8=weld(lfist8,lfist8,lfist6,euler(0,0,-0.4)*cf(-0.1,0.6,0.175))
+lfistwld9=weld(lfist9,lfist9,lfist6,euler(0,0,-0.4)*cf(-0.1,0.6,-0.175))
+lfistwld10=weld(lfist10,lfist10,lfist6,euler(0,0,-0.4)*cf(-0.1,0.6,-0.5))
+lfistwld11=weld(lfist11,lfist11,lfist6,euler(2.1,0.3,0)*cf(0,0.2,0.7))
+lfistwld12=weld(lfist12,lfist12,lfist1,euler(0,0,0)*cf(0,0,0))
+rarmwld1=weld(rarm1,rarm1,tors1,euler(0,0,0)*cf(-3,0,0))
+rarmwld2=weld(rarm2,rarm2,rarm1,euler(0,0,0)*cf(0,0.2,0))
+rarmwld3=weld(rarm3,rarm3,rarm2,euler(0,0,0)*cf(0,-0.4,0))
+rarmwld5=weld(rarm5,rarm5,rarm1,euler(0,0,0)*cf(0,-0.4,-1))
+rarmwld6=weld(rarm6,rarm6,rarm5,euler(0,0,0)*cf(0,0,0))
+rarmwld7=weld(rarm7,rarm7,rarm5,euler(0,0,0)*cf(1.29,0,1))
+rarmwld8=weld(rarm8,rarm8,rarm5,euler(0,0,0)*cf(-1.29,0,1))
+rarmwld9=weld(rarm9,rarm9,rarm5,euler(0,0,0)*cf(0,0,2))
+rarmwld10=weld(rarm10,rarm10,rarm5,euler(0,0,0)*cf(0,-0.7,1))
+rarmwld11=weld(rarm11,rarm11,rarm2,euler(-0.5,0,-0.2)*cf(0,0.8,0))
+rarmwld12=weld(rarm12,rarm12,rarm11,euler(0.5,0,0.2)*cf(0,0.8,0))
+rarmwld13=weld(rarm13,rarm13,rarm12,cf(0,1,0)*euler(-1.2,0,-0.2))
+rfistwld1=weld(rfist1,rfist1,rarm13,euler(0,0,0)*cf(0,1,0))
+rfistwld2=weld(rfist2,rfist2,rfist1,euler(0,0,0)*cf(-0.5,-1,0))
+rfistwld3=weld(rfist3,rfist3,rfist1,euler(0,1.57,0)*cf(0,-1,0.5))
+rfistwld4=weld(rfist4,rfist4,rfist1,euler(0,1.57,0)*cf(0,-1,-0.5))
+rfistwld5=weld(rfist5,rfist5,rfist1,euler(-0.2,0,0)*cf(0,0.7,0))
+rfistwld6=weld(rfist6,rfist6,rfist5,euler(0,0,0.2)*cf(-0.2,0.7,0))
+rfistwld7=weld(rfist7,rfist7,rfist6,euler(0,0,0.2)*cf(0,0.6,0.5))
+rfistwld8=weld(rfist8,rfist8,rfist6,euler(0,0,0.4)*cf(0.1,0.6,0.175))
+rfistwld9=weld(rfist9,rfist9,rfist6,euler(0,0,0.4)*cf(0.1,0.6,-0.175))
+rfistwld10=weld(rfist10,rfist10,rfist6,euler(0,0,0.4)*cf(0.1,0.6,-0.5))
+rfistwld11=weld(rfist11,rfist11,rfist6,euler(2.1,-0.3,0)*cf(0,0.2,0.7))
+rfistwld12=weld(rfist12,rfist12,rfist1,euler(0,0,0)*cf(0,0,0))
+
+player = Player
+ch = Character
+RSH = ch.Torso["Right Shoulder"]
+LSH = ch.Torso["Left Shoulder"]
+RH = ch.Torso["Right Hip"]
+LH = ch.Torso["Left Hip"]
+-- 
+RSH.Parent = nil
+LSH.Parent = nil
+RH.Parent = nil
+LH.Parent = nil
+-- 
+RW.Part0 = ch.Torso
+RW.C0 = CFrame.new(1.5, 0.5, 0) --* CFrame.fromEulerAnglesXYZ(1.3, 0, -0.5)
+RW.C1 = CFrame.new(0, 0.5, 0)
+RW.Part1 = ch["Right Arm"]
+RW.Parent = ch.Torso
+--_G.R = RW
+-- 
+LW.Part0 = ch.Torso
+LW.C0 = CFrame.new(-1.5, 0.5, 0) --* CFrame.fromEulerAnglesXYZ(1.7, 0, 0.8)
+LW.C1 = CFrame.new(0, 0.5, 0)
+LW.Part1 = ch["Left Arm"]
+LW.Parent = ch.Torso
+--_G.L = LW
+-- 
+RWL.Part0 = ch.Torso
+RWL.C0 = cf(0, -1.5, 0) --* euler(1.3, 0, -0.5)
+RWL.C1 = cf(-0.5, 0.5, 0)
+RWL.Part1 = ch["Right Leg"]
+RWL.Parent = ch.Torso
+--_G.R = RW
+-- 
+LWL.Part0 = ch.Torso
+LWL.C0 = cf(0, -1.5, 0) --* euler(1.7, 0, 0.8)
+LWL.C1 = cf(0.5, 0.5, 0)
+LWL.Part1 = ch["Left Leg"]
+LWL.Parent = ch.Torso
+--_G.L = LW
+-- 
+Neck.C0=necko*euler(0.2,0,0)
+LW.C0 = cf(-1.5,0.5,0) * euler(-0.2,0,0)
+LW.C1 = cf(0, 0.5, 0) * euler(0,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-0.3,0,0.1)
+RW.C1 = cf(0, 0.5, 0) * euler(0,0,0)
+RWL.C0 = cf(0,-0.5,0) * euler(1,0,0.1)
+RWL.C1 = cf(-0.5,1.5,0) * euler(0,0,0)
+LWL.C0 = cf(0,-0.5,0) * euler(1,0,-0.1)
+LWL.C1 = cf(0.5,1.5,0) * euler(0,0,0)
+--
+if (script.Parent.className ~= "HopperBin") then
+Tool = Instance.new("HopperBin")
+Tool.Parent = Backpack
+Tool.Name = "Roi"
+script.Parent = Tool
+end
+Bin = script.Parent
+local bg = it("BodyGyro")
+bg.maxTorque = Vector3.new(4e+005,4e+005,4e+005)*math.huge
+bg.P = 20e+003
+bg.Parent = nil
+bp=it("BodyPosition")
+bp.P=2000
+bp.D=100
+bp.maxForce=Vector3.new(math.huge,math.huge,math.huge)
+so = function(id,par,vol,pit)
+coroutine.resume(coroutine.create(function()
+local sou = Instance.new("Sound",par or workspace)
+sou.Volume=vol
+sou.Pitch=pit or 1
+sou.SoundId=id
+wait()
+sou:play()
+wait(6)
+sou:Remove()
+end))
+end
+function hideanim()
+equipped=false
+wait(0.1)
+Torso.Neck.C0=necko
+RootJoint.C0=RootCF
+end
+function equipanim()
+equipped=true
+wait(0.1)
+end
+function rayCast(Pos, Dir, Max, Ignore) -- Origin Position , Direction, MaxDistance , IgnoreDescendants
+return game.Workspace:FindPartOnRay(Ray.new(Pos, Dir.unit * (Max or 999.999)), Ignore)
+end
+function attackone()
+attack=true
+idle=false
+closefistl()
+for i=0,1,0.1 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,1*i)
+torswld5.C0=euler(0,1*i,0)*cf(0,0.8,0.2)
+larmwld11.C0=euler(-0.5,0,0.2+1.3*i)*cf(1*i,0.8-0.1*i,0)
+end
+con1=lfist12.Touched:connect(function(hit) Damagefunc1(hit,20,5) end)
+so("http://roblox.com/asset/?id=10209640",lfist12,1,0.5)
+for i=0,1,0.2 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,1-2.3*i)
+torswld5.C0=euler(0,1-2.3*i,0)*cf(0,0.8,0.2)
+larmwld11.C0=euler(-0.5+0.5*i,0.5*i,1.5)*cf(1,0.8-0.1,0)
+end
+closefistr()
+for i=0,1,0.2 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,1-2.3-0.2*i)
+torswld5.C0=euler(0,1-2.3-0.2*i,0)*cf(0,0.8,0.2)
+larmwld11.C0=euler(0,0.5,1.5)*cf(1,0.8-0.1,0)
+end
+con1:disconnect()
+openfistl()
+torswld5.C0=euler(0,0,0)*cf(0,0.8,0.2)
+end
+function attacktwo()
+attack=true
+idle=false
+con1=rfist12.Touched:connect(function(hit) Damagefunc1(hit,30,30) end)
+so("http://roblox.com/asset/?id=10209640",rfist12,1,0.6)
+for i=0,1,0.2 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,-1.5+2.8*i)
+torswld5.C0=euler(0,1-2.5+2.8*i,0)*cf(0,0.8,0.2)
+larmwld11.C0=euler(0,0.5,1.5)*cf(1,0.8-0.1,0)
+rarmwld11.C0=euler(-0.5+0.5*i,0,-0.2-1.3*i)*cf(-1*i,0.8-0.1*i,0)
+end
+for i=0,1,0.2 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,-1.5+2.8+0.2*i)
+torswld5.C0=euler(0,1-2.5+2.8+0.2*i,0)*cf(0,0.8,0.2)
+larmwld11.C0=euler(0,0.5,1.5)*cf(1,0.8-0.1,0)
+end
+con1:disconnect()
+openfistr()
+for i=0,1,0.1 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,1.5-1.5*i)
+torswld5.C0=euler(0,1.5-1.5*i,0)*cf(0,0.8,0.2)
+larmwld11.C0=euler(-0.5*i,0.5-0.5*i,1.5-1.3*i)*cf(1-1*i,0.8-0.1+0.1*i,0)
+rarmwld11.C0=euler(-0.5*i,0,-1.5+1.3*i)*cf(-1+1*i,0.8-0.1+0.1*i,0)
+--[[
+larmwld11.C0=euler(-0.5+0.2*i,0,0.2)*cf(0,0.8,0)
+rarmwld11.C0=euler(-0.5+0.2*i,0,-0.2)*cf(0,0.8,0)]]
+end
+torswld5.C0=euler(0,0,0)*cf(0,0.8,0.2)
+attack=false
+end
+function MovingPunch()
+attack=true
+closefistr()
+con1=rfist12.Touched:connect(function(hit) Damagefunc1(hit,30,30) end)
+so("http://roblox.com/asset/?id=10209640",rfist12,1,0.4)
+for i=0,1,0.1 do
+wait()
+rarmwld11.C0=euler(-0.5-1.5*i,0,-1.2-0.37*i)*cf(-1+1*i,0.7,0.5*i)
+rarmwld12.C0=euler(0.5-0.5*i,0,0.2-0.2*i)*cf(0,0.8,0)
+rarmwld13.C0=cf(0,1,0)*euler(-1.2+1.2*i,0,-0.2+0.2*i)
+end
+for i=0,1,0.1 do
+wait()
+rarmwld11.C0=euler(-0.5-1.5-0.2*i,0,-1.2-0.37)*cf(-1+1,0.7,0.5)
+end
+con1:disconnect()
+openfistr()
+for i=0,1,0.1 do
+wait()
+rarmwld11.C0=euler(-0.5-1.7+1.7*i,0,-1.2-0.37+0.37*i)*cf(-1*i,0.7,0.5-0.5*i)
+rarmwld12.C0=euler(0.5*i,0,0.2*i)*cf(0,0.8,0)
+rarmwld13.C0=cf(0,1,0)*euler(-1.2*i,0,-0.2*i)
+end
+torswld5.C0=euler(0,0,0)*cf(0,0.8,0.2)
+rarmwld11.C0=euler(-0.5,0,-0.2-1)*cf(-1,0.8-0.1,0)
+rarmwld12.C0=euler(0.5,0,0.2)*cf(0,0.8,0)
+rarmwld13.C0=cf(0,1,0)*euler(-1.2,0,-0.2)
+attack=false
+end
+function punchone()
+attack=true
+idle=false
+--[[
+LW.C0 = cf(-1.5,0.5,0) * euler(0,0,-0.2)
+RW.C0 = cf(1.5,0.5,0) * euler(0,0,0.2)
+]]
+closefistl()
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(0,0,-0.2-1.37*i)
+lfistwld1.C0=euler(-0.6-0.97*i,0.2,0)*cf(4,-2+2*i,1)
+end
+con1=lfist12.Touched:connect(function(hit) Damagefunc1(hit,20,10) end)
+so("http://roblox.com/asset/?id=10209640",lfist12,1,0.5)
+for i=0,1,0.2 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(0,-1.2*i,-1.57)
+lfistwld1.C0=euler(-1.57,0.2,0)*cf(4,0,1)*euler(0,1.2*i,0)
+end
+for i=0,1,0.2 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(0,-1.2-0.2*i,-1.57)
+lfistwld1.C0=euler(-1.57,0.2,0)*cf(4,0,1)*euler(0,1.2+0.2*i,0)
+end
+con1:disconnect()
+openfistl()
+end
+function punchtwo()
+attack=true
+idle=false
+for i=0,1,0.1 do
+wait()
+RootJoint.C0=euler(-1.57,0,3.14)*euler(0,0,1*i)
+lfistwld1.C0=euler(-1.57,0.2,0)*cf(4,0,1)*euler(0,1.4-1.4*i,0)
+end
+attack=false
+end
+function RocketPunch()
+Humanoid.WalkSpeed=0
+attack=true
+idle=false
+for i=0,1,0.2 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,-1*i)
+torswld5.C0=euler(0,-1*i,0)*cf(0,0.8,0.2)
+rarmwld11.C0=euler(-0.5+0.5*i,0,-0.2)*cf(0,0.8,0)
+rarmwld13.C0=cf(0,1,0)*euler(-1.2+1.2*i,0,-0.2+0.2*i)
+end
+for i=0,1,0.2 do
+wait()
+RootJoint.C0=RootCF*euler(0,0,-1+2.5*i)
+torswld5.C0=euler(0,-1+2.5*i,0)*cf(0,0.8,0.2)
+rarmwld11.C0=euler(-1.57*i,1.57*i,-0.2+0.2*i)*cf(0,0.8,0)
+rarmwld12.C0=euler(0.5-0.5*i,-1.57*i,0.2-0.2*i)*cf(0,0.8,0)
+--rarmwld13.C0=cf(0,1,0)*euler(-1.2+1.2*i,0,-0.2+0.2*i)
+end
+so("http://www.roblox.com/asset/?id=2697431",rfist12,1,0.2)
+disconnect=false
+con1=rfist12.Touched:connect(function(hit)
+disconnect=true
+Damagefunc1(hit,30,30) end)
+rfistwld1.Part1=nil
+rfist1.CanCollide=true
+rfist12.CanCollide=true
+rfist1.CFrame=rfist1.CFrame*cf(0,-2,0)
+rfist1.Velocity=MMouse.Hit.lookVector * 70
+bv=Instance.new("BodyVelocity")
+bv.Parent=rfist1
+bv.maxForce=Vector3.new(4e+020, 4e+020, 4e+020)
+bv.velocity=MMouse.Hit.lookVector * 70
+gy=Instance.new("BodyGyro")
+gy.Parent=rfist1
+gy.maxTorque = Vector3.new(999999999999,99999999999999999,0)
+gy.cframe = CFrame.new(gy.Parent.Position, MMouse.Hit.p)*euler(1.57,1.57,0)
+bf=Instance.new("BodyForce")
+bf.Parent=rfist1
+mass=rfist1:GetMass()+rfist2:GetMass()+rfist3:GetMass()+rfist4:GetMass()+rfist5:GetMass()+rfist6:GetMass()+rfist7:GetMass()+rfist8:GetMass()+rfist9:GetMass()+rfist10:GetMass()+rfist11:GetMass()+rfist12:GetMass()
+bf.force=Vector3.new(0, 196.2 * mass, 0)
+-- rfistwld1=weld(rfist1,rfist1,rarm13,euler(0,0,0)*cf(0,1,0))
+wait()
+rfist1.Velocity=MMouse.Hit.lookVector * 120
+numb=0
+for i=1,100 do
+if numb<=5 then
+numb=numb+1
+else
+numb=0
+end
+local target=findNearestTorso(rfist1.Position,50)
+if target~=nil then
+bv.velocity=(target.Position-rfist1.Position).unit*70
+gy.cframe = CFrame.new(gy.Parent.Position, target.Position)*euler(1.57,1.57,0)
+--rfist1.Velocity=MMouse.Hit.lookVector * 70
+else
+bv.velocity=MMouse.Hit.lookVector * 70
+gy.cframe = CFrame.new(gy.Parent.Position, MMouse.Hit.p)*euler(1.57,1.57,0)
+end
+if disconnect==false then
+wait()
+end
+end
+so("http://www.roblox.com/asset/?id=2101148",rfist12,1,0.6)
+boomcf=rfist12.CFrame
+MagicCircle(BrickColor.new("Bright red"),boomcf,1,1,1,5,5,5)
+for i=1,2 do
+MagicRing(BrickColor.new("Bright red"),boomcf*euler(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,1,1,2,2,2)
+end
+con1:disconnect()
+bv.Parent=nil
+gy.Parent=nil
+bf.Parent=nil
+rfist1.CanCollide=false
+rfist12.CanCollide=false
+rfist1.Anchored=false
+rfistwld1.Part1=rarm13
+RootJoint.C0=RootCF*euler(0,0,0)
+torswld5.C0=euler(0,0,0)*cf(0,0.8,0.2)
+rarmwld11.C0=euler(-0.5,0,-0.2)*cf(0,0.8,0)
+rarmwld12.C0=euler(0.5,0,0.2)*cf(0,0.8,0)
+rarmwld13.C0=cf(0,1,0)*euler(-1.2,0,-0.2)
+attack=false
+Humanoid.WalkSpeed=16
+end
+function Rockets()
+attack=true
+holdrockets=true
+for i=0,1,0.1 do
+wait()
+rarmwld5.C0=euler(-0.6*i,0,0)*cf(0,-0.4,-1)
+end
+rocketnumb=1
+while holdrockets==true do
+if rocketnumb==1 then
+rocketnumb=2
+item=rocketlaunchparts[1]
+shoottrail(mouse,item)
+elseif rocketnumb==2 then
+rocketnumb=3
+item=rocketlaunchparts[2]
+shoottrail(mouse,item)
+elseif rocketnumb==3 then
+rocketnumb=1
+item=rocketlaunchparts[3]
+holdrockets=false
+shoottrail(mouse,item)
+end
+wait(0.5)
+end
+for i=0,1,0.1 do
+wait()
+rarmwld5.C0=euler(-0.6+0.6*i,0,0)*cf(0,-0.4,-1)
+end
+attack=false
+end
+function LightningOrb()
+attack=true
+for i=0,1,0.1 do
+wait()
+torswld1.C0=euler(0.2+2*i,0,0)*cf(-3,2.3-2*i,-3*i)
+LW.C0 = cf(-1.5,0.5,0) * euler(-0.2-1*i,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-0.3-0.9*i,0,0.1)
+RWL.C0 = cf(0,-0.5,0) * euler(1+0.5*i,0,0.1-0.1*i)
+RWL.C1 = cf(-0.5,1.5-1.5*i,-0.5*i) * euler(-1.57*i,0,0)
+LWL.C0 = cf(0,-0.5,0) * euler(1+0.5*i,0,-0.1+0.1*i)
+LWL.C1 = cf(0.5,1.5-1.5*i,-0.5*i) * euler(-1.57*i,0,0)
+larmwld5.C0=euler(-0.8*i,0,0)*cf(0,-0.4,-1)
+end
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+torswld1.C0=euler(0.2+2,0,0)*cf(-3,2.3-2,-3)
+torswld1.C1=euler(3*i,0,0)*cf(0,0,0)
+LW.C0 = cf(-1.5,0.5,0) * euler(-1.2+2.4*i,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-1.2+2.4*i,0,0.1)
+RWL.C1 = cf(-0.5,1.5*i,-0.5+0.5*i) * euler(-1.57+1.57*i,0,0)
+LWL.C1 = cf(0.5,1.5*i,-0.5+0.5*i) * euler(-1.57+1.57*i,0,0)
+end
+for i=0,1,0.1 do
+wait()
+torswld1.C0=euler(0.2+2,0,0)*cf(-3,2.3-2,-3)
+torswld1.C1=euler(3+0.1*i,0,0)*cf(0,-1.5*i,0)
+LW.C0 = cf(-1.5,0.5,0) * euler(1.2+0.8*i,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(1.2+0.8*i,0,0.1)
+RWL.C0 = cf(0,-0.5,0) * euler(1.5-1.4*i,0,0.2*i)
+LWL.C0 = cf(0,-0.5,0) * euler(1.5-1.5*i,0,-0.2*i)
+end
+for i=0,1,0.1 do
+wait()
+torswld1.C0=euler(0.2+2,0,0)*cf(-3,2.3-2,-3)
+torswld1.C1=euler(3.1-0.7*i,0,0.5*i)*cf(1*i,-1.5,0)
+LW.C0 = cf(-1.5+0.5*i,0.5,-0.5*i) * euler(2-1*i,0,0.4*i)
+RW.C0 = cf(1.5,0.5,0) * euler(2-1*i,0,0.1+0.2*i)
+end
+end))
+numb=0
+for i=0,2,0.1 do
+wait(0.1)
+--Lightning(p0,p1,tym,ofs,col,th,tra)
+Lightning(larm17.Position+vt(math.random(-1,1),math.random(-1,1),math.random(-1,1)),larm17.Position+vt(math.random(-1,1),math.random(-1,1),math.random(-1,1)),3,1,"Bright yellow",0.05,0.5)
+if numb<=5 then
+numb=numb+1
+else
+numb=0
+MagicCircle(BrickColor.new("Bright yellow"),larm17.CFrame,0.5,0.5,0.5,1,1,1)
+end
+end
+shoottrail2(mouse,larm17)
+wait(1)
+for i=0,1,0.1 do
+wait()
+torswld1.C0=euler(2.2-1.5*i,0,0)*cf(-3,0.3-0.3*i,-3+3*i)
+torswld1.C1=euler(2.4-2.4*i,0,0.5-0.5*i)*cf(1-1*i,-1.5-0.5*i,1*i)
+LW.C0 = cf(-1.5+0.5-0.5*i,0.5,-0.5+0.5*i) * euler(1-2*i,0,0.4-0.4*i)
+RW.C0 = cf(1.5,0.5,0) * euler(1-2*i,0,0.3-0.3*i)
+RWL.C0 = cf(0,-0.5,0) * euler(0.1+1.2*i,0,0.2-0.2*i)
+LWL.C0 = cf(0,-0.5,0) * euler(1.3*i,0,-0.2+0.2*i)
+larmwld5.C0=euler(-0.8+0.8*i,0,0)*cf(0,-0.4,-1)
+end
+for i=0,1,0.1 do
+wait()
+torswld1.C0=euler(0.7-0.5*i,0,0)*cf(-3,2.3*i,0)
+torswld1.C1=euler(0,0,0)*cf(0,-2+2*i,1-1*i)
+LW.C0 = cf(-1.5,0.5,0) * euler(-1+0.8*i,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-1+0.7*i,0,0.1*i)
+RWL.C0 = cf(0,-0.5,0) * euler(1.3-0.3*i,0,0.1*i)
+LWL.C0 = cf(0,-0.5,0) * euler(1.3-0.3*i,0,-0.1*i)
+end
+attack=false
+end
+function closefistl()
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+lfistwld6.C0=euler(0,0,-0.2-0.4*i)*cf(0.2,0.7,0)
+lfistwld7.C0=euler(0,0,-0.2-0.4*i)*cf(0,0.6,0.5)
+lfistwld8.C0=euler(0,0,-0.4-0.2*i)*cf(-0.1,0.6,0.175)
+lfistwld9.C0=euler(0,0,-0.4-0.2*i)*cf(-0.1,0.6,-0.175)
+lfistwld10.C0=euler(0,0,-0.4-0.2*i)*cf(-0.1,0.6,-0.5)
+end
+end))
+end
+function openfistl()
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+lfistwld6.C0=euler(0,0,-0.2-0.4+0.4*i)*cf(0.2,0.7,0)
+lfistwld7.C0=euler(0,0,-0.2-0.4+0.4*i)*cf(0,0.6,0.5)
+lfistwld8.C0=euler(0,0,-0.4-0.2+0.2*i)*cf(-0.1,0.6,0.175)
+lfistwld9.C0=euler(0,0,-0.4-0.2+0.2*i)*cf(-0.1,0.6,-0.175)
+lfistwld10.C0=euler(0,0,-0.4-0.2+0.2*i)*cf(-0.1,0.6,-0.5)
+end
+end))
+end
+function closefistr()
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+rfistwld6.C0=euler(0,0,0.2+0.4*i)*cf(-0.2,0.7,0)
+rfistwld7.C0=euler(0,0,0.2+0.4*i)*cf(0,0.6,0.5)
+rfistwld8.C0=euler(0,0,0.4+0.2*i)*cf(0.1,0.6,0.175)
+rfistwld9.C0=euler(0,0,0.4+0.2*i)*cf(0.1,0.6,-0.175)
+rfistwld10.C0=euler(0,0,0.4+0.2*i)*cf(0.1,0.6,-0.5)
+end
+end))
+end
+function openfistr()
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+rfistwld6.C0=euler(0,0,0.2+0.4-0.4*i)*cf(-0.2,0.7,0)
+rfistwld7.C0=euler(0,0,0.2+0.4-0.4*i)*cf(0,0.6,0.5)
+rfistwld8.C0=euler(0,0,0.4+0.2-0.2*i)*cf(0.1,0.6,0.175)
+rfistwld9.C0=euler(0,0,0.4+0.2-0.2*i)*cf(0.1,0.6,-0.175)
+rfistwld10.C0=euler(0,0,0.4+0.2-0.2*i)*cf(0.1,0.6,-0.5)
+end
+end))
+end
+function idlefistr()
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+rfistwld6.C0=euler(0,0,0.2+0.4*i)*cf(-0.2+0.1*i,0.7,0)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+rfistwld6.C0=euler(0,0,0.6-0.6*i)*cf(-0.2+0.1-0.1*i,0.7,0)
+end
+for i=0,1,0.1 do
+wait()
+rfistwld6.C0=euler(0,0,0.2*i)*cf(-0.2,0.7,0)
+end
+end))
+coroutine.resume(coroutine.create(function()
+wait(0.2)
+for i=0,1,0.1 do
+wait()
+rfistwld7.C0=euler(0,0,0.2+0.6*i)*cf(0.1*i,0.6,0.5)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+rfistwld7.C0=euler(0,0,0.8-0.8*i)*cf(0.1-0.1*i,0.6,0.5)
+end
+for i=0,1,0.1 do
+wait()
+rfistwld7.C0=euler(0,0,0.2*i)*cf(0,0.6,0.5)
+end
+end))
+coroutine.resume(coroutine.create(function()
+wait(0.15)
+for i=0,1,0.1 do
+wait()
+rfistwld8.C0=euler(0,0,0.4+0.4*i)*cf(0.1,0.6,0.175)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+rfistwld8.C0=euler(0,0,0.8-0.8*i)*cf(0.1-0.1*i,0.6,0.175)
+end
+for i=0,1,0.1 do
+wait()
+rfistwld8.C0=euler(0,0,0.4*i)*cf(0.1*i,0.6,0.175)
+end
+end))
+coroutine.resume(coroutine.create(function()
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+rfistwld9.C0=euler(0,0,0.4+0.4*i)*cf(0.1,0.6,-0.175)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+rfistwld9.C0=euler(0,0,0.8-0.8*i)*cf(0.1-0.1*i,0.6,-0.175)
+end
+for i=0,1,0.1 do
+wait()
+rfistwld9.C0=euler(0,0,0.4*i)*cf(0.1*i,0.6,-0.175)
+end
+end))
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+rfistwld10.C0=euler(0,0,0.4+0.4*i)*cf(0.1,0.6,-0.5)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+lfistwld8.C0=euler(0,0,-0.8+0.8*i)*cf(-0.1+0.1*i,0.6,0.175)
+end
+for i=0,1,0.1 do
+wait()
+lfistwld8.C0=euler(0,0,-0.4*i)*cf(-0.1*i,0.6,0.175)
+end
+end))
+coroutine.resume(coroutine.create(function()
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+lfistwld9.C0=euler(0,0,-0.4-0.4*i)*cf(-0.1,0.6,-0.175)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+lfistwld9.C0=euler(0,0,-0.8+0.8*i)*cf(-0.1+0.1*i,0.6,-0.175)
+end
+for i=0,1,0.1 do
+wait()
+lfistwld9.C0=euler(0,0,-0.4*i)*cf(-0.1*i,0.6,-0.175)
+end
+end))
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.1 do
+wait()
+lfistwld10.C0=euler(0,0,-0.4-0.4*i)*cf(-0.1,0.6,-0.5)
+end
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+lfistwld10.C0=euler(0,0,-0.8+0.8*i)*cf(-0.1+0.1*i,0.6,-0.5)
+end
+for i=0,1,0.1 do
+wait()
+lfistwld10.C0=euler(0,0,-0.4*i)*cf(-0.1*i,0.6,-0.5)
+end
+end))
+end
+function Aim()
+aiming=true
+coroutine.resume(coroutine.create(function()
+bg.maxTorque = vt(math.huge,math.huge,math.huge)
+bg.P = 9000
+bg.Parent = Torso
+--wld1.C0 = euler(0,0,0) * cf(0,0,0)
+while aiming==true do
+wait()
+local pos4 = vt(workspace.CurrentCamera.CoordinateFrame.X,RootPart.Position.Y,workspace.CurrentCamera.CoordinateFrame.Z)
+bg.cframe = cf(RootPart.Position,pos4) * euler(0,3.14,0) * cf(0,0,0) --cf(Torso.Position,MMouse.Hit.p) *
+bg.Parent = RootPart
+local pos5 = Vector3.new(MMouse.Hit.p.x,RootPart.Position.Y,MMouse.Hit.p.z)
+offset=(Torso.Position.y-MMouse.Hit.p.y)/60
+mag=(Torso.Position-MMouse.Hit.p).magnitude/80
+offset=offset/mag
+end
+for i=0,1,0.1 do
+wait()
+bg.Parent=nil
+end
+end))
+end
+function NoAim()
+aiming=false
+end
+spread=0
+range=500
+rangepower=10
+function shoottrail(mouse,baseprt)
+so("http://www.roblox.com/asset/?id=2697431",baseprt,1,0.5)
+MagicBlock(BrickColor.new("Bright red"),baseprt.CFrame,0.1,0.1,0.1,1,1,1)
+coroutine.resume(coroutine.create(function(v)
+local spreadvector = (Vector3.new(math.random(-spread,spread),math.random(-spread,spread),math.random(-spread,spread))) * (baseprt.Position-MMouse.Hit.p).magnitude/100
+local dir = CFrame.new((baseprt.Position+MMouse.Hit.p)/2,MMouse.Hit.p+spreadvector)
+local hit,pos = rayCast(baseprt.Position,dir.lookVector,10,Character)
+local rangepos = range
+local function drawtrail(From,To)
+local effectsmsh = Instance.new("CylinderMesh")
+effectsmsh.Scale = Vector3.new(1,1,1)
+effectsmsh.Name = "Mesh"
+local effectsg = Instance.new("Part")
+effectsg.formFactor = 3
+effectsg.CanCollide = false
+effectsg.Name = "Eff"
+effectsg.Locked = true
+effectsg.Anchored = true
+effectsg.Size = Vector3.new(0.2,0.2,0.2)
+effectsg.Parent = modelzorz
+effectsmsh.Parent = effectsg
+effectsg.BrickColor = BrickColor.new("Bright red")
+effectsg.Reflectance = 0.25
+local LP = From
+local point1 = To
+--[[if target~=nil then
+LP=targetted
+end]]
+local mg = (LP - point1).magnitude
+effectsmsh.Scale = Vector3.new(3,mg*5,3)
+effectsg.CFrame = CFrame.new((LP+point1)/2,point1) * CFrame.Angles(math.rad(90),0,0)
+MagicBlock(BrickColor.new("Bright red"),effectsg.CFrame,0.1,0.1,0.1,0.5,0.5,0.5)
+coroutine.resume(coroutine.create(function()
+for i = 0 , 1 , 0.2 do
+wait()
+effectsg.Transparency = 1*i
+effectsmsh.Scale = Vector3.new(3-3*i,mg*5,3-3*i)
+end
+effectsg.Parent = nil
+end))
+end
+local newpos = baseprt.Position
+local inc = rangepower
+repeat
+wait() wait()
+rangepos = rangepos - 10
+dir = dir * CFrame.Angles(math.rad(-0.5),0,0)
+hit,pos = rayCast(newpos,dir.lookVector,inc,Character)
+drawtrail(newpos,pos)
+newpos = newpos + (dir.lookVector * inc)
+if inc >= 20 then
+inc = inc - 10
+end
+if hit ~= nil then
+rangepos = 0
+end
+until rangepos <= 0
+if hit ~= nil then
+so("http://www.roblox.com/asset/?id=2101148",hit,1,0.6)
+MagicCircle(BrickColor.new("Bright red"),CFrame.new(pos),0.5,0.5,0.5,2,2,2)
+MagicRing(BrickColor.new("Bright red"),CFrame.new(pos)*euler(math.random(-50,50),math.random(-50,50),math.random(-50,50)),0.5,0.5,0.5,0.5,0.5,0.5)
+if hit.Parent:FindFirstChild("Humanoid") ~= nil then
+hum = hit.Parent.Humanoid
+tTorso=hit.Parent.Torso
+Damagefunc1(hit,10,20)
+--ADmg(hum,hit)
+elseif hit.Parent.Parent ~= nil and hit.Parent.Parent:FindFirstChild("Humanoid") ~= nil then
+hum = hit.Parent.Parent.Humanoid
+tTorso=hit.Parent.Parent.Torso
+Damagefunc1(hit.Parent.Parent.Torso,10,20)
+--ADmg(hum,hit)
+end
+end
+end))
+end
+lightningdebounce=false
+function shoottrail2(mouse,baseprt)
+coroutine.resume(coroutine.create(function(v)
+local spreadvector = (Vector3.new(math.random(-spread,spread),math.random(-spread,spread),math.random(-spread,spread))) * (baseprt.Position-MMouse.Hit.p).magnitude/100
+local dir = CFrame.new((baseprt.Position+MMouse.Hit.p)/2,MMouse.Hit.p+spreadvector)
+local hit,pos = rayCast(baseprt.Position,dir.lookVector,10,Character)
+local rangepos = range*2
+local function drawtrail(From,To)
+local effectsmsh = Instance.new("SpecialMesh")
+effectsmsh.MeshType = "Sphere"
+effectsmsh.Scale = Vector3.new(1,1,1)
+effectsmsh.Name = "Mesh"
+local effectsg = Instance.new("Part")
+effectsg.formFactor = 3
+effectsg.CanCollide = false
+effectsg.Name = "Eff"
+effectsg.Locked = true
+effectsg.Anchored = true
+effectsg.Size = Vector3.new(0.2,0.2,0.2)
+effectsg.Parent = modelzorz
+effectsmsh.Parent = effectsg
+effectsg.BrickColor = BrickColor.new("Bright yellow")
+effectsg.Reflectance = 0.25
+local LP = From
+local point1 = To
+--[[if target~=nil then
+LP=targetted
+end]]
+local mg = (LP - point1).magnitude
+effectsmsh.Scale = Vector3.new(5,5,5)
+Lightning(LP+vt(math.random(-1,1),math.random(-1,1),math.random(-1,1)),point1+vt(math.random(-1,1),math.random(-1,1),math.random(-1,1)),6,4,"Bright yellow",0.05,0.5)
+effectsg.CFrame = CFrame.new((LP+point1)/2,point1) * CFrame.Angles(math.rad(90),0,0)
+local target=findNearestTorso(effectsg.Position,20)
+if target~=nil and lightningdebounce==false then
+lightningdebounce=true
+Lightning(effectsg.Position,target.Position,6,1,"Bright yellow",0.05,0.5)
+Damagefunc1(target,1,0)
+so("http://www.roblox.com/asset/?id=10756118",tartet,1,1)
+coroutine.resume(coroutine.create(function()
+wait(0.2)
+lightningdebounce=false
+end))
+end
+coroutine.resume(coroutine.create(function()
+wait(0.1)
+effectsg.Parent = nil
+end))
+end
+local newpos = baseprt.Position
+local inc = rangepower/10
+repeat
+wait() wait()
+rangepos = rangepos - 10
+dir = dir
+hit,pos = rayCast(newpos,dir.lookVector,inc,Character)
+drawtrail(newpos,pos)
+newpos = newpos + (dir.lookVector * inc)
+if inc >= 20 then
+inc = inc - 10
+end
+if hit ~= nil then
+rangepos = 0
+end
+until rangepos <= 0
+if hit ~= nil then
+if hit.Parent:FindFirstChild("Humanoid") ~= nil then
+hum = hit.Parent.Humanoid
+tTorso=hit.Parent.Torso
+Damagefunc1(hit,10,20)
+--ADmg(hum,hit)
+elseif hit.Parent.Parent ~= nil and hit.Parent.Parent:FindFirstChild("Humanoid") ~= nil then
+hum = hit.Parent.Parent.Humanoid
+tTorso=hit.Parent.Parent.Torso
+Damagefunc1(hit.Parent.Parent.Torso,10,20)
+--ADmg(hum,hit)
+end
+end
+end))
+end
+function ModeChange()
+canidle=false
+idle=false
+if Mode=="Robot" then
+Mode="Battle"
+rfistwld1.Part1=Torso
+rfistwld1.C0=euler(-1,-0.2,0)*cf(-6,5,2)
+lfistwld1.Part1=Torso
+lfistwld1.C0=euler(-1,0.2,0)*cf(0,5,2)
+for _,v in pairs(modelzorz:children()) do
+if v.className=="Part" then
+coroutine.resume(coroutine.create(function(Part)
+for i=0,1,0.1 do
+wait(0)
+Part.Transparency=Part.Transparency+0.1
+end
+end),v)
+print(v)
+end
+end
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(-0.2-0.1*i,0,-1.57*i)
+LW.C1 = cf(0, 0.5, 0) * euler(0,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-0.3,0,0.1+1.47*i)
+RW.C1 = cf(0, 0.5, 0) * euler(0,0,0)
+RWL.C0 = cf(0,-0.5,0) * euler(1-1*i,0,0.1)
+RWL.C1 = cf(-0.5,1.5,0) * euler(0,0,0)
+LWL.C0 = cf(0,-0.5,0) * euler(1-1*i,0,-0.1)
+LWL.C1 = cf(0.5,1.5,0) * euler(0,0,0)
+RootCF=euler(-1.57,0,3.14)*cf(0,0,2.4-2.4*i)
+torswld1.C0=euler(0.2-0.2*i,0,0)*cf(-3+3*i,2.3-(2.3+2.4)*i,0)
+rfistwld1.C0=euler(-1+0.4*i,-0.2,0)*cf(-6+2*i,5-7*i,2-1*i)
+lfistwld1.C0=euler(-1+0.4*i,0.2,0)*cf(4*i,5-7*i,2-1*i)
+end
+workspace.CurrentCamera.CameraSubject=Humanoid
+workspace.CurrentCamera.CameraType = "Custom"
+RootJoint.Part1=Torso
+RootJoint.C0=euler(-1.57,0,3.14)
+RootCF=euler(-1.57,0,3.14)*cf(0,0,2.4-2.4)
+modelzorz.Parent=nil
+rfistwld1.C0=euler(-0.6,-0.2,0)*cf(-4,-2,1)
+lfistwld1.C0=euler(-0.6,0.2,0)*cf(4,-2,1)
+rfistwld1.Parent=rfist1
+--rfistwld1.Part1=Torso
+rfistwld1.Part1=RootPart
+lfistwld1.Parent=lfist1
+--lfistwld1.Part1=Torso
+lfistwld1.Part1=RootPart
+print(lfistwld1.Part0)
+print(lfistwld1.Part1)
+wait(0.1)
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5+0.5*i,0.5,-0.5*i) * euler(-0.3+0.3*i,-2.8*i,-1.57+0.5*i)
+RW.C0 = cf(1.5-0.5*i,0.5,-0.5*i) * euler(-0.3+0.3*i,2.8*i,1.57)
+rfistwld1.C1=euler(0,1*i,0)*cf(0,0,0)
+lfistwld1.C1=euler(0,-1*i,0)*cf(0,0,0)
+rfistwld1.C0=euler(-0.6-1*i,-0.2,0)*cf(-4,-2+1*i,1+1*i)
+lfistwld1.C0=euler(-0.6-0.7*i,0.2,0)*cf(4,-2+1*i,1+1*i)
+end
+print(lfistwld1.Part0)
+print(lfistwld1.Part1)
+for i=0,1,0.2 do
+wait()
+Neck.C0=necko*euler(0.2-0.2*i,0,0)
+LW.C0 = cf(-1.5+0.5-0.5*i,0.5,-0.5+0.5*i) * euler(0,-2.8+2.7*i,-1.57+0.5-0.5*i)
+RW.C0 = cf(1.5-0.5+0.5*i,0.5,-0.5+0.5*i) * euler(0,2.8-2.7*i,1.57)
+rfistwld1.C1=euler(0,1-1*i,0)*cf(0,0,0)
+lfistwld1.C1=euler(0,-1+1*i,0)*cf(0,0,0)
+rfistwld1.C0=euler(-1.6,-0.2+1.47*i,0)*cf(-4-1*i,-1,2-2*i)
+lfistwld1.C0=euler(-1.3-0.3,0.2-1.47*i,0)*cf(4+1*i,-1,2-2*i)
+end
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(0,-0.1+0.1*i,-1.57)
+RW.C0 = cf(1.5,0.5,0) * euler(0,0.1-0.1*i,1.57)
+rfistwld1.C0=euler(-1.6,1.27+0.1*i,0)*cf(-5,-1,0)
+lfistwld1.C0=euler(-1.6,-1.27-0.1*i,0)*cf(5,-1,0)
+end
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(0,0,-1.57+1.37*i)
+RW.C0 = cf(1.5,0.5,0) * euler(0,0,1.57-1.37*i)
+RWL.C0 = cf(0,-0.5,0) * euler(0,0,0.1-0.1*i)
+LWL.C0 = cf(0,-0.5,0) * euler(0,0,-0.1+0.1*i)
+rfistwld1.C0=euler(-1.6+1*i,1.37-1.57*i,0)*cf(-5+1*i,-1-1*i,1*i)
+lfistwld1.C0=euler(-1.6+1*i,-1.37+1.57*i,0)*cf(5-1*i,-1-1*i,1*i)
+end
+RWL.Parent = nil
+LWL.Parent = nil
+RH.Parent = player.Character.Torso
+LH.Parent = player.Character.Torso
+canidle=true
+elseif Mode=="Battle" then
+Mode="Robot"
+workspace.CurrentCamera.CameraSubject=RootPart
+workspace.CurrentCamera.CameraType = "Track"
+modelzorz.Parent=Character
+RootJoint.Part1=tors1
+RootJoint.C0=euler(-1.57,0,3.14)
+rfistwld1.Part1=Torso
+lfistwld1.Part1=Torso
+for e=1,#RobotWelds do
+RobotWelds[e].Parent=Torso
+end
+for _,v in pairs(modelzorz:children()) do
+if v.className=="Part" then
+coroutine.resume(coroutine.create(function(Part)
+for i=0,1,0.1 do
+wait(0)
+Part.Transparency=Part.Transparency-0.1
+end
+if Part.Name~="Torso Hitbox" and Part.Name~="Left Leg Hitbox" and Part.Name~="Right Leg Hitbox" then
+Part.Transparency=0
+end
+end),v)
+end
+end
+player = Player
+ch = Character
+RH = ch.Torso["Right Hip"]
+LH = ch.Torso["Left Hip"]
+-- 
+RH.Parent = nil
+LH.Parent = nil
+-- 
+RWL.Part0 = ch.Torso
+RWL.C0 = cf(0, -1.5, 0) --* euler(1.3, 0, -0.5)
+RWL.C1 = cf(-0.5, 0.5, 0)
+RWL.Part1 = ch["Right Leg"]
+RWL.Parent = ch.Torso
+--_G.R = RW
+-- 
+LWL.Part0 = ch.Torso
+LWL.C0 = cf(0, -1.5, 0) --* euler(1.7, 0, 0.8)
+LWL.C1 = cf(0.5, 0.5, 0)
+LWL.Part1 = ch["Left Leg"]
+LWL.Parent = ch.Torso
+--_G.L = LW
+-- 
+for i=0,1,0.1 do
+wait()
+Neck.C0=necko*euler(0.6*i,0,0)
+LW.C0 = cf(-1.5,0.5,0) * euler(0,0,-0.2-1.37*i)
+RW.C0 = cf(1.5,0.5,0) * euler(0,0,0.2+1.37*i)
+RWL.C0 = cf(0,-0.5,0) * euler(1*i,0,0.1)
+LWL.C0 = cf(0,-0.5,0) * euler(1*i,0,-0.1)
+rfistwld1.C0=euler(-0.6-0.4*i,-0.2,0)*cf(-4-2*i,-2+7*i,1+1*i)
+lfistwld1.C0=euler(-0.6-0.4*i,0.2,0)*cf(4-4*i,-2+7*i,1+1*i)
+torswld1.C0=euler(0.2*i,0,0)*cf(-3*i,-2.4+(2.3+2.4)*i,0)
+RootCF=euler(-1.57,0,3.14)*cf(0,0,2.4*i)
+RootJoint.C0=RootCF
+end
+RWL.C0 = cf(0,-0.5,0) * euler(1,0,0.1)
+RWL.C1 = cf(-0.5,1.5,0) * euler(0,0,0)
+LWL.C0 = cf(0,-0.5,0) * euler(1,0,-0.1)
+LWL.C1 = cf(0.5,1.5,0) * euler(0,0,0)
+rfistwld1.Part1=rarm13
+rfistwld1.C0=euler(0,0,0)*cf(0,1,0)
+lfistwld1.Part1=larm13
+lfistwld1.C0=euler(0,0,0)*cf(0,1,0)
+wait(0.2)
+closefistl()
+closefistr()
+for i=0,1,0.1 do
+wait()
+Neck.C0=necko*euler(0.6-0.4*i,0,0)
+LW.C0 = cf(-1.5,0.5,0) * euler(2*i,0,-1.57+1.57*i)
+RW.C0 = cf(1.5,0.5,0) * euler(2*i,0,1.57-1.57*i)
+larmwld11.C0=euler(-0.5-1*i,0,0.2-0.2*i)*cf(0,0.8,0)
+rarmwld11.C0=euler(-0.5-1*i,0,-0.2+0.2*i)*cf(0,0.8,0)
+end
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(2-3*i,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(2-3*i,0,0)
+larmwld11.C0=euler(-1.5+2*i,0,0)*cf(0,0.8,0)
+rarmwld11.C0=euler(-1.5+2*i,0,0)*cf(0,0.8,0)
+end
+openfistl()
+openfistr()
+for i=0,1,0.1 do
+wait()
+LW.C0 = cf(-1.5,0.5,0) * euler(-1+0.8*i,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-1+0.7*i,0,0.1*i)
+larmwld11.C0=euler(0.5-1*i,0,0.2*i)*cf(0,0.8,0)
+rarmwld11.C0=euler(0.5-1*i,0,-0.2*i)*cf(0,0.8,0)
+end
+LW.C0 = cf(-1.5,0.5,0) * euler(-0.2,0,0)
+LW.C1 = cf(0, 0.5, 0) * euler(0,0,0)
+RW.C0 = cf(1.5,0.5,0) * euler(-0.3,0,0.1)
+RW.C1 = cf(0, 0.5, 0) * euler(0,0,0)
+canidle=true
+end
+end
+function findNearestTorso(pos,distance)
+local list = game.Workspace:children()
+local torso = nil
+local dist = distance
+local temp = nil
+local human = nil
+local temp2 = nil
+for x = 1, #list do
+temp2 = list[x]
+if (temp2.className == "Model") and (temp2 ~= Character) then
+temp = temp2:findFirstChild("Torso")
+human = temp2:findFirstChild("Humanoid")
+if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
+if (temp.Position - pos).magnitude < dist then
+torso = temp
+dist = (temp.Position - pos).magnitude
+end
+end
+end
+end
+return torso
+end
+function MagicBlock(brickcolor,cframe,x1,y1,z1,x3,y3,z3)
+local prt=part(3,workspace,0,0,brickcolor,"Effect",vt(0.5,0.5,0.5))
+prt.Anchored=true
+prt.CFrame=cframe*euler(math.random(-50,50),math.random(-50,50),math.random(-50,50))
+local msh=mesh("BlockMesh",prt,"","",vt(0,0,0),vt(x1,y1,z1))
+coroutine.resume(coroutine.create(function(Part,Mesh)
+for i=0,1,0.1 do
+wait()
+Part.CFrame=Part.CFrame
+Part.Transparency=i
+Mesh.Scale=Mesh.Scale+vt(x3,y3,z3)
+end
+Part.Parent=nil
+end),prt,msh)
+end
+function MagicCircle(brickcolor,cframe,x1,y1,z1,x3,y3,z3)
+local prt=part(3,workspace,0,0,brickcolor,"Effect",vt(0.5,0.5,0.5))
+prt.Anchored=true
+prt.CFrame=cframe
+local msh=mesh("SpecialMesh",prt,"Sphere","",vt(0,0,0),vt(x1,y1,z1))
+coroutine.resume(coroutine.create(function(Part,Mesh)
+for i=0,1,0.1 do
+wait()
+Part.CFrame=Part.CFrame
+Part.Transparency=i
+Mesh.Scale=Mesh.Scale+vt(x3,y3,z3)
+end
+Part.Parent=nil
+end),prt,msh)
+end
+function MagicRing(brickcolor,cframe,x1,y1,z1,x3,y3,z3)
+local prt=part(3,workspace,0,0,brickcolor,"Effect",vt(0.5,0.5,0.5))
+prt.Anchored=true
+prt.CFrame=cframe
+local msh=mesh("SpecialMesh",prt,"FileMesh","http://www.roblox.com/asset/?id=3270017",vt(0,0,0),vt(x1,y1,z1))
+coroutine.resume(coroutine.create(function(Part,Mesh)
+for i=0,1,0.03 do
+wait()
+Part.CFrame=Part.CFrame
+Part.Transparency=i
+Mesh.Scale=Mesh.Scale+vt(x3,y3,z3)
+end
+Part.Parent=nil
+end),prt,msh)
+end
+function Lightning(p0,p1,tym,ofs,col,th,tra)
+local magz = (p0 - p1).magnitude local curpos = p0 local trz = {-ofs,ofs}
+for i=1,tym do
+local li = Instance.new("Part",modelzorz) li.TopSurface =0 li.BottomSurface = 0 li.Anchored = true li.Transparency = tra or 0.4 li.BrickColor = BrickColor.new(col)
+li.formFactor = "Custom" li.CanCollide = false li.Size = Vector3.new(th,th,magz/tym) local ofz = Vector3.new(trz[math.random(1,2)],trz[math.random(1,2)],trz[math.random(1,2)])
+local trolpos = CFrame.new(curpos,p1)*CFrame.new(0,0,magz/tym).p+ofz
+if tym == i then
+local magz2 = (curpos - p1).magnitude li.Size = Vector3.new(th,th,magz2)
+li.CFrame = CFrame.new(curpos,p1)*CFrame.new(0,0,-magz2/2)
+else
+li.CFrame = CFrame.new(curpos,trolpos)*CFrame.new(0,0,magz/tym/2)
+end
+curpos = li.CFrame*CFrame.new(0,0,magz/tym/2).p game.Debris:AddItem(li,.5)
+end
+end
+Damagefunc1=function(hit,Damage,Knockback)
+if hit.Parent==nil then
+return
+end
+CPlayer=Bin
+h=hit.Parent:FindFirstChild("Humanoid")
+if h~=nil and hit.Parent.Name~=Character.Name and hit.Parent:FindFirstChild("Torso")~=nil then
+if attackdebounce == false then
+attackdebounce = true
+coroutine.resume(coroutine.create(function()
+wait(0.2)
+attackdebounce = false
+end))
+Damage=Damage
+--[[ if game.Players:GetPlayerFromCharacter(hit.Parent)~=nil then
+return
+end]]
+-- hs(hit,1.2)
+c=Instance.new("ObjectValue")
+c.Name="creator"
+c.Value=game.Players.LocalPlayer
+c.Parent=h
+game:GetService("Debris"):AddItem(c,.5)
+Damage=Damage+math.random(0,10)
+-- h:TakeDamage(Damage)
+blocked=false
+block=hit.Parent:findFirstChild("Block")
+if block~=nil then
+print("herp")
+if block.Value>0 then
+blocked=true
+block.Value=block.Value-1
+print(block.Value)
+end
+end
+if blocked==false then
+-- h:TakeDamage(Damage)
+h.Health=h.Health-Damage
+showDamage(hit.Parent,Damage,.5)
+else
+Damage=Damage/2
+h:TakeDamage(Damage)
+showDamage(hit.Parent,Damage,.5)
+end
+vp=Instance.new("BodyVelocity")
+vp.P=500
+vp.maxForce=Vector3.new(math.huge,0,math.huge)
+-- vp.velocity=Character.Torso.CFrame.lookVector*Knockback
+vp.velocity=RootPart.CFrame.lookVector*Knockback+RootPart.Velocity/1.05
+if Knockback>0 then
+vp.Parent=hit.Parent.Torso
+end
+game:GetService("Debris"):AddItem(vp,.25)
+game:GetService("Debris"):AddItem(r,.5)
+c=Instance.new("ObjectValue")
+c.Name="creator"
+c.Value=Player
+c.Parent=h
+game:GetService("Debris"):AddItem(c,.5)
+CRIT=false
+hitDeb=true
+AttackPos=6
+end
+end
+end
+showDamage=function(Char,Dealt,du)
+m=Instance.new("Model")
+m.Name=tostring(Dealt)
+h=Instance.new("Humanoid")
+h.Health=0
+h.MaxHealth=0
+h.Parent=m
+c=Instance.new("Part")
+c.Material = "SmoothPlastic"
+c.Transparency=0
+c.BrickColor=BrickColor:Red()
+if CRIT==true then
+c.BrickColor=BrickColor.new("Really red")
+end
+c.Name="Head"
+c.TopSurface="SmoothNoOutlines"
+c.BottomSurface="SmoothNoOutlines"
+c.RightSurface="SmoothNoOutlines"
+c.LeftSurface="SmoothNoOutlines"
+c.formFactor="Plate"
+c.Size=Vector3.new(1,.4,1)
+ms=Instance.new("CylinderMesh")
+ms.Scale=Vector3.new(.8,.8,.8)
+if CRIT==true then
+ms.Scale=Vector3.new(1,1.25,1)
+end
+ms.Parent=c
+c.Reflectance=0
+Instance.new("BodyGyro").Parent=c
+c.Parent=m
+c.CFrame=CFrame.new(Char["Head"].CFrame.p+Vector3.new(0,1.5,0))
+f=Instance.new("BodyPosition")
+f.P=2000
+f.D=100
+f.maxForce=Vector3.new(math.huge,math.huge,math.huge)
+f.position=c.Position+Vector3.new(0,3,0)
+f.Parent=c
+game:GetService("Debris"):AddItem(m,.5+du)
+c.CanCollide=false
+m.Parent=workspace
+c.CanCollide=false
+end
+function ob1d(mouse)
+if attack == true then return end
+hold=true
+if Mode=="Robot" then
+if idle==false then
+MovingPunch()
+end
+Humanoid.WalkSpeed=0
+if idle==true then
+canidle=false
+attackone()
+attacktwo()
+canidle=true
+end
+attack=false
+Humanoid.WalkSpeed=16
+elseif Mode=="Battle" then
+canidle=false
+punchone()
+punchtwo()
+wait(1)
+LW.C0 = cf(-1.5,0.5,0) * euler(0,0,-0.2)
+RW.C0 = cf(1.5,0.5,0) * euler(0,0,0.2)
+RootJoint.C0=euler(-1.57,0,3.14)
+attack=false
+canidle=true
+end
+end
+function ob1u(mouse)
+hold = false
+end
+buttonhold = false
+function key(key)
+if key=="x" then
+if debouncerockets==true then return end
+debouncerockets=true
+Rockets()
+debouncerockets=false
+end
+if key=="c" then
+if debounceorb==true then return end
+debounceorb=true
+LightningOrb()
+debounceorb=false
+end
+if attack == true then return end
+if key=="q" then
+if aiming==false then
+Aim()
+elseif aiming==true then
+NoAim()
+end
+end
+if key=="z" then
+canidle=false
+RocketPunch()
+canidle=true
+end
+if key=="f" then
+ModeChange()
+end
+--[[if key=="g" then
+so("http://roblox.com/asset/?id=133489855",Torso,1,1)
+wait(0.7)
+so("http://roblox.com/asset/?id=144844438",Torso,1,1)
+print("SOUND")
+end
+end]]--
+function key2(key)
+if key=="e" then
+holdrockets=false
+end
+end
+end
+function s(mouse)
+mouse.Button1Down:connect(function() ob1d(mouse) end)
+mouse.Button1Up:connect(function() ob1u(mouse) end)
+mouse.KeyDown:connect(key)
+mouse.KeyUp:connect(key2)
+unsheathed = true
+player = Player
+ch = Character
+MMouse = mouse
+equipanim()
+end
+function ds(mouse)
+hideanim()
+wait(0)
+end
+Bin.Selected:connect(s)
+Bin.Deselected:connect(ds)
+print("Roi loaded.")
+while restarted==false do
+if Mode=="Robot" then
+wait()
+if canidle==true then
+if (Torso.Velocity*Vector3.new(1,0,1)).magnitude < 0.2 then
+idle=true
+armwalk=false
+if doingidle==false then
+RootCF=euler(-1.57,0,3.14)*cf(0,0,2.4)
+coroutine.resume(coroutine.create(function()
+doingidle=true
+if math.random(1,5)==1 then
+idlefistr()
+end
+if math.random(1,5)==1 then
+idlefistl()
+end
+for i=0,1,0.01 do
+if idle==true then
+wait()
+RootJoint.C0=RootCF*cf(0,0,-0.5*i)
+llegwld2.C0=euler(0,0,1.57)*cf(0,-0.5*i,0)
+rlegwld2.C0=euler(0,0,1.57)*cf(0,-0.5*i,0)
+larmwld11.C0=euler(-0.5+0.2*i,0,0.2)*cf(0,0.8,0)
+rarmwld11.C0=euler(-0.5+0.2*i,0,-0.2)*cf(0,0.8,0)
+end
+end
+if math.random(1,5)==1 then
+idlefistr()
+end
+if math.random(1,5)==1 then
+idlefistl()
+end
+for i=0,1,0.01 do
+if idle==true then
+wait()
+RootJoint.C0=RootCF*cf(0,0,-0.5+0.5*i)
+llegwld2.C0=euler(0,0,1.57)*cf(0,-0.5+0.5*i,0)
+rlegwld2.C0=euler(0,0,1.57)*cf(0,-0.5+0.5*i,0)
+larmwld11.C0=euler(-0.5+0.2-0.2*i,0,0.2)*cf(0,0.8,0)
+rarmwld11.C0=euler(-0.5+0.2-0.2*i,0,-0.2)*cf(0,0.8,0)
+end
+end
+if math.random(1,5)==1 then
+idlefistr()
+end
+if math.random(1,5)==1 then
+idlefistl()
+end
+doingidle=false
+end))
+end
+end
+if (Torso.Velocity*Vector3.new(1,0,1)).magnitude > 0.2 then
+idle=false
+if armwalk==false then
+armwalk=true
+coroutine.resume(coroutine.create(function()
+for i=0,1,0.05 do
+wait()
+larmwld11.C0=euler(-0.5,0,0.2+1*i)*cf(1*i,0.8-0.1*i,0)
+rarmwld11.C0=euler(-0.5,0,-0.2-1*i)*cf(-1*i,0.8-0.1*i,0)
+end
+while armwalk==true do
+wait()
+end
+larmwld11.C0=euler(-0.5,0,0.2)*cf(0,0.8,0)
+rarmwld11.C0=euler(-0.5,0,-0.2)*cf(0,0.8,0)
+end))
+end
+if doingwalk==false then
+coroutine.resume(coroutine.create(function()
+doingwalk=true
+for i=0,1,0.1 do
+if idle==false then
+wait()
+RootJoint.C0=RootCF*cf(0,0,-0.7*i)*euler(0.1*i,0,-0.2*i)
+llegwld2.C0=euler(0.5*i,1*i,1.57)*cf(0,0,0)
+rlegwld2.C0=euler(0,-1*i,1.57)*cf(0,0,0)
+end
+end
+for i=0,1,0.1 do
+if idle==false then
+wait()
+RootJoint.C0=RootCF*cf(0,0,-0.7+0.7*i)*euler(0.1-0.1*i,0,-0.2+0.2*i)
+llegwld2.C0=euler(0.5-0.5*i,1-1*i,1.57)*cf(0,0,0)
+rlegwld2.C0=euler(0,-1+1*i,1.57)*cf(0,0,0)
+end
+end
+for i=0,1,0.1 do
+if idle==false then
+wait()
+RootJoint.C0=RootCF*cf(0,0,-0.7*i)*euler(0.1*i,0,0.2*i)
+llegwld2.C0=euler(0,-1*i,1.57)*cf(0,0,0)
+rlegwld2.C0=euler(-0.5*i,1*i,1.57)*cf(0,0,0)
+end
+end
+for i=0,1,0.1 do
+if idle==false then
+wait()
+RootJoint.C0=RootCF*cf(0,0,-0.7+0.7*i)*euler(0.1-0.1*i,0,0.2-0.2*i)
+llegwld2.C0=euler(0,-1+1*i,1.57)*cf(0,0,0)
+rlegwld2.C0=euler(-0.5+0.5*i,1-1*i,1.57)*cf(0,0,0)
+end
+end
+doingwalk=false
+end))
+end
+--RootJoint.C0=RootCF
+--llegwld2.C0=euler(0,0,1.57)*cf(0,0,0)
+--rlegwld2.C0=euler(0,0,1.57)*cf(0,0,0)
+--larmwld11.C0=euler(-0.5,0,0.2)*cf(0,0.8,0)
+--rarmwld11.C0=euler(-0.5,0,-0.2)*cf(0,0.8,0)
+end
+end
+elseif Mode=="Battle" then
+wait()
+if canidle==true then
+idle=true
+armwalk=false
+if doingidle==false then
+RootCF=euler(-1.57,0,3.14)*cf(0,0,2.4)
+coroutine.resume(coroutine.create(function()
+doingidle=true
+for i=0,1,0.01 do
+if idle==true then
+wait()
+rfistwld1.C0=euler(-0.6+0.1*i,-0.2,0)*cf(-4,-2+0.1*i,1)
+lfistwld1.C0=euler(-0.6+0.1*i,0.2,0)*cf(4,-2+0.1*i,1)
+end
+end
+if math.random(1,5)==1 then
+idlefistr()
+end
+if math.random(1,5)==1 then
+idlefistl()
+end
+for i=0,1,0.01 do
+if idle==true then
+wait()
+rfistwld1.C0=euler(-0.6+0.1-0.1*i,-0.2,0)*cf(-4,-2+0.1-0.1*i,1)
+lfistwld1.C0=euler(-0.6+0.1-0.1*i,0.2,0)*cf(4,-2+0.1-0.1*i,1)
+end
+end
+if math.random(1,5)==1 then
+idlefistr()
+end
+if math.random(1,5)==1 then
+idlefistl()
+end
+doingidle=false
+end))
+end
+end
+end
+end
