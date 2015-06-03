@@ -50,7 +50,7 @@ local rocketlaunchparts={}
 do
 local PlayerColours = {
 BrickColor.new("Bright red"),
-BrickColor.new("Bright blue"),
+BrickColor.new("Royal red"),
 BrickColor.new("Earth green"),
 BrickColor.new("Bright violet"),
 BrickColor.new("Bright orange"),
@@ -77,7 +77,7 @@ return Value % 8
 end
 end
 print(GetChatColour(PlayerName))
-Color1=BrickColor.new("Navy blue")
+Color1=BrickColor.new("Royal Red")
 Color2="Medium stone grey"
 Color3="Dark stone grey"
 Color4="Really black"
