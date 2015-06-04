@@ -1,0 +1,687 @@
+local Spawn=Spawn
+local player=game.Players.LocalPlayer
+local p2=2*math.pi
+local settings=setmetatable({
+points=12,
+reps=5,
+thickenss=1,
+size=12,
+center=CFrame.new(0,5,0),
+speed=2,
+},{__index=function(s,i)
+if not type(i)=='string' then return end
+for prop,val in pairs(s) do 
+	if prop:lower()==i:lower() then
+		return val
+	end
+end
+end
+})
+local Region={}
+
+
+
+local BoxPointCollision do
+	local VecDiv=CFrame.new().pointToObjectSpace--Right Division, yo.
+	function BoxPointCollision(CFrame,Size,Point)
+		local Relative	=VecDiv(CFrame,Point)
+		local sx,sy,sz	=Size.x/2,Size.y/2,Size.z/2
+		local rx,ry,rz	=Relative.x,Relative.y,Relative.z
+		return			rx*rx<sx*sx and rx*rx<sx*sx and rx*rx<sx*sx
+	end
+end
+
+
+
+local BoxSphereCollision do
+	local VecDiv=CFrame.new().pointToObjectSpace--Right Division, yo.
+	function BoxSphereCollision(CFrame,Size,Center,Radius)
+		local Relative	=VecDiv(CFrame,Center)
+		local sx,sy,sz	=Size.x/2,Size.y/2,Size.z/2
+		local rx,ry,rz	=Relative.x,Relative.y,Relative.z
+		local dx		=rx>sx and rx-sx--Faster than if statement
+						or rx<-sx and rx+sx
+						or 0
+		local dy		=ry>sy and ry-sy
+						or ry<-sy and ry+sy
+						or 0
+		local dz		=rz>sz and rz-sz
+						or rz<-sz and rz+sz
+						or 0
+		return dx*dx+dy*dy+dz*dz<Radius*Radius
+	end
+end
+
+
+
+--There's a reason why this hasn't been done before by ROBLOX users (as far as I know)
+--It's really mathy, really long, and really confusing.
+--0.000033 seconds is the worst, 0.000018 looks like the average case.
+--Also I ran out of local variables so I had to redo everything so that I could reuse the names lol.
+--So don't even try to read it.
+local BoxCollision do
+	local components=CFrame.new().components
+	function BoxCollision(CFrame0,Size0,CFrame1,Size1,AssumeTrue)
+		local	m00,m01,m02,
+				m03,m04,m05,
+				m06,m07,m08,
+				m09,m10,m11	=components(CFrame0)
+		local	m12,m13,m14,
+				m15,m16,m17,
+				m18,m19,m20,
+				m21,m22,m23	=components(CFrame1)
+		local	m24,m25,m26	=Size0.x/2,Size0.y/2,Size0.z/2
+		local	m27,m28,m29	=Size1.x/2,Size1.y/2,Size1.z/2
+		local	m30,m31,m32	=m12-m00,m13-m01,m14-m02
+		local	m00			=m03*m30+m06*m31+m09*m32
+		local	m01			=m04*m30+m07*m31+m10*m32
+		local	m02			=m05*m30+m08*m31+m11*m32
+		local	m12			=m15*m30+m18*m31+m21*m32
+		local	m13			=m16*m30+m19*m31+m22*m32
+		local	m14			=m17*m30+m20*m31+m23*m32
+		local	m30			=m12>m27 and m12-m27
+							or m12<-m27 and m12+m27
+							or 0
+		local	m31			=m13>m28 and m13-m28
+							or m13<-m28 and m13+m28
+							or 0
+		local	m32			=m14>m29 and m14-m29
+							or m14<-m29 and m14+m29
+							or 0
+		local	m33			=m00>m24 and m00-m24
+							or m00<-m24 and m00+m24
+							or 0
+		local	m34			=m01>m25 and m01-m25
+							or m01<-m25 and m01+m25
+							or 0
+		local	m35			=m02>m26 and m02-m26
+							or m02<-m26 and m02+m26
+							or 0
+		local	m36			=m30*m30+m31*m31+m32*m32
+		local	m30			=m33*m33+m34*m34+m35*m35
+		local	m31			=m24<m25 and (m24<m26 and m24 or m26)
+							or (m25<m26 and m25 or m26)
+		local	m32			=m27<m28 and (m27<m29 and m27 or m29)
+							or (m28<m29 and m28 or m29)
+		if m36<m31*m31 or m30<m32*m32 then
+			return true
+		elseif m36>m24*m24+m25*m25+m26*m26 or m30>m27*m27+m28*m28+m29*m29 then
+			return false
+		elseif AssumeTrue==nil then
+			--LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL
+			--(This is how you tell if something was made by Axis Angle)
+			local m30=m03*m15+m06*m18+m09*m21
+			local m31=m03*m16+m06*m19+m09*m22
+			local m32=m03*m17+m06*m20+m09*m23
+			local m03=m04*m15+m07*m18+m10*m21
+			local m06=m04*m16+m07*m19+m10*m22
+			local m09=m04*m17+m07*m20+m10*m23
+			local m04=m05*m15+m08*m18+m11*m21
+			local m07=m05*m16+m08*m19+m11*m22
+			local m10=m05*m17+m08*m20+m11*m23
+			local m05=m29*m29
+			local m08=m27*m27
+			local m11=m28*m28
+			local m15=m24*m30
+			local m16=m25*m03
+			local m17=m26*m04
+			local m18=m24*m31
+			local m19=m25*m06
+			local m20=m26*m07
+			local m21=m24*m32
+			local m22=m25*m09
+			local m23=m26*m10
+			local m33=m15+m16+m17-m12;if m33*m33<m08 then local m34=m18+m19+m20-m13;if m34*m34<m11 then local m35=m21+m22+m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=-m15+m16+m17-m12;if m33*m33<m08 then local m34=-m18+m19+m20-m13;if m34*m34<m11 then local m35=-m21+m22+m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=m15-m16+m17-m12;if m33*m33<m08 then local m34=m18-m19+m20-m13;if m34*m34<m11 then local m35=m21-m22+m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=-m15-m16+m17-m12;if m33*m33<m08 then local m34=-m18-m19+m20-m13;if m34*m34<m11 then local m35=-m21-m22+m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=m15+m16-m17-m12;if m33*m33<m08 then local m34=m18+m19-m20-m13;if m34*m34<m11 then local m35=m21+m22-m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=-m15+m16-m17-m12;if m33*m33<m08 then local m34=-m18+m19-m20-m13;if m34*m34<m11 then local m35=-m21+m22-m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=m15-m16-m17-m12;if m33*m33<m08 then local m34=m18-m19-m20-m13;if m34*m34<m11 then local m35=m21-m22-m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m33=-m15-m16-m17-m12;if m33*m33<m08 then local m34=-m18-m19-m20-m13;if m34*m34<m11 then local m35=-m21-m22-m23-m14;if m35*m35<m05 then return true;end;end;end;
+			local m12=m24*m24
+			local m13=m25*m25
+			local m14=m26*m26
+			local m15=m27*m04
+			local m16=m28*m07
+			local m17=m27*m30
+			local m18=m28*m31
+			local m19=m27*m03
+			local m20=m28*m06
+			local m21=m29*m10
+			local m22=m29*m32
+			local m23=m29*m09
+			local m35=(m02-m26+m15+m16)/m10;if m35*m35<m05 then local m33=m00+m17+m18-m35*m32;if m33*m33<m12 then local m34=m01+m19+m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26+m15+m16)/m10;if m35*m35<m05 then local m33=m00+m17+m18-m35*m32;if m33*m33<m12 then local m34=m01+m19+m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26-m15+m16)/m10;if m35*m35<m05 then local m33=m00-m17+m18-m35*m32;if m33*m33<m12 then local m34=m01-m19+m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26-m15+m16)/m10;if m35*m35<m05 then local m33=m00-m17+m18-m35*m32;if m33*m33<m12 then local m34=m01-m19+m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26+m15-m16)/m10;if m35*m35<m05 then local m33=m00+m17-m18-m35*m32;if m33*m33<m12 then local m34=m01+m19-m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26+m15-m16)/m10;if m35*m35<m05 then local m33=m00+m17-m18-m35*m32;if m33*m33<m12 then local m34=m01+m19-m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26-m15-m16)/m10;if m35*m35<m05 then local m33=m00-m17-m18-m35*m32;if m33*m33<m12 then local m34=m01-m19-m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26-m15-m16)/m10;if m35*m35<m05 then local m33=m00-m17-m18-m35*m32;if m33*m33<m12 then local m34=m01-m19-m20-m35*m09;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m00-m24+m17+m18)/m32;if m35*m35<m05 then local m33=m01+m19+m20-m35*m09;if m33*m33<m13 then local m34=m02+m15+m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24+m17+m18)/m32;if m35*m35<m05 then local m33=m01+m19+m20-m35*m09;if m33*m33<m13 then local m34=m02+m15+m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24-m17+m18)/m32;if m35*m35<m05 then local m33=m01-m19+m20-m35*m09;if m33*m33<m13 then local m34=m02-m15+m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24-m17+m18)/m32;if m35*m35<m05 then local m33=m01-m19+m20-m35*m09;if m33*m33<m13 then local m34=m02-m15+m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24+m17-m18)/m32;if m35*m35<m05 then local m33=m01+m19-m20-m35*m09;if m33*m33<m13 then local m34=m02+m15-m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24+m17-m18)/m32;if m35*m35<m05 then local m33=m01+m19-m20-m35*m09;if m33*m33<m13 then local m34=m02+m15-m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24-m17-m18)/m32;if m35*m35<m05 then local m33=m01-m19-m20-m35*m09;if m33*m33<m13 then local m34=m02-m15-m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24-m17-m18)/m32;if m35*m35<m05 then local m33=m01-m19-m20-m35*m09;if m33*m33<m13 then local m34=m02-m15-m16-m35*m10;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m01-m25+m19+m20)/m09;if m35*m35<m05 then local m33=m02+m15+m16-m35*m10;if m33*m33<m14 then local m34=m00+m17+m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25+m19+m20)/m09;if m35*m35<m05 then local m33=m02+m15+m16-m35*m10;if m33*m33<m14 then local m34=m00+m17+m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25-m19+m20)/m09;if m35*m35<m05 then local m33=m02-m15+m16-m35*m10;if m33*m33<m14 then local m34=m00-m17+m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25-m19+m20)/m09;if m35*m35<m05 then local m33=m02-m15+m16-m35*m10;if m33*m33<m14 then local m34=m00-m17+m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25+m19-m20)/m09;if m35*m35<m05 then local m33=m02+m15-m16-m35*m10;if m33*m33<m14 then local m34=m00+m17-m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25+m19-m20)/m09;if m35*m35<m05 then local m33=m02+m15-m16-m35*m10;if m33*m33<m14 then local m34=m00+m17-m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25-m19-m20)/m09;if m35*m35<m05 then local m33=m02-m15-m16-m35*m10;if m33*m33<m14 then local m34=m00-m17-m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25-m19-m20)/m09;if m35*m35<m05 then local m33=m02-m15-m16-m35*m10;if m33*m33<m14 then local m34=m00-m17-m18-m35*m32;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m02-m26+m16+m21)/m04;if m35*m35<m08 then local m33=m00+m18+m22-m35*m30;if m33*m33<m12 then local m34=m01+m20+m23-m35*m03;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26+m16+m21)/m04;if m35*m35<m08 then local m33=m00+m18+m22-m35*m30;if m33*m33<m12 then local m34=m01+m20+m23-m35*m03;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26-m16+m21)/m04;if m35*m35<m08 then local m33=m00-m18+m22-m35*m30;if m33*m33<m12 then local m34=m01-m20+m23-m35*m03;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26-m16+m21)/m04;if m35*m35<m08 then local m33=m00-m18+m22-m35*m30;if m33*m33<m12 then local m34=m01-m20+m23-m35*m03;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26+m16-m21)/m04;if m35*m35<m08 then local m33=m00+m18-m22-m35*m30;if m33*m33<m12 then local Axi=m01+m20-m23-m35*m03;if Axi*Axi<m13 then return true;end;end;end;
+			local m35=(m02+m26+m16-m21)/m04;if m35*m35<m08 then local m33=m00+m18-m22-m35*m30;if m33*m33<m12 then local sAn=m01+m20-m23-m35*m03;if sAn*sAn<m13 then return true;end;end;end;
+			local m35=(m02-m26-m16-m21)/m04;if m35*m35<m08 then local m33=m00-m18-m22-m35*m30;if m33*m33<m12 then local gle=m01-m20-m23-m35*m03;if gle*gle<m13 then return true;end;end;end;
+			local m35=(m02+m26-m16-m21)/m04;if m35*m35<m08 then local m33=m00-m18-m22-m35*m30;if m33*m33<m12 then local m34=m01-m20-m23-m35*m03;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m00-m24+m18+m22)/m30;if m35*m35<m08 then local m33=m01+m20+m23-m35*m03;if m33*m33<m13 then local m34=m02+m16+m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24+m18+m22)/m30;if m35*m35<m08 then local m33=m01+m20+m23-m35*m03;if m33*m33<m13 then local m34=m02+m16+m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24-m18+m22)/m30;if m35*m35<m08 then local m33=m01-m20+m23-m35*m03;if m33*m33<m13 then local m34=m02-m16+m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24-m18+m22)/m30;if m35*m35<m08 then local m33=m01-m20+m23-m35*m03;if m33*m33<m13 then local m34=m02-m16+m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24+m18-m22)/m30;if m35*m35<m08 then local m33=m01+m20-m23-m35*m03;if m33*m33<m13 then local m34=m02+m16-m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24+m18-m22)/m30;if m35*m35<m08 then local m33=m01+m20-m23-m35*m03;if m33*m33<m13 then local m34=m02+m16-m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24-m18-m22)/m30;if m35*m35<m08 then local m33=m01-m20-m23-m35*m03;if m33*m33<m13 then local m34=m02-m16-m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24-m18-m22)/m30;if m35*m35<m08 then local m33=m01-m20-m23-m35*m03;if m33*m33<m13 then local m34=m02-m16-m21-m35*m04;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m01-m25+m20+m23)/m03;if m35*m35<m08 then local m33=m02+m16+m21-m35*m04;if m33*m33<m14 then local m34=m00+m18+m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25+m20+m23)/m03;if m35*m35<m08 then local m33=m02+m16+m21-m35*m04;if m33*m33<m14 then local m34=m00+m18+m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25-m20+m23)/m03;if m35*m35<m08 then local m33=m02-m16+m21-m35*m04;if m33*m33<m14 then local m34=m00-m18+m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25-m20+m23)/m03;if m35*m35<m08 then local m33=m02-m16+m21-m35*m04;if m33*m33<m14 then local m34=m00-m18+m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25+m20-m23)/m03;if m35*m35<m08 then local m33=m02+m16-m21-m35*m04;if m33*m33<m14 then local m34=m00+m18-m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25+m20-m23)/m03;if m35*m35<m08 then local m33=m02+m16-m21-m35*m04;if m33*m33<m14 then local m34=m00+m18-m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25-m20-m23)/m03;if m35*m35<m08 then local m33=m02-m16-m21-m35*m04;if m33*m33<m14 then local m34=m00-m18-m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25-m20-m23)/m03;if m35*m35<m08 then local m33=m02-m16-m21-m35*m04;if m33*m33<m14 then local m34=m00-m18-m22-m35*m30;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m02-m26+m21+m15)/m07;if m35*m35<m11 then local m33=m00+m22+m17-m35*m31;if m33*m33<m12 then local m34=m01+m23+m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26+m21+m15)/m07;if m35*m35<m11 then local m33=m00+m22+m17-m35*m31;if m33*m33<m12 then local m34=m01+m23+m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26-m21+m15)/m07;if m35*m35<m11 then local m33=m00-m22+m17-m35*m31;if m33*m33<m12 then local m34=m01-m23+m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26-m21+m15)/m07;if m35*m35<m11 then local m33=m00-m22+m17-m35*m31;if m33*m33<m12 then local m34=m01-m23+m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26+m21-m15)/m07;if m35*m35<m11 then local m33=m00+m22-m17-m35*m31;if m33*m33<m12 then local m34=m01+m23-m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26+m21-m15)/m07;if m35*m35<m11 then local m33=m00+m22-m17-m35*m31;if m33*m33<m12 then local m34=m01+m23-m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02-m26-m21-m15)/m07;if m35*m35<m11 then local m33=m00-m22-m17-m35*m31;if m33*m33<m12 then local m34=m01-m23-m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m02+m26-m21-m15)/m07;if m35*m35<m11 then local m33=m00-m22-m17-m35*m31;if m33*m33<m12 then local m34=m01-m23-m19-m35*m06;if m34*m34<m13 then return true;end;end;end;
+			local m35=(m00-m24+m22+m17)/m31;if m35*m35<m11 then local m33=m01+m23+m19-m35*m06;if m33*m33<m13 then local m34=m02+m21+m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24+m22+m17)/m31;if m35*m35<m11 then local m33=m01+m23+m19-m35*m06;if m33*m33<m13 then local m34=m02+m21+m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24-m22+m17)/m31;if m35*m35<m11 then local m33=m01-m23+m19-m35*m06;if m33*m33<m13 then local m34=m02-m21+m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24-m22+m17)/m31;if m35*m35<m11 then local m33=m01-m23+m19-m35*m06;if m33*m33<m13 then local m34=m02-m21+m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24+m22-m17)/m31;if m35*m35<m11 then local m33=m01+m23-m19-m35*m06;if m33*m33<m13 then local m34=m02+m21-m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24+m22-m17)/m31;if m35*m35<m11 then local m33=m01+m23-m19-m35*m06;if m33*m33<m13 then local m34=m02+m21-m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00-m24-m22-m17)/m31;if m35*m35<m11 then local m33=m01-m23-m19-m35*m06;if m33*m33<m13 then local m34=m02-m21-m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m00+m24-m22-m17)/m31;if m35*m35<m11 then local m33=m01-m23-m19-m35*m06;if m33*m33<m13 then local m34=m02-m21-m15-m35*m07;if m34*m34<m14 then return true;end;end;end;
+			local m35=(m01-m25+m23+m19)/m06;if m35*m35<m11 then local m33=m02+m21+m15-m35*m07;if m33*m33<m14 then local m34=m00+m22+m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25+m23+m19)/m06;if m35*m35<m11 then local m33=m02+m21+m15-m35*m07;if m33*m33<m14 then local m34=m00+m22+m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25-m23+m19)/m06;if m35*m35<m11 then local m33=m02-m21+m15-m35*m07;if m33*m33<m14 then local m34=m00-m22+m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25-m23+m19)/m06;if m35*m35<m11 then local m33=m02-m21+m15-m35*m07;if m33*m33<m14 then local m34=m00-m22+m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25+m23-m19)/m06;if m35*m35<m11 then local m33=m02+m21-m15-m35*m07;if m33*m33<m14 then local m34=m00+m22-m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25+m23-m19)/m06;if m35*m35<m11 then local m33=m02+m21-m15-m35*m07;if m33*m33<m14 then local m34=m00+m22-m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01-m25-m23-m19)/m06;if m35*m35<m11 then local m33=m02-m21-m15-m35*m07;if m33*m33<m14 then local m34=m00-m22-m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			local m35=(m01+m25-m23-m19)/m06;if m35*m35<m11 then local m33=m02-m21-m15-m35*m07;if m33*m33<m14 then local m34=m00-m22-m17-m35*m31;if m34*m34<m12 then return true;end;end;end;
+			return false
+		else
+			return AssumeTrue
+		end
+	end
+end
+
+
+local setmetatable	=setmetatable
+local components	=CFrame.new().components
+local Workspace		=Workspace
+local BoxCast		=Workspace.FindPartsInRegion3WithIgnoreList
+local unpack		=unpack
+local type			=type
+local IsA			=game.IsA
+local r3			=Region3.new
+local v3			=Vector3.new
+
+
+
+local function Region3BoundingBox(CFrame,Size)
+ 	local	x,y,z,
+			xx,yx,zx,
+			xy,yy,zy,
+			xz,yz,zz=components(CFrame)
+	local	sx,sy,sz=Size.x/2,Size.y/2,Size.z/2
+	local	px		=sx*(xx<0 and -xx or xx)
+					+sy*(yx<0 and -yx or yx)
+					+sz*(zx<0 and -zx or zx)
+	local	py		=sx*(xy<0 and -xy or xy)
+					+sy*(yy<0 and -yy or yy)
+					+sz*(zy<0 and -zy or zy)
+	local	pz		=sx*(xz<0 and -xz or xz)
+					+sy*(yz<0 and -yz or yz)
+					+sz*(zz<0 and -zz or zz)
+	return			r3(v3(x-px,y-py,z-pz),v3(x+px,y+py,z+pz))
+end
+
+
+
+local function FindAllPartsInRegion3(Region3,Ignore)
+	local Ignore=type(Ignore)=="table" and Ignore or {Ignore}
+	local Last=#Ignore
+	repeat
+		local Parts=BoxCast(Workspace,Region3,Ignore,100)
+		local Start=#Ignore
+		for i=1,#Parts do
+			Ignore[Start+i]=Parts[i]
+		end
+	until #Parts<100;
+	return {unpack(Ignore,Last+1,#Ignore)}
+end
+
+
+
+local function CastPoint(Region,Point)
+	return BoxPointCollision(Region.CFrame,Region.Size,Point)
+end
+
+
+
+local function CastSphere(Region,Center,Radius)
+	return BoxSphereCollision(Region.CFrame,Region.Size,Center,Radius)
+end
+
+
+
+local function CastBox(Region,CFrame,Size)
+	return BoxCollision(Region.CFrame,Region.Size,CFrame,Size)
+end
+
+
+
+local function CastPart(Region,Part)
+	return	(not IsA(Part,"Part") or Part.Shape=="Block") and
+			BoxCollision(Region.CFrame,Region.Size,Part.CFrame,Part.Size)
+			or BoxSphereCollision(Region.CFrame,Region.Size,Part.Position,Part.Size.x)
+end
+
+
+
+local function CastParts(Region,Parts)
+	local Inside={}
+	for i=1,#Parts do
+		if CastPart(Region,Parts[i]) then
+			Inside[#Inside+1]=Parts[i]
+		end
+	end
+	return Inside
+end
+
+
+
+local function Cast(Region,Ignore)
+	local Inside={}
+	local Parts=FindAllPartsInRegion3(Region.Region3,Ignore)
+	for i=1,#Parts do
+		if CastPart(Region,Parts[i]) then
+			Inside[#Inside+1]=Parts[i]
+		end
+	end
+	return Inside
+end
+
+
+
+local function NewRegion(CFrame,Size)
+	local Object	={
+		CFrame		=CFrame;
+		Size		=Size;
+		Region3		=Region3BoundingBox(CFrame,Size);
+		Cast		=Cast;
+		CastPart	=CastPart;
+		CastParts	=CastParts;
+		CastPoint	=CastPoint;
+		CastSphere	=CastSphere;
+		CastBox		=CastBox;
+					}
+	return			setmetatable({},{
+		__index=Object;
+		__newindex=function(_,Index,Value)
+			Object[Index]=Value
+			Object.Region3=Region3BoundingBox(Object.CFrame,Object.Size)
+		end;
+					})
+end
+
+
+
+Region.Region3BoundingBox	=Region3BoundingBox
+Region.FindAllPartsInRegion3=FindAllPartsInRegion3
+Region.BoxPointCollision	=BoxPointCollision
+Region.BoxSphereCollision	=BoxSphereCollision
+Region.BoxCollision			=BoxCollision
+Region.new					=NewRegion
+function Region.FromPart(Part)
+	return NewRegion(Part.CFrame,Part.Size)
+end
+
+local BouncingBoxPoints = { -- Bouding box posiitions. 
+	Vector3.new(-1,-1,-1);
+	Vector3.new( 1,-1,-1);
+	Vector3.new(-1, 1,-1);
+	Vector3.new( 1, 1,-1);
+	Vector3.new(-1,-1, 1);
+	Vector3.new( 1,-1, 1);
+	Vector3.new(-1, 1, 1);
+	Vector3.new( 1, 1, 1);
+}
+
+local function GetBoundingBox(Objects)
+local Sides = {-math.huge;math.huge;-math.huge;math.huge;-math.huge;math.huge}
+for _, BasePart in pairs(Objects) do
+local HalfSize = BasePart.Size/2
+local Rotation = BasePart.CFrame
+for _, BoundingBoxPoint in pairs(BouncingBoxPoints) do
+local Point = Rotation*CFrame.new(HalfSize*BoundingBoxPoint).p
+
+if Point.x > Sides[1] then Sides[1] = Point.x end
+if Point.x < Sides[2] then Sides[2] = Point.x end
+if Point.y > Sides[3] then Sides[3] = Point.y end
+if Point.y < Sides[4] then Sides[4] = Point.y end
+if Point.z > Sides[5] then Sides[5] = Point.z end
+if Point.z < Sides[6] then Sides[6] = Point.z end
+end;end
+-- Size, Position
+return Vector3.new(Sides[1]-Sides[2],Sides[3]-Sides[4],Sides[5]-Sides[6]), 
+Vector3.new((Sides[1]+Sides[2])/2,(Sides[3]+Sides[4])/2,(Sides[5]+Sides[6])/2)
+end
+
+
+-------------------------------------------------
+-------------------------------------------------
+
+local rem=false
+
+
+local function Draw(p1,p2)
+	local d=(p1-p2).magnitude
+	local pos=CFrame.new(p1,p2)
+	pos=pos.p+(pos.lookVector*(d/2))
+	pos=CFrame.new(pos,p2)
+	local p=Instance.new('Part')
+	p.CanCollide=false
+	p.Anchored=true
+	p.FormFactor=Enum.FormFactor.Custom
+	p.Size=Vector3.new(settings.thickness,settings.thickness,d)
+	p.CFrame=pos
+	return p
+end
+
+local function Get(l)
+local ray=Ray.new(l,Vector3.new(0,-999,0),true)
+local hit,pos=workspace:FindPartOnRayWithIgnoreList(ray,{(player.Character~=nil and player.Character)})
+if hit then return l-((pos-l).unit/2) end
+--if hit then return (pos-l).magnitude;end
+return nil
+end
+
+local function AntiRemove(a,p)
+game.DescendantRemoving:connect(function(o)
+if o==a and rem==false then
+pcall(function()o.Parent=p;end)
+Spawn(function()
+wait(0)
+pcall(function()o.Parent=p;end)
+end)
+end
+end)	
+end
+
+
+
+local function GetParts(m)
+if not pcall(function()m:children''end)then return end
+local f={}
+if #m:children''>=1 then
+for _,v in pairs(m:children'')do
+if v.ClassName=='Part' then f[#f+1]=v;end
+local a=GetParts(v)
+table.foreach(a,function(i,v)f[#f+1]=v;end)
+end
+else
+return {}
+end
+return f
+end
+
+
+local function Move(m,c)
+local parts=GetParts(m)
+local s,p=GetBoundingBox(parts)
+local center=p+Vector3.new(0,s/2,0)
+for _,v in pairs(parts)do
+local a=c:toWorldSpace(CFrame.new(center):toObjectSpace(v.CFrame))
+v.CFrame=a
+end
+end
+
+local BALL
+local STARTED=false
+
+local function Start()
+-------------------------
+	
+local gpoints={}
+local angleN=(p2)/settings.points
+for i = 1,settings.points do
+	local ver=settings.center*CFrame.Angles(0,angleN*i,0)
+	gpoints[#gpoints+1]=ver.p+(ver.lookVector*(settings.size/2))
+end
+
+local repN=(p2)/settings.reps
+local rpoints={}
+for r=1,settings.reps do
+	rpoints[r]={}
+	for _,v in pairs(gpoints)do
+		local q=settings.center*CFrame.Angles(repN*r,0,0)*CFrame.new(settings.center:pointToObjectSpace(v))
+		local ver=q.p
+		rpoints[r][#rpoints[r]+1]=q.p
+	end
+end	
+
+local function DrawShape()
+	local m=Instance.new('Model',workspace)
+	AntiRemove(m,workspace)
+	for i,set in pairs(rpoints) do
+		for i2,point in pairs(set) do
+			if set[i2+1]~=nil then
+				local seg=Draw(point,set[i2+1])
+				seg.Parent=m
+				AntiRemove(seg,m)
+			else
+				local seg=Draw(point,set[1])
+				seg.Parent=m
+				AntiRemove(seg,m)
+			end
+		end
+	end
+	return m
+end
+
+	
+
+------------------------------
+
+print'GO BOIS'
+STARTED=true
+	
+local a=DrawShape()
+local s,p=GetBoundingBox(GetParts(a))
+local center=CFrame.new(p+Vector3.new(0,s/2,0))
+local b=DrawShape()
+Move(a,center)
+Move(b,center)
+
+BALL={a,b}
+
+local l
+local scan=false
+
+--		local region
+
+game:GetService('RunService'):BindToRenderStep('Ball',1,function()
+if not STARTED then return end
+if player.Character~=nil then
+if player.Character:FindFirstChild('Torso')~=nil then
+l=CFrame.new(player.Character.Torso.CFrame.p)
+--		region=Region.new(l,Vector3.new(1,1,1)*settings.size/1.8)
+--		local parts=region:Cast({(player.Character~=nil and player.Character),a,b})
+scan=not scan
+			
+if scan then
+				
+local region=Region3.new(l.p-(Vector3.new(1,1,1)*settings.size/2),l.p+(Vector3.new(1,1,1)*settings.size/2))
+local parts=workspace:FindPartsInRegion3WithIgnoreList(region,{(player.Character~=nil and player.Character),a,b})
+			
+for _,v in pairs(parts) do
+if v:FindFirstChild('Tagged')==nil then
+if v:GetMass()<=90 then
+							
+local a=Instance.new('Folder',v)
+a.Name='Tagged'
+game:GetService('Debris'):AddItem(a,.2)
+							
+v:BreakJoints()
+v.Anchored=false
+v.Velocity=(v.Position-l.p).unit*300
+							
+end--good mass
+end--tagged
+end--loop
+end--if scan
+end--if player.character.torso
+end--if player.character
+		
+Move(b,center)
+Move(b,l*CFrame.Angles(math.rad(math.sin(tick()*settings.speed/2)*2),0,0))
+		
+Move(a,center)
+Move(a,l*CFrame.Angles(0,math.rad(settings.speed),0))
+
+end)
+end
+
+local CMDS={}
+
+
+
+setmetatable(CMDS,{__index=function(s,i)
+if type(i)=='string' then
+	for ind,cmd in pairs(s) do
+		print(ind:lower(),i:lower())
+		if ind:lower()==i:lower() then return cmd end
+		for i2,aliase in pairs(cmd.Aliases) do
+			if aliase:lower()==i:lower() then 
+				return cmd
+			end
+		end
+	end
+end
+end,
+__newindex=function(s,i,v)
+local b=setmetatable(v,{__call=function(s2,...)print'fire in da hole's2.Action(...)end})
+rawset(s,i,b)
+end,
+})
+
+CMDS.Start={
+Action=function(args)
+	if not args.Points and not args.Size and not args.Reps then
+	if args.Speed then settings.speed=args.Speed;end
+	if not STARTED then Start()end
+	else
+	STARTED=false
+	game:GetService('RunService'):UnbindFromRenderStep('Ball')
+	rem=true
+	if BALL~=nil then for _,v in pairs(BALL) do pcall(function()v:remove()end)end;end
+	if args.Size then settings.size=args.Size;end
+	if args.Speed then settings.speed=args.Speed;end
+	if args.Points then settings.points=args.Points;end
+	if args.Reps then settings.reps=args.Reps;end
+	Spawn(function()wait()Start()end)
+	rem=false
+	end
+end,
+Aliases={'star','boot','s'},
+}
+
+
+local ARG_TABLE=setmetatable({
+['size%D*(%d+)']=	function(a)		return {'Size',tonumber(a)}end,
+['fire']=			function()		return {'Fire',true}end,
+['points%D*(%d+)']=	function(a)		return {'Points',tonumber(a)}end,
+['rep%D*(%d+)']=		function(a)		return {'Reps',tonumber(a)}end,
+['speed%D*(%d+)']=	function(a)		return {'Speed',tonumber(a)}end,
+},
+{__index=function(s,i)
+	for name,func in pairs(s) do
+		if i:lower():match(name)~=nil then
+			return func(i:lower():match(name))
+		end
+	end
+	return nil
+end
+})
+
+local function ParseArgs(s)
+	local Valid={}
+	for i,arg in pairs(s) do
+		local try=ARG_TABLE[arg]
+		if try ~= nil then
+			local ind,val=try[1],try[2]
+			print(type(val))
+			print(val)
+			Valid[tostring(ind)]=tonumber(val)
+			--print'boys we got one!!'
+		end
+	end
+	return Valid
+end
+
+player.Chatted:connect(function(c)
+	local c=c:lower()
+	local cmd,args=c:match('(.-)/*/(.*)')
+	local found=CMDS[cmd]
+	if found ~= nil then
+	local fargs={}
+	for arg in string.gmatch(args,'(.-/*)/')do
+		fargs[#fargs+1]=arg
+	end
+	local real_args=ParseArgs(fargs)
+	found(real_args)
+	end
+end)
+
+--[[
+local a='Bob/b/b' 
+local start=a:match('^([%w+/?]-)/')
+print(start)
+
+local a='Bob///b/b' 
+local start=a:match('(.-/*)/.*')
+print(start)
+
+local a='Bob/5///b/b' 
+local start,args=a:match('(.-/*)/(.*)')
+print(start,args)
+
+local a='Bob/5///b/b' 
+local start,args=a:match('(.-)/+/(.*)')
+print(start,args)
+
+local a='size-true/fall'
+for arg in string.gmatch(a,'(.-/*)') do print(arg) end
+
+local a='size-true/fall'
+for arg in string.gmatch(a,'(.-)/*/?) do print(arg) end
+
+
+--]]
+
