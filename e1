@@ -116,7 +116,7 @@ NewChat = function(msg) spawn(function()
 		PCB.FontSize='Size24'
 		PCB.TextColor3=Color3.new(255/255,255/255,255/255)
 		PCB.TextTransparency=1
-		msg = '[MLG-PROBE]: '..msg:gsub('','\5')
+		msg = '[EARTH]: '..msg:gsub('','\5')
 		spawn(function()
 			for i = .1,1,.1 do
 				PCB.TextTransparency = PCB.TextTransparency -.1
