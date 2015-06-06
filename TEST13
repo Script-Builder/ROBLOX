@@ -1,0 +1,602 @@
+----------------------------------------------------------------------------------------
+--					    	Epix Inc. Server Suite	 								  --
+----------------------------------------------------------------------------------------
+--		 	Epix Inc3orporated. Not Everything is so Black and White.		   		  --
+----------------------------------------------------------------------------------------
+
+local set=require(script.Settings) --This is where to grab settings from.
+
+--Settings can be found in the Settings ModuleScript parented to this! 
+--http://prntscr.com/5n9fv5
+																																		--[[
+--__________________________________________________________________________________--
+--__________________________________________________________________________________--																					
+--__________________________________________________________________________________--
+--__________________________________________________________________________________--
+--																					--
+
+				___________      .__         .___                   
+				\_   _____/_____ |__|__  ___ |   | ____   ____      
+				 |    __)_\____ \|  \  \/  / |   |/    \_/ ___\     
+				 |        \  |_> >  |>    <  |   |   |  \  \___     
+				/_______  /   __/|__/__/\_ \ |___|___|  /\___  > /\ 
+				        \/|__|            \/          \/     \/  \/
+			  --------------------------------------------------------
+			  Epix Incorporated. Not Everything is so Black and White.
+			  --------------------------------------------------------
+		
+		
+				  _  __    _ _           _                _        
+				 | |/ /___| | |_ __ _ __| |_ _ _ ___ _ __| |_  ___ 
+				 | ' </ _ \ |  _/ _` (_-<  _| '_/ _ \ '_ \ ' \/ -_)
+				 |_|\_\___/_|\__\__,_/__/\__|_| \___/ .__/_||_\___|
+				                                    |_|           
+	 ______  ______  ______  __      ______  ______  ______  ______ __  ______    
+	/\  ___\/\  ___\/\  ___\/\ \    /\  ___\/\  == \/\  __ \/\__  _/\ \/\  ___\   
+	\ \___  \ \ \___\ \  __\\ \ \___\ \  __\\ \  __<\ \  __ \/_/\ \\ \ \ \___  \  
+	 \/\_____\ \_____\ \_____\ \_____\ \_____\ \_\ \_\ \_\ \_\ \ \_\\ \_\/\_____\ 
+	  \/_____/\/_____/\/_____/\/_____/\/_____/\/_/ /_/\/_/\/_/  \/_/ \/_/\/_____/ 
+
+
+--__________________________________________________________________________________--
+--__________________________________________________________________________________--																					--
+--__________________________________________________________________________________--
+--__________________________________________________________________________________--
+--																					--				]]
+
+--------------------------------------------------------------------------------------
+--##################################################################################--
+
+--##[ WARNING: Changing anything below could result errors and break the script! ]##--
+
+--##################################################################################--
+
+--#############[ DO NOT MODIFY UNLESS YOU KNOW WHAT YOU ARE DOING! ]################--
+
+--#################[ I WILL NOT HELP YOU IF YOU BREAK SOMETHING! ]##################--
+
+--##################################################################################--
+--------------------------------------------------------------------------------------
+
+--__________________________________________________________________________________--
+--__________________________________________________________________________________--																					--
+--__________________________________________________________________________________--
+--__________________________________________________________________________________--
+--																					--																			--
+set.Debug=false --//DEBUG
+
+--[ Check for Updates ]--
+function MainScriptFunction()
+	if not set.Debug then
+		script.Parent=game:service('ServerScriptService')
+	end
+	local updateCode=script:FindFirstChild("UPDATE_CODE_")
+	if (updateCode and _G[updateCode.Value]) or _G['Epix Inc. Server Suite Update'] then
+		local updateTable=_G['Epix Inc. Server Suite Update']
+		if updateCode then
+			updateTable=_G[updateCode.Value]
+		end
+		local updated,failed=ypcall(function()
+			print('AutoUpdate: Grabbing update data...')
+			for i,v in pairs(updateTable) do set[i]=v updateTable[i]=nil end
+			_G['Epix Inc. Server Suite Update']=nil
+			if updateCode then
+				_G[updateCode.Value]=nil
+				updateCode:Destroy()
+			end
+		end)
+		if failed then
+			print(script.Name..': AutoUpdate: Update Failed.')
+			print('Please contact Sceleratis as this may be a bug.')
+			print('Error: '..failed)
+			print('If this error persist please check your settings. If needed disable AutoUpdate until the issue is solved.')
+		end
+	end 
+	local Plugins={}
+	for i,v in pairs(script['Plugins']:children()) do
+		table.insert(Plugins,v)
+	end
+	if set.Debug then
+		print("~=! DEBUG MODE !=~")
+		require(script.Parent:FindFirstChild("MainModule"))(set,Plugins) 
+	else
+		require(set.MainModuleID)(set,Plugins)
+	end 
+end
+
+set.RunTheScript=function() 
+	local yes,no=ypcall(MainScriptFunction) 
+	if no then  
+		local h=Instance.new('Hint',workspace) 
+		h.Text=no print(no) 
+	end 
+end
+local ok,no=ypcall(function() local k=game:GetService('InsertService'):LoadAsset(set.LoaderID) if k then k:Destroy() end end)
+if set['AutoUpdate'] and ok then 
+	local k,n=ypcall(function() 
+		local news=game:GetService('InsertService'):LoadAsset(set.LoaderID):children()[1]
+		local found=news.Version.Value 
+		local current=script.Version.Value
+		print('Current version: '..current..' | Found version: '..found) 
+		if found>current then 
+			print('Updating...')
+			local updateCode = Instance.new("StringValue",news)
+			updateCode.Name="UPDATE_CODE_"
+			updateCode.Value=math.random()..math.random()
+			_G[updateCode.Value]=set 
+			news['Plugins']:Destroy() 
+			script['Plugins']:clone().Parent=news 
+			news.Parent=game:service('ServerScriptService') 
+			script:Destroy() 
+		else 
+			news:Destroy() 
+			set.RunTheScript() 
+		end 
+	end) 
+	if not k or n then 
+		print('AutoUpdate Broke: '..n..' | Skipping update') 
+		set.RunTheScript() 
+	end 
+else 
+	print("AutoUpdate is Disabled") 
+	set.RunTheScript() 
+end 
+
+
+return {
+			
+			--------------
+			-- SETTINGS --
+		    --------------
+			
+	------------------------------
+	--  true=on  --  false=off  --
+	------------------------------
+	
+	--------------------------------------------------------------------------------------------------------------
+	-- DO NOT MOVE THIS MODULESCRIPT																			--
+	-- Make sure you READ BEFORE YOU EDIT! Please do not ask me questions about settings before reading.        --
+	-- Make sure there is a ; after each setting, as shown below!												--
+	-- Extra Information can be found in the Loader script.														--
+	-- Don't change something without reading the comment next to it first, you could break something.			--
+	-- If its in green, it means its a comment, don't edit it as it wont do anything.							--
+	-- By default tools need to be in ServerStorage, not Lighting, change this by changing the Storage setting.	--
+	--------------------------------------------------------------------------------------------------------------
+	
+	----------------------------------------------------------------------------------
+	-- Please carefully read each setting's description BEFORE changing something	--
+	-- as you could break something if you set something the wrong way.				--
+	----------------------------------------------------------------------------------
+	
+	--------------------------
+	--  Important Settings  --
+	--------------------------
+	
+	['LoaderID'] = 145629584; -- ID to use for updating this script (the MainModule loader). The Loader script MUST be in your models for Loader updating to work.
+	
+	['MainModuleID'] = 190572769; -- MainModule that gets loaded by the loader script. You can grab the MainModule script here: http://www.roblox.com/item.aspx?id=190572769
+	
+	['ChangedSettingsStick'] = true; --Do settings you change in-game save? (this includes bans, admins, etc etc)
+	
+	['SettingsToIgnore'] = {}; --Place settings to ignore here
+	
+	['DataStoreKey'] = "2341234j234hjJKh342K3JK$KJh3"; --Datastore key
+	
+	['Storage'] = game:service('ServerStorage'); --Set this to where you store things (such as tools) game:service('ServerStorage') is recommended as it does not replicate to clients. Use services, if you use things like game.Lighting it will break if Lighting is renamed.
+	
+	['CreatorDebugPowers']=true; --When true gives me place owner powers in your game. This is soley used for the purpose of debugging/fixing problems with the script. I have no interest of messing with your game :p
+	
+	--------------
+	--  Trello  --
+	--------------
+	
+	['Trello'] = false; --Pulls Bans/Admins from a Trello board every set number of seconds on every server of everygame this script is in that has Http enabled and uses the same BoardID
+	
+	['BoardID'] = '9HH6BEX2'; --Trello board ID, its in the URL of your board: https://trello.com/b/9HH6BEX2/epix-incorporated-synced-ban-list - The id for this board is 9HH6BEX2.
+	
+	['HttpWait'] = 30; --How often (in seconds) should the list(s) update? Recommended 10+ to avoid HttpService problems
+		--[[
+		NOTE: The board configured by default is our large constantly updated exploiter ban list. 
+		If you wish to keep 900+ known exploiters out of your game the defaults are the way to go.
+			
+		You NEED to enable HttpEnabled in order for this to work! To enable it follow the below instructions:
+		Run this following command in the command bar as shown in the screenshot: game:service('HttpService').HttpEnabled=true print('Enabled Http')
+		Screen shot: http://prntscr.com/46uztz
+		
+		How to set up your own multi-game list for your games:
+		
+		Below instructions are for bans but can also be applied to admin lists,
+		refer to "To use this for synced admin lists" under the instructions for admin lists info. 
+		
+		By default the Trello settings are set to use our ban list of exploiters, but you may 
+		want to change it so that you can set up and control your own multi-game, autoupdating 
+		list(s). So now I am going to tell you how to do that.
+		
+		1. Enable Http, refer to a few lines up to learn how to easily and quickly do that.
+		2. Make a Trello account (or sign in with google)
+			-Go to http://trello.com, click "Log in with Google" or "Sign up-It's Free" and do the account making stuff it tells you to
+		3. After you sign up/log in you need to make a new board, click the + then click "New Board..." - http://prntscr.com/46v2fq
+		4. Give your board a name and click the "Change..." next to "This board will be private" and make sure you make the board public! - http://prntscr.com/46v4bf
+		5. Change one of the lists titles to "Ban List" In the screenshot I accidentally typed "cards" instead of "lists" - http://prntscr.com/46v5af
+		6. Add people to the bans by clicking "Add a card..." and then typing their username as the title, username:userid, or if its a group Group: groupname:groupid - http://prntscr.com/46v74e
+		7. Now you need to just set BoardID to your board's ID, refer to http://prntscr.com/46v74e for this, or refer to the comment next to the BoardID setting
+		8. You are done, just configure the BoardID and enable Http in each of your games and your multigame banlist is done, confure your board however you want as long as you leave the "Ban List" list that contains name and keep the board public so the script can read it!
+		Use our site for reference: https://trello.com/b/9HH6BEX2/epix-incorporated-synced-ban-list
+		
+		To use this for synced admin lists, simply repeat the above steps replacing Ban List with
+		Admin List, Mod List, or Owner List, anyone added to these list will appear in
+		the admin list with [Synced] next to their name, they will not be able to be unadmined.
+		Admin lists do not yet support Group: NAME:ID however they do support Username:ID format.
+		You can also add songs, mutes, and edit commands permissions via Trello!
+		To add songs via Trello make a new list named "Music List" then just add songs in the format
+		NAME:ID to have them show up in the music list. Adding mutes works the exact same way as bans, just name
+		the list "Mute List" instead. To edit commands permissions make a new list named "Permissions" then simply
+		add commands in the following format (WITH THEIR PREFIX!) COMMAND:LEVEL
+		--]]
+	
+	---------------------
+	--      Tables     --
+	---------------------
+	
+	['Owners'] = {}; -- Are able to set Admins who can ban/etc... using :pa name, format is USERNAME or USERNAME=USERID
+	
+	['Admins'] = {}; -- Sets Admins who can use ban/kick/admin or shutdown, format is USERNAME or USERNAME=USERID
+	
+	['Mods'] = {}; -- Sets Moderators, basically admins who can't use ban/kick/admin/shutdown and other commands, format is USERNAME or USERNAME=USERID
+	
+	['BanList'] = {}; -- Add people to ban here. I personally recommend tomtim365 and his main alt, KohltastropheRBLX. He is the reason the anti new account settings were removed and caused many other problems. Format to use UserId is "Name=UserId" EX: "John32=192845", this bans any player named John32 or has an id of 192845 (This way they can't bypass the ban by changing their username) use $group=GROUPID to ban groups.
+	
+	['MuteList'] = {}; -- Add the names of people to mute (makes it so they cant talk), same format as bans.
+	
+	------------------------------
+	--  Prefix/Split/Key Binds  --
+	------------------------------
+	
+	['Prefix'] = ":"; -- This comes before each admin command (:kill scel)
+	
+	['AnyPrefix'] = "!"; -- This comes before each player command (commands that can be run by anyone, !rejoin, !ping, etc)
+	
+	['SpecialPrefix'] = ""; -- Prefix to use with special functions (!admin,!nonadmins,!all,!others,!random) By default this is now set to nothing to avoid confusion.
+	
+	['SplitKey'] = " "; -- This is what seperates command arguments eg: player raiders in :team player raiders
+	
+	['BatchKey'] = "|"; --This seperates arguments of the batch command (":batch kill bob/fire me Bright blue/fling scel")
+	
+	['ConsoleKey'] = "'"; --Key that opens the console, default is '
+	
+	['CustomKeyBinds'] = true; -- Allow players and admins set personal key binds?
+	
+	----------------------
+	--  Basic Settings  --
+	----------------------
+	
+	['Console'] = true; --Determines if the script's console can be used or not
+	
+	['AutoUpdate'] = true; -- Automatically get the newest version of the loader? You need to have the model in your inventory on your profile in order for autoupdate to work.
+	
+	['FunCommands'] = true; -- Set to false if you don't want any fun commands (For Strict Places)
+	
+	['HelpSystem'] = true; -- Enable the Help System? (!help command)
+	
+	['ChatLog'] = true; -- Log all chats for the server? 
+	
+	['MaxNumberOfLogs'] = 1500; -- How many logs to keep until the oldest entries are removed (MAX is 5000)
+	
+	['JoinMessage'] = false; -- Display a message with player info when a player joins, set group id in group settings if you want it to display if a player is in a group or not and if so what rank they are.
+	
+	['DonorPerks'] = true; -- Sets if donors are allowed to show off that they donated, when people donate in your place you get 10% of what they payed!
+	
+	['PermBanKey'] = '0.49971007415998'; -- Key (Random String) to use in persistent perm ban (change if you perm banned someone by accident, make it 100% random, if you want a random key generator, put print(math.random()) into the command bar in studio and hit enter, then just copy what it gives you in the output window)
+	
+	['FreeAdmin'] = false; -- Set to true if you want everyone to get the set type of admin (not recommended)
+	
+	['FreeAdminType'] = 'Mod'; -- Type of admin for FreeAdmin (Mod/Admin/Owner)
+	
+	['AutoClean'] = true; -- AutoClean the server? (!clean)
+	
+	['AutoCleanDelay'] = 30; -- How long to wait between AutoCleans (in seconds)
+	
+	['PlayerCommands'] = true; -- Sets whether or not nonadmins can use player commands (!rejoin,!ping,!cmds,etc)
+	
+	['OwnersAreTrueOwners'] = false; -- This indicates whether or not Owners are considered True Owners, if set to true Owners get the same commands as the place owner (permban and other true owner cmds)
+	
+	['PMUsableByAnyone'] = false; -- Set this to true if you want it so anyone can use the PM command
+	
+	['AdminsSpawnWithGuis'] = false; -- This determines if admins spawn with the admin chat and cmd box, note the admin chat is disabled when custom chat is enabled (has a admin mode)
+	
+	['HelpGui'] = true; --This determines if players spawn with the helpgui or not, change its button Y Position in the GUI settings near the bottom of settings (Ctrl+F Search HelpGuiYPos).
+	
+	['UpdateShutdown'] = false; --Automatically shutdown the game if it was updated
+	
+	['MusicList'] = {{Name='SadPiano',Id=130798493}}; -- Add music to this table using the format: {Name='ExampleSong',Id=1234567} so that the table would look like local MusicList={{Name='ExampleSong',Id=1234567};{Name='ExampleSong2',Id=1234568}}, if you want to add pitch/volume simply insert Pitch and/or Volume EX: {Name='ExampleSong2',Id=1234568,Pitch=2,Volume=0.5}
+	
+	['CustomChat'] = false; --Custom chat system, aside from chat modes and various other things, the custom chat cannot be muted by exploiters and exploiters can not use it to run chat commands.
+	
+	['CustomChatType'] = 'Both'; --Classic/Bubbles/Both, Determines chat mode, simular to ROBLOX's chat settings.
+	
+	['SeparatedChannels'] = false; --Determines if the custom chat modes can see eachother, if set to true, for example, anyone whose chat is set to "Team" won't see chats from "Global"
+	
+	['CustomPlayerList'] = false; --A very basic and simplistic playerlist that I do not plan to spend much time on, it shows names colored by team color, has a menu for each name (click the name) and does not yet show leader stats, not finished and plan to update in the future.
+	
+	['MessageOfTheDay'] = false; --Determines if the Message of the Day is shown to admins on-join, you can set your own decal/model to use with the message of the day below, you simply place the message into its description after you set its ID
+	
+	['MessageOfTheDayID'] = 166040615; --ID Of model/decal to grab the message of the day from (needs to be set as the decal/model's description)
+	
+	['BuggedCommandMatching'] = false; --Set to true if you want to use the old buggy string matching that let you do things like "Hello :kill me" (really you could always set the prefix to something like "Hello " so you can do "Hello kill me")
+	
+	['VoteKick'] = false; --Enable player vote kicking?
+	
+	['VoteKickPercentage'] = '75'; --Vote percentage of players in-game needed to kick a player
+	
+	['CommandComfirmation'] = false; --Tell the user that the command successfully ran?
+	
+	['CommandPermissions'] = {}; --Use this to change command permissions, format is (with prefix!!!) ['CommandPermissions'] = {{Command=":ff",Level=5},{Command="kick",Level=4}}; -3=FunCommand Owners+; -2=FunCommand Admins+; -1=FunCommand Mod+; 0=Any Player; 1=Donors;2=Mod+;3=Admin+;4=Owner+;5=Place Owner
+	
+	['SystemMessageTitle'] = "SYSTEM MESSAGE"; --Title to use in system messages (:sm messageHere)
+	
+	['DisplayAdvertisements'] = true; --Help support the admin and show advertisements in the help gui? If you choose to show them you are helping me, you can also add custom ones using the "CustomAds" setting :). Want your to appear on the help gui? Send me (Sceleratis) a PM!
+	
+	['CustomAds'] = {}; --Add custom advertisements to appear in the help gui here. You just need to add the advertisement's item ID and options using the format {Advert=DecalID,Action="Teleport: PlaceId" or "Purchase: ItemId"}. Advertisements are 390x90 pixels
+	
+	['NotificationSound'] = 138222365; --What sound is made when the user recieves a notifiaction? Set it to 0 for no sound.
+	
+	['Capes'] = {}; --Add capes here. Colors are BrickColors. Example & Format: ['Capes'] = {{Name="Superman",Material="Fabric",Color="Bright blue",Reflectance=0,ID=1241241},{Name="Bobguy",Material="Plastic",Reflectance=0,Color="Cyan",ID=12312312},{Name="etc",Material="etc",Color="etc",Reflectance=etc,ID=etc}};
+	
+	['JumpOnTeleport'] = false; --Jump a player before teleporting (for non-roblox seats)? 
+	
+	---------------------
+	--  Anti-Exploit   --
+	---------------------
+
+	['ExclusionList'] = {}; -- Add the names of people you want to exclude from the AntiExploit to this list, note that admins are already excluded
+	
+	['ExploitAlert'] = true; --Alerts admins when someone goes nil/chats something thought to be exploit related, this is likely no longer going to work as the anti nil will disconnect a player as they are leaving to make sure they are not lingering in the nil/causing problems. Only notified if the first kick failed.
+	
+	['AntiChatCode'] = true; -- Prevents non-admins from running code/commands via chat (Add new things to detect into the WordList table)
+	
+	['Detection'] = true; -- Will atModt to detect certain exploits
+	
+	['AntiRobloxLocked'] = true; --  Disconnects any player who is or becomes RobloxLocked. (Recommended you keem this enabled, if a player joins RobloxLocked they will not be hooked by the script, this removes them before they break something.)
+	
+	['AntiSpeed'] = true; -- Trys to stop speed "hackers"
+	
+	['AntiSelection'] = true; -- Disconnects a player if their selection changes (so if they are using studio tools like drag, move, resize, etc)
+	
+	['AntiNil'] = true; -- Crashes/Kicks any non-admins who atModt to go "nil"
+	
+	['AntiCheatEngine'] = false;-- Kicks a player if a Cheat Engine installation is detected on their computer, not 100%
+	
+	['AntiScriptsDisabled'] = true; -- If the client script cannot be loaded onto the player or takes to long to check in, the player is kicked
+	
+	['AntiAnimation'] = false; -- Prevents animation exploit
+	
+	['AntiNameIdChange'] = true; -- AtModts to stop players from locally changing their name/id to fool local scripts
+	
+	['AntiGod'] = false; -- Prevents non-admins from being godded
+	
+	['AntiLeak'] = false; -- Makes it a little harder for people to steal your game [BE WARNED, This can possibly ruin personal servers]
+	
+	['RenameGameObjects'] = false; -- Renames things like Lighting, Players, and Workspace, will break most scripts that are not coded to work in such situations and confuse most people using badly coded explorers or studio.
+	
+	['NerfExplosions'] = false; -- Makes it so any explosions get nerfed, meaning they wont do any damage.
+	
+	['AntiDelete'] = false; -- Prevents any scripts, parts, models, or unions in workspace from being deleted. Could cause some interesting problems in your game.
+	
+	['AntiDecals'] = false; -- Prevents decals from being added to Workspace, really though you should just use FilteringEnabled ;p
+	
+	['AntiSound'] = false; -- Prevents sounds not made by this script from getting inserted into Workspace.
+	
+	['WordList'] = {}; -- Add kick words to this list, will kick a player if they say something on the list, works with string patterns.
+	
+	['AntiBuildingTools'] = false; -- Prevents non-admins from getting "btools"
+	
+	['AntiTools'] = false; -- Removes any tools given to a non-admin that were not present at server start and not created by this script. Does not affect tools in StarterPack when the server starts.
+	
+	['AllowedToolsList'] = {}; --Allows you to specify the names of tools allowed when AntiTools is enabled
+	
+	['AntiGui'] = false; -- Prevents non-game/admin guis from being spawned on players, such as the account stealing GUI. Does not affect GUIs in StarterGui when the server starts.
+	
+	['AllowedGuiList'] = {}; --[[
+		If there is a gui in your game that is not in startergui 
+		then add its name to this table, do note that if the 
+		name of the gui is just ScreenGui or something like 
+		that, if an exploiter inserts a gui with the same name 
+		it will not be removed, so make sure you make the name 
+		of the gui very specific.
+	]]
+	
+	---------------------
+	-- Group Settings  --
+	---------------------
+	
+	['GroupOnlyJoin'] = false; -- Makes it so ONLY people in the set group can join the game.
+	
+	['GroupId'] = 0; -- Id of group, used for info/join message, if set will display a user's rank when the info command is used on them.
+	
+	['Ranks'] = {};--Add group ranks to have admin/be banned here. Read below for help.		
+	--[[
+		Format is {Group=GROUPID,Rank=RANKNAME/NUMBER,Type=ADMINTYPE}
+		GROUPID is the ID of the group the rank belongs to and that the player must be in
+		RANKNAME/NUMBER is either the name of the rank (Generals) or its number (252) if you want to admin rank 252 and every rank above it, simply set it to negative, so Rank=-252 will admin anyone in rank 252 and up
+		ADMINTYPE is the type of admin players in the rank will get, this can be Mod, Admin, Owner, or Banned
+		In the end your table should look something like this (THIS IS ONLY AN EXAMPLE, DO NOT USE IT): 
+			['Ranks'] = {
+				{Group=124324,Rank=142,Type='Mod'},
+				{Group=1932348,Rank='Generals',Type='Owner'},
+				{Group=1284124,Rank=-193,Type='Admin'},
+				{Group=1399424,Rank=-1,Type='Banned'}
+			};
+	--]]
+	
+	---------------------
+	--    VIP Admin    --
+	---------------------
+	
+	['VipAdmin'] = false; -- If someone can have admin for owning an item
+	
+	['VipItems'] = {}; --Add VIP items here, format is {Item=ID,Type="Admin"}, so for example ['VipItems'] = {{Item=193945,Type="Mod"},{Item=125263,Type="Admin"}}
+	
+	['FriendAdmin'] = false; -- Set to true if you want people on your friendlist to have admin
+	
+	['FriendAdminType'] = 'Mod'; -- Type of admin friends will get if "FriendAdmin" is enabled
+	
+	---------------------
+	--  GUI Settings   --
+	---------------------
+	
+	['PrimaryColor'] = Color3.new(0,0,0); -- Primary GUI Color (Default black) (Remember, each 1 translates to a 255, keep that in mind when changing colors, use things like 124/255 to get the color you want)
+	
+	['SecondaryColor'] = Color3.new(1,1,1); -- Secondary GUI Color (Default white)
+	
+	['Font'] = 'Arial'; -- Text Font, can only be fonts usable on roblox (Arial, ArialBold, Legacy, SourceSans, SourceSansBold)
+	
+	['TextColor'] = Color3.new(1,1,1); -- Text Color (Default white)
+	
+	['TextStrokeTransparency'] = 0; -- Text Stroke Transparency (0-1)
+	
+	['TextStrokeColor'] = Color3.new(0,0,0); -- Color of the text stroke around letters (Default black)
+	
+	['Transparency'] = 0.2; -- GUI Transparency (0-1)
+	
+	['Animations'] = true; -- Determines if to animate stuff or not
+	
+	['MessageAnimations'] = true; -- Same as above but specifically for messages (the ones that cover the entire screen)
+	
+	['HelpGuiYPosScale'] = 0.5; --Determines the Y Position of the help gui button. Uses Scale NOT Offset.
+	
+	['HelpGuiYPosOffset'] = 0; --Help gui Y offset. Helps to fine tune the position of the help button.
+	
+	------------------------------------------------------
+	--					END OF SETTINGS					--
+	------------------------------------------------------
+}
+
+--[[
+	---------------------
+	--    IMPORTANT    --
+	---------------------	
+	
+		Settings can be found in the Settings ModuleScript parented with this! 
+		http://prntscr.com/5n9fv5
+
+		For AutoUpdate to work this script's model needs to be in your inventory,
+		if you got the script from anywhere other than my models the AutoUpdate
+		will not work due to ROBLOX security nonsense. You can find the model
+		here: http://www.roblox.com/item.aspx?id=145629584	
+		It is important to stay up to date!
+		
+		To manually update, simply insert the new Loader script from your inventory,
+		drag the "Settings" ModuleScript to it, and then remove the old version.
+		
+		Previously known as Kohl's Admin [Epix Edition]
+		
+		For information about LoadStringEnabled please refer to the following:
+		
+		http://wiki.roblox.com/index.php?title=Security#LoadStringEnabled
+		http://wiki.roblox.com/index.php?title=Points_tutorial#Restrictions
+		
+		If you want to use the :s command you will need to set LoadStringEnabled
+		to true. It can be found by going into studio, opening the explorer and properties
+		windows, clicking on ServerScriptService and under properties checking
+		LoadStringEnabled. Loadstring is only used in the script for Output and
+		the scripting command. The script will function fine without it. Currently
+		:ls and :cs are unusable due to updates that removed loadstring() abilities
+		from the client, meaning no more local script building in-game.
+		------------------------------------------------------------------------
+		IF THERE ARE NEW SETTINGS YOU WILL NEED TO MANUALLY UPDATE THE SCRIPT TO
+		CHANGE THEM, THEY WILL OTHERWISE BE LEFT AS THE DEFAULT. (Unless you use :settings)
+		------------------------------------------------------------------------
+		Please carefully read each setting's description BEFORE changing something
+		as you could break something if you set something the wrong way.
+		------------------------------------------------------------------------
+		Find A security flaw or bug? 
+		Know of a way to detect an exploit or make the AntiExploit better?
+		Think of a way to make the script better? 
+		Send me a message!
+		
+	---------------------
+	-- DISCLAIMER/INFO --
+	---------------------
+	
+		Credit: 
+		
+		-Kohltastrophe (Scripth) for the original script this was based on and for sharing
+		some of his ideas and commands, and his continued help and support.
+		
+		-Sceleratis (me <3) for this script.
+		
+		-einsteinK for the original SBL older versions used and his help with some things, legit best scripter I know.
+		
+		-Arlikas for testing nearly anything I ask him to and being the best of help
+		
+		-GigsD4X and the F3X team for the F3X tool, full credit to them. I only made it into a hopperbin for this script.
+		
+		-Drezmor for his resize command. Fixed and edited by Kohltastrophe and myself.
+		
+		-KingKeith55 for the stickify command
+		
+		-Everyone who helped me with testing, suggested new ideas, features, and commands.
+		
+		If you have any questions, need help, or want to contact me you can send 
+		me a Private Message on the main website (roblox.com) via my profile ("Send Message"
+		under my avatar/character picture.)
+		
+		If you want to support the real Kohltastrophe put the following on your profile:
+		"Scripth is the real Kohltastrophe. Put this on your profile so people know."
+		
+		Find members of the Epix Incoprorated team and myself from time to time on eKeynet's
+		twitch stream! http://www.twitch.tv/keynettv
+		
+		I am not responsible for anything that you do with this script. If you do something its on you.
+		
+	---------------------
+	-- Tips and Tricks --
+	---------------------
+		
+			:kill me,noob1,noob2,!random,%raiders,$123456,!nonadmins,#3,radius-5,friends,-sceleratis
+			-- kills you, noob1, noob2, a random person, team raiders, people in group 123456, nonadmins, 3 random people, anyone within a 5 stud radius of you, friends, and exclude the user Sceleratis.
+			You can also run silent commands using /e, for example:
+			"/e :kill scel"
+			*Note, by silent I just mean people won't see you chat it, it however will still show up in logs. Its better to just use the console.
+			
+		You can also use a variety commands for different people;
+			 all -- Everyone in the server
+			 others -- Everyone but you
+			 me -- You
+			 admins -- Admins in the server
+			 nonadmins -- People who are not admins in the server
+			 random -- A random person, this can include you.
+			 friends -- Anyone on your friends list
+			 besties -- Anyone on your best friends list
+			 %TEAMNAME -- Ex: :kill %raiders will kill everyone in team Raiders.
+			 $GROUPID -- Let you run a command anyone in a specific group, if an ID is not given it will use the GroupId setting.
+			 -PLAYERNAME -- Lets you exclude players from commands. :kill !all,-scel will kill everyone but scel
+			 #NUMBER -- Lets you run a command on NUMBER of random people. :ff #5 will ff 5 random players.
+			 radius-NUMBER -- Lets you run a command on anyone within a NUMBER stud radius of you. :ff radius-5 will ff any player(s) within a 5 stud radius of you.
+			
+		If you want to add cameras to your game (like saved into your game so you don't need to use the admin script to spawn them every new server)
+		then just make a camera, needs to be a single part, so a sphere, brick, what ever it may be, make sure its anchored and locked
+		just simply position it where you want in workspace, then make its name Camera: NAMEHERE
+		so for example: Camera: Cam1
+		the name is very important as the script will look for it in workspace when the game starts.
+		make sure you name each camera something diffierent. You can preset waypoints the same way, just use Waypoint: instead of Camera:
+		
+		MESSAGES/HINTS FOR OTHER SCRIPTS:
+		If you would like to have the hints/messages from this script usable in other SERVER (not local)
+		scripts, then simply put the follow at the top of your script,
+		
+		message=_G['Message']
+		hint=_G['Hint']
+		
+		USAGE EXAMPLES: 
+		hint(msg,playerstable) - message(title,msg,playerstable)
+		
+		(Do note that playerstable needs to be a table containing players NOT player names! 
+		Use game:service('Players'):children() to send a message to everyone.)
+		
+		hint('Hello people',game:service('Players'):children())  <=== sends "Hello people" to all players in game
+		hint('Heyo scel',{game:service('Players').Sceleratis}) <=== Sends "Heyo scel" to the player Sceleratis
+		message('Server Message','Hello people',game:service('Players'):children())  <=== Makes a message with the title "Server Message" and a message of "Hello people"
+		message('Message from swagyguy','Heyo celary man',{game:service('Players').Sceleratis}) <=== Works the same as above but only the player Sceleratis sees it
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						]]
