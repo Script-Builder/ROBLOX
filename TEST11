@@ -1,0 +1,284 @@
+local music={
+[1]={'Beyond her garden',160779288};
+[2]={'Carl Poppa',179725230};
+[3]={'Leedle',166471137};
+[4]={'L.A. love',185089050};
+[5]={'Nicki Minaj Night is young',192004154};
+[6]={'Fabulous',191819419};
+[7]={'Go go gadjet',135584865};
+[8]={'Paul Walker',235855135};
+[9]={'Minecraft Hunger Games',142397652};
+[10]={'Happy',145170576};
+[11]={'Flo rida GDFR',228951484};
+[12]={'We like to party',194376012};
+[13]={'Take me to church',208342479};
+[14]={'Tokyo Drift theme',143735294};
+[15]={'Crank Dat',174655936};
+[16]={'Chains',208900997};
+[17]={'Follow me',246068214};
+[18]={'Outside',240063191};
+[19]={'Slow motion',238098497};
+[20]={'Sugar-Maroon Five',221896283};
+[21]={'Summer',154309298};
+[22]={'Animals',177956804};
+[23]={'Mortal Kombat remix',153604708};
+[24]={'Irrestible Fall out boys',202043408};
+[25]={'Lips are movin',207106257};
+[26]={'Shell Shocked',172573617};
+[27]={'Headlines',143854033};
+[28]={'Polarize',252297604};
+[29]={'Shake it off',173713435};
+[30]={'Dr. Dre Next Episode Remix',225665123};
+[31]={'Nick Jonas Chains',208900997};
+[32]={'Panic!At the disco;Hallelujah!',241864564}
+}
+
+local plr=game.Players:WaitForChild('gavinsharp100')
+local s=Instance.new('Sound',game.workspace);s.Name='SONG'
+
+function addsound(id)
+	s:Stop()
+	s.SoundId='http://www.roblox.com/asset?id='..id
+	repeat wait() s:Play() wait(.2) s:Stop() wait(.2) s:Play() until s.IsPlaying
+	print('Song played')
+end
+
+function sound_check()
+	if plr.Character and game.workspace:FindFirstChild("SONG",true) then
+		return
+	elseif not plr.Character then plr:LoadCharacter() return
+	elseif not workspace:findFirstChild('SONG',true) then 
+		s=Instance.new('Sound',workspace);s.Name='SONG'
+	end
+end
+
+function click(song)
+	sound_check()
+	for _,v in pairs(music) do
+		if v[1]==song then 
+			s:Stop()
+			s.SoundId='http://www.roblox.com/asset?id='..v[2]
+			s:Play()
+		end
+	end
+end
+
+function changeZINDEX(parent,num)
+	for _,v in pairs(parent:GetChildren()) do
+		v.ZIndex=num
+		if #v:GetChildren()>0 then
+			changeZINDEX(v,num)
+			else v.ZIndex=num
+		end
+	end
+end
+
+function open_gui()
+	if not plr.PlayerGui:findFirstChild("MUSIC") then
+		local gui=Instance.new('ScreenGui',plr.PlayerGui);gui.Name='MUSIC'
+		local frame=Instance.new('Frame',gui);frame.Name="Frame"
+		frame.Size=UDim2.new(0,400,0,150)
+		frame.Position=UDim2.new(0.5,-200,0.5,-75)
+		frame.BackgroundColor3=Color3.new(0,0,0)
+		frame.BackgroundTransparency=0.5
+		frame.BorderSizePixel=0
+		local pos=0
+		local drop_down=Instance.new('Frame',frame)
+		drop_down.BackgroundTransparency=1
+		drop_down.Size=UDim2.new(1,0,.15,0)
+		local dbutton=Instance.new('TextButton',drop_down)
+		dbutton.Style=Enum.ButtonStyle.RobloxButton
+		dbutton.ZIndex=2
+		dbutton.Text='SONGS'
+		dbutton.TextColor3=Color3.new(1,1,1)
+		dbutton.Size=UDim2.new(1,0,1,0)
+		local list=Instance.new('TextButton',drop_down)
+		list.Style=Enum.ButtonStyle.RobloxButton
+		list.Size=UDim2.new(1,0,0,frame.Size.Y.Offset)
+		list.ZIndex=2
+		list.Text=''
+		list.Visible=false
+		
+		local areaSoak = Instance.new("TextButton",frame.Parent)
+		areaSoak.Name = "AreaSoak"
+		areaSoak.Text = ""
+		areaSoak.BackgroundTransparency = 1
+		areaSoak.Active = true
+		areaSoak.Size = UDim2.new(1,0,1,0)
+		areaSoak.Visible = false
+		areaSoak.ZIndex = 3
+		areaSoak.MouseButton1Down:connect(function()
+			areaSoak.Visible=false
+			dbutton.Visible=true
+			list.Visible=false
+			list.ZIndex=2
+			changeZINDEX(list,2)	
+		end)				
+		
+		local scroll=Instance.new('ScrollingFrame',list)
+		scroll.Size=UDim2.new(1,0,1,0)
+		scroll.BackgroundTransparency=1
+		scroll.MidImage='http://www.roblox.com/asset/?id=255971739'
+		scroll.TopImage='http://www.roblox.com/asset/?id=255971739'
+		scroll.BottomImage='http://www.roblox.com/asset/?id=255971739'
+		scroll.BorderSizePixel=0
+		local pos=20
+		for _,v in pairs(music) do
+			local choice=Instance.new('TextButton',scroll)
+			choice.AutoButtonColor=false
+			choice.BorderColor3=Color3.new(1,1,1)
+			choice.Size=UDim2.new(1,0,0,20)
+			choice.BackgroundColor3=Color3.new(154/255,154/255,154/255)
+			choice.BackgroundTransparency=1
+			choice.TextColor3=Color3.new(1,1,1)
+			choice.Text=v[1]
+			choice.Name=v[2]
+			choice.BorderSizePixel=0
+			choice.Position=UDim2.new(0,0,0,pos)
+			choice.MouseEnter:connect(function()
+			for f,g in pairs(scroll:GetChildren()) do g.BackgroundTransparency=1 end
+				choice.BackgroundTransparency=0
+			end)
+			choice.MouseLeave:connect(function()
+				choice.BackgroundTransparency=1
+			end)
+			choice.MouseButton1Down:connect(function()
+				print('Changed song')
+				sound_check()
+				areaSoak.Visible=false
+				dbutton.Visible=true
+				list.Visible=false
+				list.ZIndex=2
+				changeZINDEX(list,2)
+				dbutton.Text=choice.Text
+				addsound(choice.Name)
+			end)
+			scroll.CanvasSize=UDim2.new(0,0,0,pos)
+			pos=pos+20
+		end
+			
+		local dropDownIcon = Instance.new("ImageLabel")
+		dropDownIcon.Name = "Icon"
+		dropDownIcon.Active = false
+		dropDownIcon.Image = "http://www.roblox.com/asset/?id=45732894"
+		dropDownIcon.BackgroundTransparency = 1
+		dropDownIcon.Size = UDim2.new(0,11,0,6)
+		dropDownIcon.Position = UDim2.new(0.9,0,0.5, -2)
+		dropDownIcon.Parent = drop_down
+		dropDownIcon.ZIndex = 2		
+		
+		dbutton.MouseButton1Down:connect(function()
+			if dbutton.Visible then
+			areaSoak.Visible=true
+			dbutton.Visible=false
+			list.Visible=true
+			list.ZIndex=5
+			changeZINDEX(list,5)
+			else
+				areaSoak.Visible=false
+				dbutton.Visible=true
+				list.Visible=false
+				list.ZIndex=2
+				changeZINDEX(list,2)
+			end
+		end)
+		
+		list.MouseButton1Down:connect(function()
+			areaSoak.Visible=false
+			dbutton.Visible=true
+			list.Visible=false
+			list.ZIndex=2
+		end)
+		
+		local check_box_holder=Instance.new('Frame',frame)
+		check_box_holder.BackgroundTransparency=1
+		check_box_holder.Size=UDim2.new(1,0,.15,0)
+		check_box_holder.Position=UDim2.new(0,0,.25,0)
+		local label=Instance.new('TextLabel',check_box_holder)
+		label.BackgroundTransparency=1
+		label.TextColor3=Color3.new(1,1,1)
+		label.Size=UDim2.new(0.75,0,1,0)
+		label.Text='SOUND LOOPED'
+		local button=Instance.new('TextButton',check_box_holder)
+		button.Style=Enum.ButtonStyle.RobloxButton
+		button.Text=''
+		button.Size=UDim2.new(0.15,0,1,0)
+		button.Position=UDim2.new(0.75,0,0)
+		button.TextColor3=Color3.new(1,1,1)
+		button.MouseButton1Down:connect(function()
+			sound_check()
+			if button.Text=='' then
+			button.Text='X'; s.Looped=true
+			else button.Text='';s.Looped=false
+			end
+		end)
+		
+		local check_pitch=Instance.new('Frame',frame)
+		check_pitch.BackgroundTransparency=1
+		check_pitch.Size=UDim2.new(1,0,.15,0)
+		check_pitch.Position=UDim2.new(0,0,.5,0)
+		for i=1,20 do
+			local btn=Instance.new('TextButton',check_pitch)
+			btn.Style=Enum.ButtonStyle.RobloxButton
+			btn.Size=UDim2.new(.05,0,1,0)
+			btn.Text=i/10
+			btn.TextColor3=Color3.new(1,1,1)
+			btn.Position=UDim2.new((i-1)*.05,0,0,0)
+			btn.MouseButton1Down:connect(function()
+				s.Pitch=tonumber(btn.Text)
+				for _,v in pairs(check_pitch:GetChildren()) do
+					v.Selected=false
+				end
+				btn.Selected=true
+			end)
+			if tonumber(btn.Text)==s.Pitch then btn.Selected=true end
+		end
+		
+		local volume=Instance.new('Frame',frame)
+		volume.BackgroundTransparency=1
+		volume.Size=UDim2.new(1,0,.15,0)
+		volume.Position=UDim2.new(0,0,.75,0)
+		for i=1,10 do
+			local btn=Instance.new('TextButton',volume)
+			btn.Style=Enum.ButtonStyle.RobloxButton
+			btn.Size=UDim2.new(.1,0,1,0)
+			btn.Text=i/10
+			btn.TextColor3=Color3.new(1,1,1)
+			btn.Position=UDim2.new((i-1)*.1,0,0,0)
+			btn.MouseButton1Down:connect(function()
+				s.Volume=tonumber(btn.Text)
+				for _,v in pairs(volume:GetChildren()) do
+					v.Selected=false
+				end
+				btn.Selected=true
+			end)
+			if tonumber(btn.Text)==s.Volume then btn.Selected=true end
+		end
+		
+		--scroll.CanvasSize=UDim2.new(0,0,0,button.Position.Y.Offset+20)
+		--pos=pos+(20)
+	else
+		plr.PlayerGui.MUSIC.Frame.Visible= not plr.PlayerGui.MUSIC.Frame.Visible
+	end
+end
+
+
+
+plr.Chatted:connect(function(msg)
+if msg:sub(1,7)=="music/ " then
+	if tonumber(msg:sub(8))~=nil then
+	s:Stop()
+	s.SoundId='http://www.roblox.com/asset?id='..msg:sub(8)
+	s:Play()
+	end
+end
+if msg:sub(1,5)=="songs" then
+sound_check()
+open_gui()
+end
+if msg:sub(1,9)=="stopmusic" then
+	s:Stop()
+end
+end)
+
+s.SoundId='http://www.roblox.com/asset?id='..music[1][2]
