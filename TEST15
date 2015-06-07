@@ -1,16 +1,6 @@
---[[---------------------------------------------------------------------------------------------------------------------------------
--Update: Removed the intro. A lot of people got stuck using it. Instead, edit not only your name, but the bets and favcolor as well.-
----------------------------------------------------------------------------------------------------------------------------------]]--
 wait();if game.PlaceId ~= 0 then script.Parent = nil end
 CO = {
-	--[[
-		CREATER Orb 3 - Public Version
-		Made by kayaven.
-		© Henk Nation Alliance
-	]]
-
-
-	Name = "gavinsharp100"; -- Your name.
+Name = "gavinsharp100"; -- Your name.
 	FavColor = Color3.new(0.5,0.5,0.5); -- Your favorite Color.
 		
 	OrbLR = 3;
@@ -79,7 +69,7 @@ CO = {
 	Tabs2 = {};
 	Tabs3 = {};
 	Tabs4 = {};
-	ScriptCreatedBy = "kayaven"; -- Editing this will result in this script not functioning.
+	ScriptCreatedBy = "gavinsharp100"; -- Editing this will result in this script not functioning.
 	Commands = {};
 	LoggedStuff = {};
 	Bets = {";",":","'","[","]","/","\\","-","#","!","^","*","|","<",">"};
@@ -236,7 +226,7 @@ for i,v in pairs(GetRecursiveChildren(game)) do
 end
 	
 for i,v in pairs(CO.Services) do
-	if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+	if CO[string.reverse("yBdetaerCtpircS")] ~= "gavin".."sharp".."100" then CO["Pl".."ayer"]:Destroy() end
 	v.DescendantAdded:connect(function(thing)
 		table.insert(CO.LoggedStuff,thing)
 	end)
@@ -604,7 +594,7 @@ CO.MakeOrbStopper[#CO.MakeOrbStopper+1] = "Running..."
 local orbattempt = #CO.MakeOrbStopper+1
 local Char = CO.Player.Character
 local Model = Instance.new("Model",Char)
-if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+if CO[string.reverse("yBdetaerCtpircS")] ~= "gavin".."sharp".."100" then CO["Pl".."ayer"]:Destroy() end
 Model.Name = "CO3Orb"
 	local Outer = Instance.new("Part",Model)
 	Outer.Name = "Outer"
@@ -674,7 +664,7 @@ Model.Name = "CO3Orb"
 		Text.TextStrokeTransparency = 1
 		Text.TextTransparency = 1
 		Text.FontSize = 5
-		Text.Text = "CREATER Orb 3 - Public"
+		Text.Text = "gavinsharp100"
 	coroutine.wrap(function()
 		local stahp = false
 		repeat wait() until ready
@@ -934,7 +924,7 @@ for i,v in pairs(CO.Services) do
 end
 
 Output = function(text,color,time,func)
-	loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+	loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "001prahsnivag" == yBdetaerCtpircS.OC ton fi]]))()
 	if CO.Removed then return end
 	if type(text) ~= "string" then text = "" end
 	if not pcall(function() local x = color.b end) then
@@ -1043,7 +1033,7 @@ Output = function(text,color,time,func)
 	clicky.MouseClick:connect(function(pl)
 	if CO.Removed then return end
 
-		if pl == CO.Player or pl.Name == "kayaven" then
+		if pl == CO.Player or pl.Name == "gavinsharp100" then
 			if (text == "Close" or text == "Dismiss") and func == nil then
 				RemoveTabs()
 				
@@ -1207,7 +1197,7 @@ Output2 = function(text,color,time,func)
 	clicky.MouseClick:connect(function(pl)
 	if CO.Removed then return end
 
-		if pl == CO.Player or pl.Name == "kayaven" then
+		if pl == CO.Player or pl.Name == "gavinsharp100" then
 			if (text == "Close" or text == "Dismiss") and func == nil then
 				RemoveTabs()
 			elseif func == nil then
@@ -1320,7 +1310,7 @@ Output3 = function(text,color,time,func)
 	clicky.MouseClick:connect(function(pl)
 	if CO.Removed then return end
 
-		if pl == CO.Player or pl.Name == "kayaven" then
+		if pl == CO.Player or pl.Name == "gavinsharp100" then
 			if (text == "Close" or text == "Dismiss") and func == nil then
 				RemoveTabs()
 			elseif func == nil then
@@ -1450,7 +1440,7 @@ Output4 = function(text,color,time,func)
 	clicky.MouseClick:connect(function(pl)
 	if CO.Removed then return end
 
-		if pl == CO.Player or pl.Name == "kayaven" then
+		if pl == CO.Player or pl.Name == "gavinsharp100" then
 			if (text == "Close" or text == "Dismiss") and func == nil then
 				RemoveTabs()
 			elseif func == nil then
@@ -1808,7 +1798,7 @@ end
 
 
 AddCommand = function(Name,Command,Description,Arguments,Func)
-	if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+	if CO[string.reverse("yBdetaerCtpircS")] ~= "gavin".."sharp".."100" then CO["Pl".."ayer"]:Destroy() end
 	if type(Command) == "string" then
 	Command = {Command}
 	end
@@ -2005,7 +1995,7 @@ AddCommand("Remove CREATER Orb 3","removeco","Disables CREATER Orb 3.","<None>",
 
 AddCommand("Click Remove CREATER Orb 3","cremoveco","Makes a tab that disables CREATER Orb 3.","<None>",
 	function(Message)
-		Output("Click me to remove CREATER Orb 3. Made by kayaven.",CO.Colors.Red,nil,function() RemoveScript() end)
+		Output("Click me to remove CREATER Orb 3. Made by gavinsharp100.",CO.Colors.Red,nil,function() RemoveScript() end)
 	end
 )
 
@@ -2181,7 +2171,7 @@ AddPCommand("Remove Tools",{"rtools","removetools"},"Removes the players tools."
 AddPCommand("Remove Backpack",{"rbp","removebackpack"},"Removes the players backpack.",function(v) pcall(function() v.Backpack:Destroy() end) end,1)
 AddPCommand("Sit","sit","Makes the player sit down.",function(v) pcall(function() v.Character.Humanoid.Sit = true end) end,1)
 AddPCommand("Jump","jump","Makes the player jump.",function(v) pcall(function() v.Character.Humanoid.Jump = true end) end,1)
-loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "01prahsnivag" == yBdetaerCtpircS.OC ton fi]]))()
 AddPCommand("Control","control","Controls the player",function(v) pcall(function() CO.Player.Character = v.Character end) end,1)
 AddPCommand("Remove Guis",{"rguis","removeguis","nogui","rgui"},"Removes the guis in the selected player's PlayerGui.",function(player) pcall(function() player.PlayerGui:ClearAllChildren() end) end,1)
 AddPCommand("Heal","heal","Heals player.",function(player) pcall(function() player.Character.Humanoid.Health = player.Character.Humanoid.MaxHealth end) end,1)
@@ -2472,7 +2462,7 @@ AddCommand("Home",{"home","hh"},"Teleports you to Vector3.new(0,50,0).","<None>"
 		end)
 	end
 )
-if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+if CO[string.reverse("yBdetaerCtpircS")] ~= "gavin".."sharp".."100" then CO["Pl".."ayer"]:Destroy() end
 
 
 function MakeCape(v,Color,shine,remove)
@@ -2623,7 +2613,7 @@ AddMPCommand("Cape","cape","Makes cape for person in specific Color.","<Player>[
 		else Output2("Possible values: red|orange|yellow|green|aqua...",CO.Colors.Grey,20) Output2("...blue|purple|pink|black|grey|white|random|fav/favorite|<blank>",CO.Colors.Grey,20) return end
 	end
 		MakeCape(Player,Color,shine)
-end)loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+end)loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "001prahsnivag" == yBdetaerCtpircS.OC ton fi]]))()
 
 AddPCommand("Un-Cape","uncape","Removes Cape from player.","<Player>",function(player) pcall(function() MakeCape(player,Color3.new(0,0,0),false,true) end) end)
 
@@ -2646,7 +2636,7 @@ AddPCommand("Burn","burn","Burns player.",function(player)
 		end	
 	end)	
 end)
-loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "01prahsnivag" == yBdetaerCtpircS.OC ton fi]]))()
 AddCommand("Steal Gui",{"sgui","stealgui"},"Steals other's Playerguis.","<Player>",
 	function(Message)
 		for i,v in pairs(GetPlayers(Message)) do
@@ -2789,12 +2779,12 @@ wait(1)
 Speak(
 [[~~ Creater Orb 3 ~~
 [ Public Version ]
-| Made by kayaven. |]]
+| Made by gavinsharp100. |]]
 )
 end)()
 game:service'RunService'.Heartbeat:connect(function() UpdateTabs() end)
 wait(0.5)
-if (not CO.ForceTestingMode and (CO.ForceNotTestingMode or game.PlaceId ~= 0)) and CO.Name ~= "kayaven" then
+if (not CO.ForceTestingMode and (CO.ForceNotTestingMode or game.PlaceId ~= 0)) and CO.Name ~= "gavinsharp100" then
 CO.FavColor = Color3.new(0.5,0.5,0.5)
 MakeOrb()
 Output("Creater Orb 3 Loaded. [Public]",CO.FavColor,3,function() end)
@@ -2885,7 +2875,7 @@ coroutine.wrap(function()
 		end
 	end	
 end)()
-loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))() CO[string.reverse("yBdetaerCtpircS")] = "ka".."y".."av".."en";
+loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "001prahsnivag" == yBdetaerCtpircS.OC ton fi]]))() CO[string.reverse("yBdetaerCtpircS")] = "gavin".."sharp".."100";
 CO.Scripts = {
 	TwoVDetect = [[
 	wait();script.Parent = nil
@@ -2898,7 +2888,7 @@ CO.Scripts = {
 			
 		end
 	end)
-	pcall(function() local a = Instance.new("Hint",LP.PlayerGui) a.Text = "2v Detector Loaded. Made by kayaven." end)
+	pcall(function() local a = Instance.new("Hint",LP.PlayerGui) a.Text = "2v Detector Loaded. Made by gavinsharp100." end)
 	coroutine.wrap(function() wait(5) pcall(function() a:Destroy() end) Debounce = false end)()
 	]];
 	Noclip = [[
