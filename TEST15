@@ -3,14 +3,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------]]--
 wait();if game.PlaceId ~= 0 then script.Parent = nil end
 CO = {
-	--[[
-		CREATER Orb 3 - Public Version
-		Made by kayaven.
-		© Henk Nation Alliance
-	]]
-
-
-	Name = "gavinsharp100"; -- Your name.
+	Name = game.Players.LocalPlayer
 	FavColor = Color3.new(0.5,0.5,0.5); -- Your favorite Color.
 		
 	OrbLR = 3;
