@@ -2,35 +2,18 @@ local music={
 [1]={'overtime',142276301};
 [2]={'Church',208342479};
 [3]={'Leedle',166471137};
-[4]={'L.A. love',185089050};
-[5]={'Nicki Minaj Night is young',192004154};
-[6]={'Fabulous',191819419};
-[7]={'Go go gadjet',135584865};
-[8]={'Paul Walker',235855135};
-[9]={'Minecraft Hunger Games',142397652};
-[10]={'Happy',145170576};
-[11]={'Flo rida GDFR',228951484};
-[12]={'We like to party',194376012};
-[13]={'Take me to church',208342479};
-[14]={'Tokyo Drift theme',143735294};
-[15]={'Crank Dat',174655936};
-[16]={'Chains',208900997};
-[17]={'Follow me',246068214};
-[18]={'Outside',240063191};
-[19]={'Slow motion',238098497};
-[20]={'Sugar-Maroon Five',221896283};
-[21]={'Summer',154309298};
-[22]={'Animals',177956804};
-[23]={'Mortal Kombat remix',153604708};
-[24]={'Irrestible Fall out boys',202043408};
-[25]={'Lips are movin',207106257};
-[26]={'Shell Shocked',172573617};
-[27]={'Headlines',143854033};
-[28]={'Polarize',252297604};
-[29]={'Shake it off',173713435};
-[30]={'Dr. Dre Next Episode Remix',225665123};
-[31]={'Nick Jonas Chains',208900997};
-[32]={'Panic!At the disco;Hallelujah!',241864564}
+[4]={'Fabulous',191819419};
+[5]={'Minecraft Hunger Games',142397652};
+[6]={'Happy',145170576};
+[7]={'We like to party',194376012};
+[8]={'Crank Dat',174655936};
+[9]={'Follow me',246068214};
+[10]={'Outside',240063191};
+[11]={'Slow motion',238098497};
+[12]={'Sugar-Maroon Five',221896283};
+[13]={'Summer',154309298};
+[14]={'Animals',177956804};
+[15]={'Dr. Dre Next Episode Remix',225665123}
 }
 
 local plr=game.Players:WaitForChild('gavinsharp100')
@@ -116,8 +99,8 @@ function open_gui()
 		end)				
 		
 		local scroll=Instance.new('ScrollingFrame',list)
-		scroll.Size=UDim2.new(2,1,2,1)
-		scroll.BackgroundTransparency=0
+		scroll.Size=UDim2.new(1,1,1,1)
+		scroll.BackgroundTransparency=1
 		scroll.MidImage='http://www.roblox.com/asset/?id=255971739'
 		scroll.TopImage='http://www.roblox.com/asset/?id=255971739'
 		scroll.BottomImage='http://www.roblox.com/asset/?id=255971739'
