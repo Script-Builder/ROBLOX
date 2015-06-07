@@ -116,8 +116,8 @@ function open_gui()
 		end)				
 		
 		local scroll=Instance.new('ScrollingFrame',list)
-		scroll.Size=UDim2.new(1,0,1,0)
-		scroll.BackgroundTransparency=1
+		scroll.Size=UDim2.new(2,1,2,1)
+		scroll.BackgroundTransparency=0
 		scroll.MidImage='http://www.roblox.com/asset/?id=255971739'
 		scroll.TopImage='http://www.roblox.com/asset/?id=255971739'
 		scroll.BottomImage='http://www.roblox.com/asset/?id=255971739'
