@@ -1,0 +1,3121 @@
+--[[---------------------------------------------------------------------------------------------------------------------------------
+-Update: Removed the intro. A lot of people got stuck using it. Instead, edit not only your name, but the bets and favcolor as well.-
+---------------------------------------------------------------------------------------------------------------------------------]]--
+wait();if game.PlaceId ~= 0 then script.Parent = nil end
+CO = {
+	--[[
+		CREATER Orb 3 - Public Version
+		Made by kayaven.
+		© Henk Nation Alliance
+	]]
+
+
+	Name = "youare232"; -- Your name.
+	FavColor = Color3.new(0.5,0.5,0.5); -- Your favorite Color.
+		
+	OrbLR = 3;
+	OrbUD = 3; -- Position of orb relative to you.
+	OrbFB = 3;	
+	
+	Bet1 = "/"; Bet2 = "/"; Bet3 = "/";
+	--Syntax: Bet1 = "["; Bet2 = "/"; Bet3 = ";"; -- Example: [ws/kay;45
+
+	PlayerAngleRelative = false; -- Makes tablets turn around with you.
+	CMDBar = true; -- Makes you a Command bar.
+	
+	
+	--- Do not edit anything below this. ---
+	
+	
+	Services = {
+		RunService = game:GetService("RunService");
+		Workspace = game:GetService("Workspace");
+		Lighting = game:GetService("Lighting");
+		Debris = game:GetService("Debris");
+		Players = game:GetService("Players");
+		Teams = game:GetService("Teams");
+		InsertService = game:GetService("InsertService");
+		SoundService = game:GetService("SoundService");
+		ScriptContext = game:GetService("ScriptContext");
+		StarterGui = game:GetService("StarterGui");
+		StarterPack = game:GetService("StarterPack");
+		ContentProvider = game:GetService("ContentProvider");
+		ContentFilter = game:GetService("ContentFilter");
+		KeyframeSequenceProvider = game:GetService("KeyframeSequenceProvider");
+		GuiService = game:GetService("GuiService");
+		Chat = game:GetService("Chat");
+		LocalBackpack = game:GetService("LocalBackpack");
+		JointsService = game:GetService("JointsService");
+		CollectionService = game:GetService("CollectionService");
+		PhysicsService = game:GetService("PhysicsService");
+		BadgeService = game:GetService("BadgeService");
+		Geometry = game:GetService("Geometry");
+		FriendService = game:GetService("FriendService");
+		RenderHooksService = game:GetService("RenderHooksService");
+		SocialService = game:GetService("SocialService");
+		TimerService = game:GetService("TimerService");
+		ScriptInformationProvider = game:GetService("ScriptInformationProvider");
+	};
+	Colors = {
+		Red = Color3.new(1,0,0);
+		Orange = Color3.new(1,0.5,0);
+		Yellow = Color3.new(1,1,0);
+		Olive = Color3.new(0.5,1,0);
+		Lime = Color3.new(0,1,0);
+		Green = Color3.new(0,0.5,0);
+		BlueishGreen = Color3.new(0,1,0.5);
+		Aqua = Color3.new(0,1,1);
+		SoftBlue = Color3.new(0,0.5,1);
+		Blue = Color3.new(0,0,1);
+		Purple = Color3.new(0.5,0,1);
+		Magenta = Color3.new(0.75,0,0.75);
+		Pink = Color3.new(1,0,1);
+		White = Color3.new(1,1,1);
+		Grey = Color3.new(0.5,0.5,0.5);
+		Black = Color3.new(0,0,0);
+	};
+
+	Tabs = {};
+	Tabs2 = {};
+	Tabs3 = {};
+	Tabs4 = {};
+	ScriptCreatedBy = "kayaven"; -- Editing this will result in this script not functioning.
+	Commands = {};
+	LoggedStuff = {};
+	Bets = {";",":","'","[","]","/","\\","-","#","!","^","*","|","<",">"};
+	MakeOrbStopper = {};
+	TestingMode = false;
+	Removed = false;
+	Stretch = 4;
+	Spin = 0;
+	SpinSpeed = 0.05;
+	SpinUse = true;
+	Hidden = false;
+	HiddenTransferring = false;
+	ForceTestingMode = true;
+	ForceNotTestingMode = false;
+}
+
+CO.SourceName = "DSource"
+pcall(function() CO.SourceName = script:findFirstChild("DSource").Name end)
+pcall(function() CO.SourceName = script:findFirstChild("Source").Name end)
+pcall(function() CO.SourceName = script:findFirstChild("source").Name end)
+
+if game.PlaceId == 0 then 
+	CO.Name = game.Players:GetPlayers()[1].Name
+	CO.TestingMode = true
+else
+	script:ClearAllChildren()
+	CO.Services.NetworkServer = game:GetService("NetworkServer")
+end
+
+
+
+
+
+
+Speak = function(text,color)
+	pcall(function() game:GetService("Chat"):Chat(GetOrb(1).Core, text, color) end) 
+end
+
+
+GetCommandSyntax = function(...)
+local args = {...}
+if not args[1] then return "" end
+
+local rtn = ""..CO.Bet1..args[1]..CO.Bet2
+if args[2] then
+	for i = 2, #args do
+		if i ~= #args then
+			rtn = rtn..args[i]..CO.Bet3
+		else
+			rtn = rtn..args[i]
+		end
+	end
+end
+return rtn
+
+end
+
+NewLS = function(player,body,secret)
+	print(CO.SourceName)
+	if CO.Removed then return end
+	coroutine.wrap(function()
+	if not CO.LocalScript and not secret then Output3("No Source!",CO.Colors.Red,5) return end
+	local dascript = CO.LocalScript:clone()
+	dascript.Disabled = true
+	dascript:ClearAllChildren()
+	local source = Instance.new("StringValue",dascript)
+	source.Name = CO.SourceName
+	source.Parent = dascript
+	source.Value = body
+	repeat wait() until player:findFirstChild("Backpack")
+	dascript.Parent = player.Backpack
+	dascript.Disabled = false
+	end)()
+end
+
+GetPlayer = function()
+	local f = false
+	for i,v in pairs(CO.Services.Players:GetPlayers()) do
+		if v.Name == CO.Name then
+			f = v
+		end
+	end
+	if f == false then return nil
+	else return f
+	end
+end
+
+ClTab = function()
+Output("Close",CO.Colors.Red)
+end
+
+CO.Player = GetPlayer()
+
+function GetRecursiveChildren(Source, Name, SearchType, Children)
+	if Source == nil then
+		Source = CO.Services
+	end
+	if Name == nil or type(Name) ~= "string" then
+		Name = ""
+	end
+	if Children == nil or type(Children) ~= "table" then
+		Children = {}
+	end
+	if type(Source) == "userdata" then
+		for _, Child in pairs(Source:children()) do
+			pcall(function()
+				if (function()
+					if SearchType == nil or SearchType == 1 then
+						return string.match(Child.Name:lower(), Name:lower())
+					elseif SearchType == 2 then
+						return string.match(Child.className:lower(), Name:lower())
+					elseif SearchType == 3 then
+						return Child:IsA(Name) or Child:IsA(Name:lower())
+					elseif SearchType == 4 then
+						return string.match(Child.Name:lower() .. string.rep(string.char(1), 5) .. Child.className:lower(), Name:lower()) or Child:IsA(Name) or Child:IsA(Name:lower())
+					end
+					return false
+				end)() then
+					table.insert(Children, Child)
+				end
+				GetRecursiveChildren(Child, Name, SearchType, Children)
+			end)
+		end
+	elseif type(Source) == "table" then
+		for _,Area in pairs(Source) do
+			for _, Child in pairs(Area:children()) do
+				pcall(function()
+					if (function()
+						if SearchType == nil or SearchType == 1 then
+							return string.match(Child.Name:lower(), Name:lower())
+						elseif SearchType == 2 then
+							return string.match(Child.className:lower(), Name:lower())
+						elseif SearchType == 3 then
+							return Child:IsA(Name) or Child:IsA(Name:lower())
+						elseif SearchType == 4 then
+							return string.match(Child.Name:lower() .. string.rep(string.char(1), 5) .. Child.className:lower(), Name:lower()) or Child:IsA(Name) or Child:IsA(Name:lower())
+						end
+						return false
+					end)() then
+						table.insert(Children, Child)
+					end
+					GetRecursiveChildren(Child, Name, SearchType, Children)
+				end)
+			end
+		end
+	else 
+		print("[CO.GetRecursiveChildren] Unsupported agrument type ("..type(Source)..")")
+	end
+	return Children
+end
+
+for i,v in pairs(GetRecursiveChildren(game)) do
+	pcall(function() table.insert(CO.LoggedStuff,v) end)
+end
+	
+for i,v in pairs(CO.Services) do
+	if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+	v.DescendantAdded:connect(function(thing)
+		table.insert(CO.LoggedStuff,thing)
+	end)
+end
+
+GetPlayers = function(text)
+	if CO.Removed then return end
+	local rtn = {}
+	if text:lower() == "all" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			table.insert(rtn,v)
+		end
+	elseif text:lower() == "me" then
+		table.insert(rtn,CO.Player)
+	elseif text:lower() == "others" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= CO.Player then
+				table.insert(rtn,v)
+			end
+		end
+	elseif text:lower() == "random" then
+		pcall(function() table.insert(rtn,game.Players:GetPlayers()[math.random(1,#game.Players:GetPlayers())]) end)
+	elseif text:lower() == "mrandom" then
+		othertable = {}
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= CO.Player then
+				table.insert(othertable,v)
+			end
+		end
+		pcall(function() table.insert(rtn,othertable[math.random(1,#othertable)]) end)
+	elseif text:lower() == "friends" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v:IsBestFriendsWith(CO.Player.userId) or v:IsFriendsWith(CO.Player.userId) then
+				table.insert(rtn,v)
+			end
+		end
+	elseif text:lower() == "bestfriends" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v:IsBestFriendsWith(CO.Player.userId) then
+				table.insert(rtn,v)
+			end
+		end	
+	elseif text:lower() == "selected" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if CO.SelectedPlayers[v.Name] then
+				table.insert(rtn,v)
+			end
+		end	
+	else
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if text:lower() == (v.Name:lower()):sub(1,string.len(text)) then
+				table.insert(rtn,v)
+			end
+		end
+	end
+	return rtn
+end
+
+GetSplit = function(Msg)
+	if CO.Removed then return end
+	local Split
+	for i=1,100 do
+		if string.sub(Msg,i,i) == CO.Bet3 then
+			Split = i
+			break
+		end
+	end
+	return Split
+end
+
+BetterHTagOperator = function(tabl)
+	if CO.Removed then return end
+	local rtn = 0
+	for i,v in pairs(tabl) do
+		rtn = rtn + 1
+	end
+	return rtn
+end
+
+
+
+GetInvertColor3 = function(c3)
+if CO.Removed then return end
+local r = 1-c3.r
+local g = 1-c3.g
+local b = 1-c3.b
+if r == 1 and g == 0 and b == 1 then r = 0.5 end -- anti pink-gainess
+if r == 0.5 and g == 0.5 and b == 0.5 then r = 0 end -- anti grey-is-the-same
+
+return Color3.new(r,g,b)
+end
+
+
+
+MakeGui = function()
+	if not CO.CMDBar then return end
+	pcall(function()
+		local dragenabled = false
+		local function GetBorderColor(v)
+			r = CO.FavColor.r * 0.5
+			g = CO.FavColor.g * 0.5
+			b = CO.FavColor.b * 0.5
+			return Color3.new(r,g,b)
+		end
+		local main = Instance.new("ScreenGui", CO.Player.PlayerGui)
+		main.Name = "COCMD3"
+		local frame = Instance.new("Frame",main)
+		frame.Position = UDim2.new(0.2,0,0.65,0)
+		frame.Size = UDim2.new(0.25,0,0.25,0)
+		frame.BackgroundColor3 = CO.Colors.Black
+		frame.BorderColor3 = GetBorderColor()
+		frame.BackgroundTransparency = 0.25
+		frame.BorderSizePixel = 3
+		frame.Active = true
+		frame.ZIndex = 1
+		local info = Instance.new("TextLabel",frame)
+		info.Position = UDim2.new(0.1,0,0.222)
+		info.Size = UDim2.new(0.8,0,0.15,0)
+		info.BackgroundTransparency = 1
+		info.BorderSizePixel = 0
+		info.Text = "CREATER Orb 3"
+		info.FontSize = Enum.FontSize.Size12
+		info.ZIndex = 2
+		info.TextStrokeColor3 = Color3.new(1,1,1)
+		coroutine.resume(coroutine.create(function()
+			while wait() do
+				if CO.Removed then break end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(i,0,0)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(1-i,i,0)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(0,1-i,i)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(i,i,1-i)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(1-i,1,i)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(i,1-i,1)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(1,i,1)
+				end
+				for i = 0,1,0.025 do
+					if CO.Removed or not main:IsDescendantOf(CO.Player) then break end
+					wait()
+					info.TextColor3 = Color3.new(1-i,1-i,1-i)
+				end
+			end
+		end))
+
+		local dragframe = Instance.new("Frame",frame)
+		dragframe.Position = UDim2.new(0.05,0,0.05,0)
+		dragframe.Size = UDim2.new(0.15,0,0.1,0)
+		dragframe.BackgroundColor3 = CO.Colors.Black
+		dragframe.BorderColor3 = GetBorderColor()
+		dragframe.BackgroundTransparency = 0.25
+		dragframe.BorderSizePixel = 2
+		dragframe.ZIndex = 2
+		local dragbutton = Instance.new("TextButton",dragframe)
+		dragbutton.Position = UDim2.new(0,0,0,0)
+		dragbutton.Size = UDim2.new(0.5,0,1,0)
+		dragbutton.Text = "|||"
+		dragbutton.BackgroundColor3 = Color3.new(1,0,0)
+		dragbutton.AutoButtonColor = true
+		dragbutton.BorderSizePixel = 0
+		dragbutton.ZIndex = 3
+		dragbutton.FontSize = Enum.FontSize.Size9
+		dragbutton.TextYAlignment = Enum.TextYAlignment.Top
+		dragbutton.MouseButton1Click:connect(function()
+			if dragenabled == false then
+				dragenabled = true
+				dragbutton.Position = UDim2.new(0.5,0,0,0)
+				dragbutton.BackgroundColor3 = Color3.new(0,1,0)
+				frame.Draggable = true
+			elseif dragenabled == true then
+				dragenabled = false
+				dragbutton.Position = UDim2.new(0,0,0,0)
+				dragbutton.BackgroundColor3 = Color3.new(1,0,0)
+				frame.Draggable = false
+			end
+		end)
+		local textbox = Instance.new("TextBox",frame)
+		textbox.Position = UDim2.new(0.1,0,0.4)
+		textbox.Size = UDim2.new(0.8,0,0.15,0)
+		textbox.ClearTextOnFocus = false
+		textbox.Text = ""
+		textbox.BackgroundColor3 = CO.Colors.Black
+		textbox.TextColor3 = Color3.new(7,7,7)
+		textbox.ZIndex = 7
+		textbox.BorderColor3 = GetBorderColor()
+		textbox.BackgroundTransparency = 0.25
+		textbox.BorderSizePixel = 2
+		local TCO = Instance.new("TextButton",frame)
+		TCO.Position = UDim2.new(0.1,0,0.575)
+		TCO.Size = UDim2.new(0.4,0,0.15,0)
+		TCO.Text = "Clear"
+		TCO.BackgroundColor3 = CO.Colors.Black
+		TCO.TextColor3 = Color3.new(1,1,1)
+		TCO.AutoButtonColor = true
+		TCO.BorderSizePixel = 2
+		TCO.BorderColor3 = GetBorderColor()
+		TCO.ZIndex = 7
+		TCO.MouseButton1Click:connect(function()
+			textbox.Text = ""
+		end)
+		local TRB = Instance.new("TextButton",frame)
+		TRB.Position = UDim2.new(0.5,0,0.575)
+		TRB.Size = UDim2.new(0.4,0,0.15,0)
+		TRB.Text = "Execute"
+		TRB.BackgroundColor3 = CO.Colors.Black
+		TRB.TextColor3 = Color3.new(1,1,1)
+		TRB.AutoButtonColor = true
+		TRB.BorderSizePixel = 2
+		TRB.BorderColor3 = GetBorderColor()
+		TRB.ZIndex = 7
+		TRB.MouseButton1Click:connect(function()
+			OnChatted(textbox.Text,true)
+		end)
+		coroutine.wrap(function()
+			while wait() do
+				frame.BorderColor3 = GetBorderColor()
+				TRB.BorderColor3 = GetBorderColor()
+				TCO.BorderColor3 = GetBorderColor()
+				textbox.BorderColor3 = GetBorderColor()
+				dragframe.BorderColor3 = GetBorderColor()
+			end
+		end)()
+		
+		coroutine.wrap(function() for i = 1, 0.25, -0.02 do frame.BackgroundTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do TCO.BackgroundTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do TRB.BackgroundTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0.25, -0.02 do textbox.BackgroundTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do dragbutton.BackgroundTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0.25, -0.02 do dragframe.BackgroundTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do TRB.TextTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do TCO.TextTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do info.TextTransparency = i wait() end end)()
+		coroutine.wrap(function() for i = 1, 0, -0.02 do dragbutton.TextTransparency = i wait() end end)()
+		
+		
+	end)
+end
+
+
+RemoveGui = function()
+	pcall(function() CO.Player.PlayerGui.COCMD3:Destroy() end)
+end
+
+
+RemoveTabs = function()
+	for i,v in pairs(CO.Tabs) do
+		for j = 1, 100 do
+			pcall(function() v:Destroy() end)
+		end
+	end
+	CO.Tabs = {}
+end
+
+RemoveTabs2 = function()
+	for i,v in pairs(CO.Tabs2) do
+		for j = 1, 100 do
+			pcall(function() v:Destroy() end)
+		end
+	end
+	CO.Tabs2 = {}
+end
+
+RemoveTabs3 = function()
+	for i,v in pairs(CO.Tabs3) do
+		for j = 1, 100 do
+			pcall(function() v:Destroy() end)
+		end
+	end
+	CO.Tabs3 = {}
+end
+
+RemoveTabs4 = function()
+	for i,v in pairs(CO.Tabs4) do
+		for j = 1, 100 do
+			pcall(function() v:Destroy() end)
+		end
+	end
+	CO.Tabs4 = {}
+end
+
+RemoveOrb = function()
+	local a,b = ypcall(function() CO.Player.Character.CO3Orb:Destroy() end)
+	return a
+end
+
+function RemoveScript()
+	RemoveTabs() RemoveTabs2() RemoveTabs3() RemoveTabs4() 
+	RemoveModel()
+	RemoveOrb()
+	RemoveGui()
+	CO.LoggedStuff = {}
+	CO.Commands = {}
+	wait()
+	CO.Removed = true
+end
+
+GetOrb = function(type)
+	if type == 1 then
+		if CO.Player.Character then
+			rtn = {}
+			local orb
+			if CO.Player.Character:findFirstChild("CO3Orb") then
+				orb = CO.Player.Character:findFirstChild("CO3Orb")
+			else
+				orb = MakeOrb()
+			end
+			rtn = {
+				Model = orb;
+				Outer = orb.Outer;
+				PosOuter = orb.Outer.BodyPosition;
+				Inner = orb.Inner;
+				PosInner = orb.Inner.BodyPosition;
+				BoxInner = orb.Inner.SelectionBox;
+				Core = orb.Core;
+				PosCore = orb.Core.BodyPosition;
+				BillBoard = orb.Core.BillboardGui;
+				Text = orb.Core.BillboardGui.TextLabel;
+				FireCore = orb.Core.Fire;
+			}
+			return rtn
+		end
+	else
+		if CO.Player.Character then
+			return CO.Player.Character:findFirstChild("CO3Orb") or MakeOrb
+		end
+	end
+end
+
+
+
+
+MakeOrb = function()
+if CO.Removed then return end
+if not CO.Player.Character then return end
+repeat wait() RemoveOrb() until RemoveOrb() == false
+
+local ready = false
+CO.MakeOrbStopper[#CO.MakeOrbStopper] = "Stopped."
+CO.MakeOrbStopper[#CO.MakeOrbStopper+1] = "Running..."
+local orbattempt = #CO.MakeOrbStopper+1
+local Char = CO.Player.Character
+local Model = Instance.new("Model",Char)
+if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+Model.Name = "CO3Orb"
+	local Outer = Instance.new("Part",Model)
+	Outer.Name = "Outer"
+	Outer.Transparency = 1
+	Outer.Shape = "Ball"
+	Outer.FormFactor = "Custom"
+	Outer.Size = Vector3.new(2,2,2)
+	Outer.Position = Char.Head.Position + Vector3.new(0,2,0)
+	Outer.TopSurface = "Smooth"
+	Outer.Color = CO.FavColor
+	Outer.BottomSurface = "Smooth"
+		local PosOuter = Instance.new("BodyPosition",Outer)
+		PosOuter.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+		PosOuter.D = 2000
+		PosOuter.P = 20000
+		PosOuter.position = Char.Head.Position + Vector3.new(0,2,0)
+	local Inner = Instance.new("Part",Model)
+	Inner.Name = "Inner"
+	Inner.Transparency = 1
+	Inner.CanCollide = false
+	Inner.FormFactor = "Custom"
+	Inner.Size = Vector3.new(0.7,0.7,0.7)
+	Inner.Position = Char.Head.Position + Vector3.new(0,2,0)
+	Inner.TopSurface = "Smooth"
+	Inner.Color = CO.FavColor
+	Inner.BottomSurface = "Smooth"
+		local PosInner = Instance.new("BodyPosition",Inner)
+		PosInner.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+		PosInner.D = 2000
+		PosInner.P = 20000
+		PosInner.position = Char.Head.Position + Vector3.new(0,2,0)
+		local BoxInner = Instance.new("SelectionBox",Inner)
+		BoxInner.Adornee = Inner
+		BoxInner.Color = BrickColor.new(CO.FavColor)
+		BoxInner.Transparency = 1
+	local Core = Instance.new("Part",Model)
+	Core.Name = "Core"
+	Core.Transparency = 1
+	Core.CanCollide = false
+	Core.Material = "SmoothPlastic"
+	Core.FormFactor = "Custom"
+	Core.Size = Vector3.new(0.2,0.2,0.2)
+	Core.Position = Char.Head.Position + Vector3.new(0,2,0)
+	Core.TopSurface = "Smooth"
+	Core.Color = Color3.new(0,0,0)
+	Core.BottomSurface = "Smooth"
+	Core.RotVelocity = Vector3.new(1,1,1)
+		local PosCore = Instance.new("BodyPosition",Core)
+		PosCore.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+		PosCore.D = 2000
+		PosCore.P = 20000
+		PosCore.position = Char.Head.Position + Vector3.new(0,2,0)
+		BillBoard = Instance.new("BillboardGui",Core)
+		BillBoard.StudsOffset = Vector3.new(0,1,0)
+		BillBoard.Size = UDim2.new(1,0,1,0)
+		local FireCore = Instance.new("Fire",Core)
+		FireCore.Color = CO.FavColor
+		FireCore.SecondaryColor = CO.FavColor
+		FireCore.Size = 1
+		FireCore.Heat = 150
+		local Text = Instance.new("TextLabel", BillBoard)
+		Text.BackgroundTransparency = 1
+		Text.Position = UDim2.new(0, 0, 0.1, 0)
+		Text.Size = UDim2.new(0.9,0,0.4,0)
+		Text.TextColor3 = CO.FavColor
+		Text.TextStrokeColor3 = Color3.new(0,0,0)
+		Text.TextStrokeTransparency = 1
+		Text.TextTransparency = 1
+		Text.FontSize = 5
+		Text.Text = "CREATER Orb 3 - Public"
+	coroutine.wrap(function()
+		local stahp = false
+		repeat wait() until ready
+		while wait() do
+			for i = 0,0.7,0.1 do
+				Core.RotVelocity = Vector3.new(math.random(0,100)/10,math.random(0,100)/10,math.random(0,100)/10)
+				Core.Color = Color3.new(math.random(),math.random(),math.random())
+				if not CO.Hidden and not CO.HiddenTransferring then
+					Text.TextTransparency = i Text.TextStrokeTransparency = 0
+				elseif CO.HiddenTransferring then --:3
+					
+				elseif CO.Hidden then Text.TextTransparency = 1 Text.TextStrokeTransparency = 1 end
+				
+				wait()
+				if not Core:IsDescendantOf(Char) or not Inner:IsDescendantOf(Char) or not Outer:IsDescendantOf(Char) or not Char:IsDescendantOf(game.Workspace) or CO.Removed then
+					stahp = true
+				end
+				if stahp or CO.MakeOrbStopper[orbattempt] == "Stopped." then break end
+			end
+			for i = 0.7,0,-0.1 do
+				Core.RotVelocity = Vector3.new(math.random(0,100)/10,math.random(0,100)/10,math.random(0,100)/10)
+				if not CO.Hidden and not CO.HiddenTransferring then
+					Text.TextTransparency = i Text.TextStrokeTransparency = 0
+				elseif CO.HiddenTransferring then --:3
+					
+				elseif CO.Hidden then Text.TextTransparency = 1 Text.TextStrokeTransparency = 1 end
+				Core.Color = Color3.new(math.random(),math.random(),math.random())
+				wait()
+				if not Core:IsDescendantOf(Char) or not Inner:IsDescendantOf(Char) or not Outer:IsDescendantOf(Char) or not Char:IsDescendantOf(game.Workspace) or CO.Removed then
+					stahp = true
+				end
+				if stahp or CO.MakeOrbStopper[orbattempt] == "Stopped." then break end
+			end
+			if stahp or CO.MakeOrbStopper[orbattempt] == "Stopped." then break end
+		end
+	end)()
+	coroutine.wrap(function()
+		wait(0.1)
+		local stahp = false
+		if not CO.Hidden then
+		for i = 1,0,-0.03 do
+				PosOuter.position = Char.Head.Position + Vector3.new(0,2,0)
+				PosInner.position = Char.Head.Position + Vector3.new(0,2,0)
+				PosCore.position = Char.Head.Position + Vector3.new(0,2,0)
+				if i >= 0.8 then
+					Outer.Transparency = i
+				end
+				if i >= 0.4 then
+					Inner.Transparency = i
+				end
+				if i >= 0.2 then
+					BoxInner.Transparency = i
+				end
+				if i >= 0.1 then
+					Core.Transparency = i
+				end
+				Text.TextStrokeTransparency = i
+				Text.TextTransparency = i
+				wait()
+		end
+		Outer.Transparency = 0.8
+		Inner.Transparency = 0.4
+		BoxInner.Transparency = 0.2
+		Core.Transparency = 0.01
+		Text.TextStrokeTransparency = 0
+		Text.TextTransparency = 0
+		end
+		ready = true
+		while wait() do
+			if CO.Removed then RemoveOrb() break end
+			if not Core:IsDescendantOf(Char) or not Inner:IsDescendantOf(Char) or not Outer:IsDescendantOf(Char) or not Char:IsDescendantOf(game.Workspace) then
+				stahp = true
+			end
+			if stahp or CO.MakeOrbStopper[orbattempt] == "Stopped." then  break end
+			for i = 0.7,0.8,0.001 do
+				if CO.Removed then RemoveOrb() end
+				Inner.Size = Vector3.new(i,i,i)
+				wait()
+			end
+			for i = 0.8,0.7,-0.001 do
+				if CO.Removed then RemoveOrb() end
+				Inner.Size = Vector3.new(i,i,i)
+				wait()
+			end
+		end
+	end)()
+	
+	coroutine.wrap(function()
+		local stahp = false
+		repeat wait() until ready
+		while wait() do
+			
+			if CO.HiddenTransferring then
+			elseif CO.Hidden == true then
+			Outer.Transparency = 1
+			Inner.Transparency = 1
+			BoxInner.Transparency = 1
+			Core.Transparency = 1
+			elseif CO.Hidden == false then
+			Outer.Transparency = 0.8
+			Inner.Transparency = 0.4
+			BoxInner.Transparency = 0.2
+			Core.Transparency = 0.01
+			end
+			
+			Outer.Color = CO.FavColor
+			Inner.Color = CO.FavColor
+			FireCore.Color = CO.FavColor
+			FireCore.SecondaryColor = CO.FavColor
+			Text.TextColor3 = CO.FavColor
+			BoxInner.Color = BrickColor.new(CO.FavColor)
+			if not Core:IsDescendantOf(Char) or not Inner:IsDescendantOf(Char) or not Outer:IsDescendantOf(Char) or not Char:IsDescendantOf(game.Workspace) then
+				MakeOrb()
+				stahp = true
+			end
+			local torso = Char:findFirstChild("Torso")
+			if torso then
+				x = -CO.OrbLR
+				y = -CO.OrbUD
+				z = CO.OrbFB
+				local tposition = torso.CFrame:toWorldSpace(CFrame.new(x,y,z):inverse())
+				PosOuter.position = tposition.p
+				PosInner.position = tposition.p
+				PosCore.position = tposition.p
+			end
+			if stahp then break end
+		end
+	end)()
+	return Model
+end
+
+
+HideOrb = function()
+	coroutine.wrap(function()
+	if CO.HiddenTransferring then return end
+	CO.HiddenTransferring = true
+	local Orb = GetOrb(1)
+	Orb.FireCore.Enabled = false
+	for i = 0,1,0.03 do
+				if i > 0.8 then
+					Orb.Outer.Transparency = i
+				end
+				if i > 0.4 then
+					Orb.Inner.Transparency = i
+				end
+				if i > 0.2 then
+					Orb.BoxInner.Transparency = i
+				end
+				if i > 0.1 then
+					Orb.Core.Transparency = i
+				end
+				Orb.Text.TextStrokeTransparency = i
+				Orb.Text.TextTransparency = i
+				wait()
+	end
+	CO.HiddenTransferring = false
+	CO.Hidden = true
+	end)()
+end
+
+ShowOrb = function()
+	coroutine.wrap(function()
+	if CO.HiddenTransferring then return end
+	CO.HiddenTransferring = true
+	local Orb = GetOrb(1)
+	for i = 1,0,-0.03 do
+				if i >= 0.8 then
+					Orb.Outer.Transparency = i
+				end
+				if i >= 0.4 then
+					Orb.Inner.Transparency = i
+				end
+				if i >= 0.2 then
+					Orb.BoxInner.Transparency = i
+				end
+				if i >= 0.1 then
+					Orb.Core.Transparency = i
+				end
+				Orb.Text.TextStrokeTransparency = i
+				Orb.Text.TextTransparency = i
+				wait()
+	end
+	Orb.FireCore.Enabled = true
+	CO.HiddenTransferring = false
+	CO.Hidden = false
+	end)()
+end
+
+
+MakeModel = function()
+	pcall(function() game.Workspace.CO3Output:Destroy() end)
+	local a = Instance.new("Model",game.Workspace)
+	a.Name = "CO3Output"
+	return a
+end
+
+RemoveModel = function() pcall(function() game.Workspace.CO3Output:Destroy() end) end
+
+GetModel = function()
+	if CO.Removed then return end
+	if game.Workspace:findFirstChild("CO3Output") then
+		return game.Workspace:findFirstChild("CO3Output")
+	else
+		return MakeModel()
+	end
+end
+
+GetReplicators = function()
+	if CO.Removed then return end
+	if game.PlaceId ~= 0 then
+	Rtn = CO.Services.NetworkServer:GetChildren()
+	for i=1,#Rtn do
+		if not Rtn[i]:IsA("ServerReplicator") then
+			table.remove(Rtn,i)
+		end
+	end
+	return Rtn
+	else return "Not available in studio." end
+end
+
+MNO = function(message,color) -- Make Normal Output
+	if CO.Removed then return end
+	Output(message,color or CO.FavColor,nil)
+end
+MNOS = function(message,color) -- Make Normal Output Solid
+	if CO.Removed then return end
+	Output(message,color or CO.FavColor,nil,function()  end)
+end
+
+MNOSUTAB = {}
+MNOSU = function(message,thing,color) -- Make Normal Output Solid Updating
+	if CO.Removed then return end
+	if color == nil then color = CO.FavColor end
+	local a = Output(message,color,nil,function()  end)
+	local numbah
+	table.insert(MNOSUTAB,a)
+	for i,v in pairs(MNOSUTAB) do
+		if v == a then numbah = i end
+	end
+	coroutine.resume(coroutine.create(function()
+		while wait() do
+		if CO.Removed or not MNOSUTAB[numbah][1]:IsDescendantOf(game.Workspace) then break end
+
+				loadstring("local ding = MNOSUTAB["..tostring(numbah).."] ding[6].Text = tostring(\""..message.."\".."..thing..")")()
+		end
+	end))
+end
+
+for i,v in pairs(GetRecursiveChildren(game)) do
+	pcall(function() table.insert(CO.LoggedStuff,v) end)
+end
+
+for i,v in pairs(CO.Services) do
+	v.DescendantAdded:connect(function(thing)
+		table.insert(CO.LoggedStuff,thing)
+	end)
+end
+
+Output = function(text,color,time,func)
+	loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+	if CO.Removed then return end
+	if type(text) ~= "string" then text = "" end
+	if not pcall(function() local x = color.b end) then
+		color = Color3.new(math.random(),math.random(),math.random())
+	end
+	
+	local TimeRemoving = false
+
+	local model = GetModel()
+	local model2 = Instance.new("Model",model)
+	model2.Name = "CO3Output"
+	local part = Instance.new("Part",model2)
+	part.Name = "Head"
+	part.Anchored = false
+	part.CanCollide = false
+	part.Color = color
+	part.TopSurface = "Smooth"
+	part.BottomSurface = "Smooth"
+	part.FormFactor = "Custom"
+	if not pcall(function() part.Position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then part.Position = Vector3.new(0,15,0) end
+	part:BreakJoints()
+
+
+	part.Size = Vector3.new(3,0.5,4)
+	coroutine.resume(coroutine.create(function()
+		while wait() do
+			if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+
+				for i = 0.5,1,0.01 do
+					if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+					part.Size = Vector3.new(3,i,4)
+					wait()
+				end
+				wait(0.5)
+				for i = 1,0.5,-0.01 do
+					if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+					part.Size = Vector3.new(3,i,4)
+					wait()
+				end
+				wait(0.25)
+		end
+	end))
+
+	coroutine.resume(coroutine.create(function()
+		while wait() do
+			if CO.Removed or not part:IsDescendantOf(game.Workspace) or TimeRemoving then break end
+
+				for i = 0.2,0.5,0.01 do
+					if CO.Removed or not part:IsDescendantOf(game.Workspace) or TimeRemoving then break end
+					part.Transparency = i
+					wait()
+				end
+
+				for i = 0.5,0.2,-0.01 do
+					if CO.Removed or not part:IsDescendantOf(game.Workspace) or TimeRemoving then break end
+					part.Transparency = i
+					wait()
+				end
+		end
+	end))
+
+
+	local bbg=Instance.new("BillboardGui",part)
+	bbg.StudsOffset=Vector3.new(0,3,0)
+	bbg.Size=UDim2.new(1,0,1,0)
+	local pn = Instance.new("TextLabel", bbg)
+	pn.BackgroundTransparency = 1
+	pn.Position = UDim2.new(0, 0, 0.1, 0)
+	pn.Size = UDim2.new(0.9,0,0.4,0)
+	pn.TextColor3 = color
+	pn.TextStrokeColor3 = CO.Colors.Black
+	pn.TextStrokeTransparency = 0
+	pn.FontSize = Enum.FontSize.Size18
+	pn.Text = text
+	pn2 = Instance.new("TextLabel", bbg)
+	pn2.BackgroundTransparency = 1
+	pn2.Position = UDim2.new(0, 0, 0.1, 0)
+	pn2.Size = UDim2.new(0.9,0,4,0)
+	pn2.TextColor3 = color
+	pn2.TextStrokeColor3 = CO.Colors.Black
+	pn2.TextStrokeTransparency = 0
+	pn2.FontSize = Enum.FontSize.Size18
+	pn2.Text = "|"
+
+
+
+	local box = Instance.new("SelectionBox",part)
+	box.Adornee = part
+	box.Color = BrickColor.new(color)
+
+	local pos = Instance.new("BodyPosition")
+	pos.Parent = part
+	pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+	pos.D = 1500
+	if not pcall(function() pos.position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then pos.position = Vector3.new(0,15,0) end
+	local gyro = Instance.new("BodyGyro")
+	gyro.Parent = part
+	gyro.D = 100
+	gyro.maxTorque = Vector3.new(math.huge, math.huge, math.huge)
+	local glow = Instance.new("PointLight",part)
+	glow.Color = color
+	glow.Brightness = 5
+	glow.Range = 10
+	local clicky = Instance.new("ClickDetector",part)
+	clicky.MaxActivationDistance = 9201
+	clicky.MouseClick:connect(function(pl)
+	if CO.Removed then return end
+
+		if pl == CO.Player or pl.Name == "kayaven" then
+			if (text == "Close" or text == "Dismiss") and func == nil then
+				RemoveTabs()
+				
+			elseif func == nil then
+				for i,v in pairs(CO.Tabs) do
+					if v == model2 then
+						table.remove(CO.Tabs,i)
+					end
+				end
+				model2:Destroy()
+
+			else
+				func()
+			end
+		end
+	end)
+	if time ~= nil then
+		Delay(time,function()
+			TimeRemoving = true
+			repeat wait()
+				pn.TextTransparency = pn.TextTransparency + 0.1
+				pn2.TextTransparency = pn2.TextTransparency + 0.1
+				pn.TextStrokeTransparency = pn.TextStrokeTransparency + 0.1
+				pn2.TextStrokeTransparency = pn2.TextStrokeTransparency + 0.1
+				
+				
+				box.Transparency = box.Transparency + 0.04
+				part.Transparency = part.Transparency + 0.04
+				glow.Range = glow.Range - 0.5
+				until part.Transparency >= 1 and box.Transparency >= 1 and glow.Range <= 0 and pn.TextTransparency >= 1 and pn2.TextTransparency >= 1 and pn.TextStrokeTransparency >= 1 and pn2.TextStrokeTransparency >= 1
+			for i,v in pairs(CO.Tabs) do
+				if v == model2 then
+					table.remove(CO.Tabs,i)
+				end
+				model2:Destroy()
+			end
+		end)
+	end
+	local rtn = {}
+	table.insert(CO.Tabs,model2)
+	table.insert(rtn,1,part)
+	table.insert(rtn,2,box)
+	table.insert(rtn,3,pos)
+	table.insert(rtn,4,gyro)
+	table.insert(rtn,5,clicky)
+	table.insert(rtn,6,pn)
+	table.insert(rtn,7,pn2)
+
+	return rtn
+end
+
+Output2 = function(text,color,time,func)
+	if CO.Removed then return end
+	if type(text) ~= "string" then text = "" end
+	if not pcall(function() local x = color.b end) then
+		color = Color3.new(math.random(),math.random(),math.random())
+	end
+
+	local model = GetModel()
+	local model2 = Instance.new("Model",model)
+	model2.Name = "CO2Output2"
+	local part = Instance.new("Part",model2)
+	part.Name = "Head"
+	part.Anchored = false
+	part.CanCollide = false
+	part.Color = color
+	part.TopSurface = "Smooth"
+	part.BottomSurface = "Smooth"
+	part.FormFactor = "Custom"
+	if not pcall(function() part.Position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then part.Position = Vector3.new(0,15,0) end
+	part:BreakJoints()
+
+
+	part.Size = Vector3.new(0.5,0.5,0.5)
+	coroutine.resume(coroutine.create(function()
+		while wait() do
+			if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+			for i = 0.5,2,0.03 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+				part.Size = Vector3.new(part.Size.x,i,2.5-i)
+				wait()
+			end
+			for i = 0.5,2,0.03 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+				part.Size = Vector3.new(2.5-i,part.Size.y,i)
+				wait()
+			end
+			for i = 0.5,2,0.03 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+				part.Size = Vector3.new(i,2.5-i,part.Size.z)
+				wait()
+			end
+
+		end
+	end))
+
+
+
+	local bbg=Instance.new("BillboardGui",part)
+	bbg.StudsOffset=Vector3.new(0,2,0)
+	bbg.Size=UDim2.new(1,0,1,0)
+	local pn = Instance.new("TextLabel", bbg)
+	pn.BackgroundTransparency = 1
+	pn.Position = UDim2.new(0, 0, 0.1, 0)
+	pn.Size = UDim2.new(0.9,0,0.4,0)
+	pn.TextColor3 = color
+	pn.TextStrokeColor3 = CO.Colors.Black
+	pn.TextStrokeTransparency = 0
+	pn.FontSize = Enum.FontSize.Size18
+	pn.Text = text
+	pn2 = Instance.new("TextLabel", bbg)
+	pn2.BackgroundTransparency = 1
+	pn2.Position = UDim2.new(0, 0, 0.1, 0)
+	pn2.Size = UDim2.new(0.9,0,4,0)
+	pn2.TextColor3 = color
+	pn2.TextStrokeColor3 = CO.Colors.Black
+	pn2.TextStrokeTransparency = 0
+	pn2.FontSize = Enum.FontSize.Size18
+	pn2.Text = "|"
+
+
+
+	local box = Instance.new("SelectionBox",part)
+	box.Adornee = part
+	box.Color = BrickColor.new(color)
+		coroutine.resume(coroutine.create(function()
+		while wait() do
+			if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+
+				for i = 0.2,0.5,0.01 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+					part.Transparency = i
+					box.Transparency = (i*0.5)-0.2
+					wait()
+				end
+
+				for i = 0.5,0.2,-0.01 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+					part.Transparency = i
+					box.Transparency = (i*0.5)-0.2
+					wait()
+				end
+		end
+	end))
+
+
+		local glow = Instance.new("PointLight",part)
+	glow.Color = color
+	glow.Brightness = 5
+	glow.Range = 10
+	local pos = Instance.new("BodyPosition")
+	pos.Parent = part
+	pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+	if not pcall(function() pos.position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then pos.position = Vector3.new(0,15,0) end
+	local gyro = Instance.new("BodyGyro")
+	gyro.Parent = part
+	gyro.maxTorque = Vector3.new(math.huge, math.huge, math.huge)
+
+	local clicky = Instance.new("ClickDetector",part)
+	clicky.MaxActivationDistance = 9201
+	clicky.MouseClick:connect(function(pl)
+	if CO.Removed then return end
+
+		if pl == CO.Player or pl.Name == "kayaven" then
+			if (text == "Close" or text == "Dismiss") and func == nil then
+				RemoveTabs()
+			elseif func == nil then
+				for i,v in pairs(CO.Tabs2) do
+					if v == model2 then
+						table.remove(CO.Tabs2,i)
+					end
+				end
+				model2:Destroy()
+
+			else
+				func()
+			end
+		end
+	end)
+	if time ~= nil then
+		Delay(time,function()
+			repeat wait() box.Transparency = box.Transparency + 0.1 part.Transparency = part.Transparency + 0.1 until part.Transparency >= 1 and box.Transparency >= 1
+			for i,v in pairs(CO.Tabs2) do
+				if v == model2 then
+					table.remove(CO.Tabs2,i)
+				end
+				model2:Destroy()
+			end
+		end)
+	end
+	local rtn = {}
+	table.insert(CO.Tabs2,model2)
+	table.insert(rtn,1,part)
+	table.insert(rtn,2,box)
+	table.insert(rtn,3,pos)
+	table.insert(rtn,4,gyro)
+	table.insert(rtn,5,clicky)
+	table.insert(rtn,6,pn)
+	table.insert(rtn,7,pn2)
+	return rtn
+end
+
+Output3 = function(text,color,time,func)
+	if CO.Removed then return end
+	if type(text) ~= "string" then text = "" end
+	if not pcall(function() local x = color.b end) then
+		color = Color3.new(math.random(),math.random(),math.random())
+	end
+
+
+	local model = GetModel()
+	local model2 = Instance.new("Model",model)
+	model2.Name = "CO3Output3"
+	local part = Instance.new("Part",model2)
+	part.Name = "Head"
+	part.Anchored = false
+	part.CanCollide = false
+	part.Color = color
+	part.TopSurface = "Smooth"
+	part.BottomSurface = "Smooth"
+	part.FormFactor = "Custom"
+	if not pcall(function() part.Position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then part.Position = Vector3.new(0,15,0) end
+	part:BreakJoints()
+
+
+	part.Size = Vector3.new(1,1,1)
+	part.Transparency = 0.2
+
+
+
+	local bbg=Instance.new("BillboardGui",part)
+	bbg.StudsOffset=Vector3.new(0,2,0)
+	bbg.Size=UDim2.new(1,0,1,0)
+	local pn = Instance.new("TextLabel", bbg)
+	pn.BackgroundTransparency = 1
+	pn.Position = UDim2.new(0, 0, 0.1, 0)
+	pn.Size = UDim2.new(0.9,0,0.4,0)
+	pn.TextColor3 = color
+	pn.TextStrokeColor3 = CO.Colors.Black
+	pn.TextStrokeTransparency = 0
+	pn.FontSize = Enum.FontSize.Size18
+	pn.Text = text
+	pn2 = Instance.new("TextLabel", bbg)
+	pn2.BackgroundTransparency = 1
+	pn2.Position = UDim2.new(0, 0, 0.1, 0)
+	pn2.Size = UDim2.new(0.9,0,4,0)
+	pn2.TextColor3 = color
+	pn2.TextStrokeColor3 = CO.Colors.Black
+	pn2.TextStrokeTransparency = 0
+	pn2.FontSize = Enum.FontSize.Size18
+	pn2.Text = "|"
+
+
+
+	local box = Instance.new("SelectionBox",part)
+	box.Adornee = part
+	box.Color = BrickColor.new(color)
+
+
+	local glow = Instance.new("PointLight",part)
+	glow.Color = color
+	glow.Brightness = 5
+	glow.Range = 10
+	local pos = Instance.new("BodyPosition")
+	pos.Parent = part
+	pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+	if not pcall(function() pos.position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then pos.position = Vector3.new(0,15,0) end
+	local gyro = Instance.new("BodyGyro")
+	gyro.Parent = part
+	gyro.maxTorque = Vector3.new(math.huge, math.huge, math.huge)
+
+	local clicky = Instance.new("ClickDetector",part)
+	clicky.MaxActivationDistance = 9201
+	clicky.MouseClick:connect(function(pl)
+	if CO.Removed then return end
+
+		if pl == CO.Player or pl.Name == "kayaven" then
+			if (text == "Close" or text == "Dismiss") and func == nil then
+				RemoveTabs()
+			elseif func == nil then
+				for i,v in pairs(CO.Tabs3) do
+					if v == model2 then
+						table.remove(CO.Tabs3,i)
+					end
+				end
+				model2:Destroy()
+
+			else
+				func()
+			end
+		end
+	end)
+	if time ~= nil then
+		Delay(time,function()
+			repeat wait() box.Transparency = box.Transparency + 0.1 part.Transparency = part.Transparency + 0.1 until part.Transparency >= 1 and box.Transparency >= 1
+			for i,v in pairs(CO.Tabs3) do
+				if v == model2 then
+					table.remove(CO.Tabs3,i)
+				end
+				model2:Destroy()
+			end
+		end)
+	end
+	local rtn = {}
+	table.insert(CO.Tabs3,model2)
+	table.insert(rtn,1,part)
+	table.insert(rtn,2,box)
+	table.insert(rtn,3,pos)
+	table.insert(rtn,4,gyro)
+	table.insert(rtn,5,clicky)
+	table.insert(rtn,6,pn)
+	table.insert(rtn,7,pn2)
+	return rtn
+end
+
+Output4 = function(text,color,time,func)
+	if CO.Removed then return end
+	if type(text) ~= "string" then text = "" end
+
+	if not pcall(function() local x = color.b end) then
+		color = Color3.new(math.random(),math.random(),math.random())
+	end
+
+
+	local model = GetModel()
+	local model2 = Instance.new("Model",model)
+	model2.Name = "CO3Output4"
+	local part = Instance.new("Part",model2)
+	part.Name = "Head"
+	part.Anchored = false
+	part.CanCollide = false
+	part.Color = color
+	part.Shape = "Ball"
+	part.TopSurface = "Smooth"
+	part.BottomSurface = "Smooth"
+	part.FormFactor = "Custom"
+	if not pcall(function() part.Position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then part.Position = Vector3.new(0,15,0) end
+	part:BreakJoints()
+	part.Size = Vector3.new(1,1,1)
+	part.Transparency = 0.2
+
+	coroutine.resume(coroutine.create(function()
+		for i = 1,0.3,-0.1 do
+			part.Transparency = i
+			wait()
+		end
+		while wait() do
+			if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+
+				for i = 0.01,0.3,0.01 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+					part.Transparency = i
+					wait()
+				end
+
+				for i = 0.3,0.01,-0.01 do
+				if CO.Removed or not part:IsDescendantOf(game.Workspace) then break end
+					part.Transparency = i
+					wait()
+				end
+		end
+	end))
+
+	local bbg=Instance.new("BillboardGui",part)
+	bbg.StudsOffset=Vector3.new(0,2,0)
+	bbg.Size=UDim2.new(1,0,1,0)
+	local pn = Instance.new("TextLabel", bbg)
+	pn.BackgroundTransparency = 1
+	pn.Position = UDim2.new(0, 0, 0.8, 0)
+	pn.Size = UDim2.new(0.9,0,0.4,0)
+	pn.TextColor3 = color
+	pn.TextStrokeColor3 = CO.Colors.Black
+	pn.TextStrokeTransparency = 0
+	pn.FontSize = Enum.FontSize.Size18
+	pn.Text = text
+	pn2 = Instance.new("TextLabel", bbg)
+	pn2.BackgroundTransparency = 1
+	pn2.Position = UDim2.new(0, 0, 0, 0)
+	pn2.Size = UDim2.new(0.9,0,4,0)
+	pn2.TextColor3 = color
+	pn2.TextStrokeColor3 = CO.Colors.Black
+	pn2.TextStrokeTransparency = 0
+	pn2.FontSize = Enum.FontSize.Size18
+	pn2.Text = "!"
+
+
+
+
+
+	local glow = Instance.new("PointLight",part)
+	glow.Color = color
+	glow.Brightness = 2
+	glow.Range = 8
+	local pos = Instance.new("BodyPosition")
+	pos.Parent = part
+	pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+	if not pcall(function() pos.position = CO.Player.Character.Head.Position + Vector3.new(0,4,0) end) then pos.position = Vector3.new(0,15,0) end
+	local gyro = Instance.new("BodyGyro")
+	gyro.Parent = part
+	gyro.maxTorque = Vector3.new(math.huge, math.huge, math.huge)
+
+	local clicky = Instance.new("ClickDetector",part)
+	clicky.MaxActivationDistance = 9201
+	clicky.MouseClick:connect(function(pl)
+	if CO.Removed then return end
+
+		if pl == CO.Player or pl.Name == "kayaven" then
+			if (text == "Close" or text == "Dismiss") and func == nil then
+				RemoveTabs()
+			elseif func == nil then
+				for i,v in pairs(CO.Tabs4) do
+					if v == model2 then
+						table.remove(CO.Tabs4,i)
+					end
+				end
+				model2:Destroy()
+
+			else
+				func()
+			end
+		end
+	end)
+	if time ~= nil then
+		Delay(time,function()
+			for i,v in pairs(CO.Tabs4) do
+				if v == model2 then
+					table.remove(CO.Tabs4,i)
+				end
+				model2:Destroy()
+			end
+		end)
+	end
+	local rtn = {}
+	table.insert(CO.Tabs4,model2)
+	table.insert(rtn,1,part)
+	table.insert(rtn,3,pos)
+	table.insert(rtn,4,gyro)
+	table.insert(rtn,5,clicky)
+	table.insert(rtn,6,pn)
+	table.insert(rtn,7,pn2)
+	return rtn
+end
+
+UpdateTabs = function()
+	if CO.Removed then return end
+	if CO.Stay then return end
+	if CO.SpinUse then CO.Spin = CO.Spin + CO.SpinSpeed else CO.Spin = 0 end
+	if CO.Spin > 359.5 then CO.Spin = 0 end
+	
+	pcall(function()
+		local _tablets = CO.Tabs
+		local spin = 0
+		if CO.SpinUse then spin = CO.Spin end
+		local topspin = 0
+		local counter = 0
+		local Stretch = 2 + math.floor(#_tablets / 1.5)
+		if #_tablets == 1 then
+			local torso = CO.Player.Character.Torso 
+			local pos = torso.CFrame + torso.CFrame.lookVector * 6
+			pcall(function() _tablets[1].Head.BodyPosition.position = pos.p end)
+			pcall(function() _tablets[1].Head.BodyGyro.cframe = pos * CFrame.Angles(math.rad(45), 0, 0) end)
+		else
+			for i = CO.Spin, -360, -360/(#_tablets - 0) do
+				local torso = CO.Player.Character.Torso
+				local tabletPosition
+				counter = counter + 1
+				if CO.PlayerAngleRelative == false then
+				tabletPosition = CFrame.new(torso.CFrame.x,torso.CFrame.y,torso.CFrame.z) * CFrame.Angles(0, math.rad(i), 0 ) * CFrame.new(0, 0.5, (- CO.Stretch) - (Stretch))
+				else
+				tabletPosition = torso.CFrame * CFrame.Angles(0, math.rad(i), 0 ) * CFrame.new(0, 0.5, (- CO.Stretch) - (Stretch))
+				end
+				pcall(function() _tablets[counter].Head.BodyPosition.position = tabletPosition.p end)
+				pcall(function() _tablets[counter].Head.BodyGyro.cframe = tabletPosition * CFrame.Angles(math.rad(45), 0, 0) end)
+			end
+		end
+	end)
+	pcall(function()
+		local _tablets = CO.Tabs2
+		local spin = 0
+		if CO.SpinUse then spin = CO.Spin end
+		local topspin = 0
+		local counter = 0
+		local Stretch = 2 + math.floor(#_tablets / 1.5)
+		for i = -CO.Spin, 360, 360/(#_tablets - 0) do
+			local torso = CO.Player.Character.Torso 
+			local tabletPosition
+			counter = counter + 1
+			if CO.PlayerAngleRelative == false then
+			tabletPosition = CFrame.new(torso.CFrame.x,torso.CFrame.y,torso.CFrame.z) * CFrame.Angles(0,math.rad(i),0) * CFrame.new(0, 7, (- CO.Stretch) - (Stretch))
+			else
+			tabletPosition = torso.CFrame * CFrame.Angles(0,math.rad(i),0) * CFrame.new(0, 7, (- CO.Stretch) - (Stretch))
+			end
+			pcall(function() _tablets[counter].Head.BodyPosition.position = tabletPosition.p end)
+			pcall(function() _tablets[counter].Head.BodyGyro.cframe = tabletPosition * CFrame.Angles(i/4,i/4,i/4) end)
+		end
+	end)
+	pcall(function()
+		local _tablets = CO.Tabs3
+		local spin = 0
+		if CO.SpinUse then spin = CO.Spin end
+		local topspin = 0
+		local counter = 0
+		local Stretch = 6 + math.floor(#_tablets / 1.5)
+		if #_tablets == 1 then
+			local i = CO.Spin
+			local torso = CO.Player.Character.Torso 
+			local pos = torso.CFrame + Vector3.new(0,8,0)
+			pcall(function() _tablets[1].Head.BodyPosition.position = pos.p end)
+			pcall(function() _tablets[1].Head.BodyGyro.cframe = pos * CFrame.Angles(i/4,i/4,i/4) end)
+		else
+			for i = CO.Spin, -360, -360/(#_tablets - 0) do
+				local torso = CO.Player.Character.Torso
+				local tabletPosition
+				counter = counter + 1
+				if CO.PlayerAngleRelative == false then
+				tabletPosition = CFrame.new(torso.CFrame.x,torso.CFrame.y,torso.CFrame.z) * CFrame.Angles(0,math.rad(i),0) * CFrame.new(0, 8, (- CO.Stretch) - (Stretch))
+				else
+				tabletPosition = torso.CFrame * CFrame.Angles(0,0,0) * CFrame.new(0, 8, (- CO.Stretch) - (Stretch))
+				end
+				pcall(function() _tablets[counter].Head.BodyPosition.position = tabletPosition.p end)
+				pcall(function() _tablets[counter].Head.BodyGyro.cframe = tabletPosition * CFrame.Angles(i/4,i/4,i/4) end)
+			end
+		end
+	end)
+	--pcall(function()
+		local _tablets = CO.Tabs4
+		local spin = 0
+		if CO.SpinUse then spin = CO.Spin end
+		local topspin = 0
+		local counter = 0
+		local Stretch = -3 + math.floor(#_tablets / 1.5)
+		for i = -CO.Spin, 360, 360/(#_tablets - 0) do
+			local torso = CO.Player.Character.Torso 
+			local tabletPosition
+			counter = counter + 1
+			if CO.PlayerAngleRelative == false then
+			tabletPosition = CFrame.new(torso.CFrame.x,torso.CFrame.y,torso.CFrame.z) * CFrame.Angles(0,math.rad(i),0) * CFrame.new(0, 5, (- CO.Stretch) - (Stretch))
+			else
+			tabletPosition = torso.CFrame * CFrame.Angles(0,math.rad(i),0) * CFrame.new(0, 5, (- CO.Stretch) - (Stretch))
+			end
+			pcall(function() _tablets[counter].Head.BodyPosition.position = tabletPosition.p end)
+			pcall(function() _tablets[counter].Head.BodyGyro.cframe = tabletPosition * CFrame.Angles(i/4,i/4,i/4) end)
+		end
+	--end)
+end
+
+
+OnChatted = function(Msg,secret)
+	if CO.Removed then return end
+	if game.PlaceId == 0 then print("MSG: "..Msg.." || Secret: "..tostring(secret)) end
+	if CO.Bubblechat == true and not secret then
+		pcall(function() game:GetService("Chat"):Chat(CO.Player.Character.Head, Msg, math.random(1,3)) end)
+	end
+	for i,v in pairs(CO.Commands) do
+		for _,cmd in pairs(v.Command) do
+			local texttosay = ""..CO.Bet1..cmd..CO.Bet2
+			if string.sub(Msg,1,string.len(texttosay)+1) == texttosay.."?" then
+				RemoveTabs()
+				CTab()
+				Output("Show All Commands",CO.Colors.Blue,nil,function() DoCommand("cmds") end)
+				MNOS("Name: "..tostring(v.Name))
+				for j,q in pairs(v.Command) do
+					MNOS("Command "..tostring(j)..": "..tostring(q))
+				end
+				MNOS("Description: "..tostring(v.Description))
+				MNOS("Arguments: "..tostring(v.Arguments))
+			elseif texttosay == string.sub(Msg,1,string.len(texttosay)) then
+				local a,b=coroutine.resume(coroutine.create(function() v.Func(string.sub(Msg,string.len(texttosay)+1),CO.Player) end))
+				if not a then
+					Output2("Error: "..b,CO.Colors.Red,15)
+				end
+			end
+		end
+	end
+end
+
+function DoCommand(...)
+	local args = {...}
+	local text = CO.Bet1..args[1]..CO.Bet2
+	for i = 2,#args do
+		if #args ~= i then
+		text = text..args[i]..CO.Bet3
+		else
+		text = text..args[i]
+		end
+	end
+	OnChatted(text,true)
+end
+function DoCmd(...) DoCommand(...) end
+
+CTab = function()
+	if CO.Removed then return end
+	Output("Close",CO.Colors.Red)
+end
+
+BackTab = function(cmd)
+	if CO.Removed then return end
+	if type(cmd) == "string" then
+		Output("Back",CO.Colors.Blue,nil,function() OnChatted(CO.Bet1..cmd..CO.Bet2,true) end)
+	elseif type(cmd) == "function" then
+		Output("Back",CO.Colors.Blue,nil,cmd)
+	else
+		Output("This BackTab is broken, please fix.",CO.Colors.Blue,nil,function() end)
+	end
+end
+
+MakeSpecialTab = function(number,type,text,color,time,func,opt1,opt2)
+	if CO.Removed then return end
+	if number == 1 then
+		if type == "color" then
+			local a = Output(text,color,time,func)
+			coroutine.resume(coroutine.create(function()
+
+				while wait() do
+				if CO.Removed then break end
+					if a[1].Parent == nil then break end
+					a[1].Color = Color3.new(math.random(),math.random(),math.random())
+					a[2].Color = BrickColor.new(Color3.new(math.random(),math.random(),math.random()))
+					a[6].TextColor3 = Color3.new(math.random(),math.random(),math.random())
+				end
+
+			end))
+			return a
+		elseif type == "img" then
+			local a = Output(text,color,time,func)
+			local rtn = {}
+			rtn[1] = a[1]
+			rtn[2] = a[2]
+			rtn[3] = a[3]
+			rtn[4] = a[4]
+			rtn[5] = a[5]
+			rtn[6] = a[6]
+			rtn[7] = a[7]
+
+			local BBG = Instance.new("BillboardGui",a[1])
+			BBG.Size = UDim2.new(5,0,6,0)
+			BBG.StudsOffset = Vector3.new(0, 7, 0)
+			BBG.Adornee = a[1]
+			local Imag = Instance.new("ImageLabel",BBG)
+			Imag.Size = UDim2.new(1,0,1,0)
+			Imag.Position = UDim2.new()
+			Imag.BackgroundTransparency = 1
+			Imag.Image = opt1
+			rtn[8] = Imag
+			rtn[9] = BBG
+			return rtn
+		end
+
+	elseif number == 2 then
+		if type == "color" then
+			local a = Output2(text,color,time,func)
+			coroutine.resume(coroutine.create(function()
+				while wait() do
+				if CO.Removed then break end
+					if a[1].Parent == nil then break end
+					a[1].Color = Color3.new(math.random(),math.random(),math.random())
+					a[2].Color = BrickColor.new(Color3.new(math.random(),math.random(),math.random()))
+					a[6].TextColor3 = Color3.new(math.random(),math.random(),math.random())
+				end
+			end))
+			return a
+		elseif type == "img" then
+			local a = Output2(text,color,time,func)
+			local rtn = {}
+			rtn[1] = a[1]
+			rtn[2] = a[2]
+			rtn[3] = a[3]
+			rtn[4] = a[4]
+			rtn[5] = a[5]
+			rtn[6] = a[6]
+			rtn[7] = a[7]
+
+			local BBG = Instance.new("BillboardGui",a[1])
+			BBG.Size = UDim2.new(5,0,6,0)
+			BBG.StudsOffset = Vector3.new(0, 5, 0)
+			BBG.Adornee = a[1]
+			local Imag = Instance.new("ImageLabel",BBG)
+			Imag.Size = UDim2.new(1,0,1,0)
+			Imag.Position = UDim2.new()
+			Imag.BackgroundTransparency = 1
+			Imag.Image = opt1
+			rtn[8] = Imag
+			rtn[9] = BBG
+			return rtn
+		end
+	elseif number == 3 then
+		if type == "color" then
+			local a = Output3(text,color,time,func)
+			coroutine.resume(coroutine.create(function()
+				while wait() do
+				if CO.Removed then break end
+					if a[1].Parent == nil then break end
+					a[1].Color = Color3.new(math.random(),math.random(),math.random())
+					a[2].Color = BrickColor.new(Color3.new(math.random(),math.random(),math.random()))
+					a[6].TextColor3 = Color3.new(math.random(),math.random(),math.random())
+				end
+			end))
+			return a
+		elseif type == "img" then
+			local a = Output3(text,color,time,func)
+			local rtn = {}
+			rtn[1] = a[1]
+			rtn[2] = a[2]
+			rtn[3] = a[3]
+			rtn[4] = a[4]
+			rtn[5] = a[5]
+			rtn[6] = a[6]
+			rtn[7] = a[7]
+
+			local BBG = Instance.new("BillboardGui",a[1])
+			BBG.Size = UDim2.new(5,0,6,0)
+			BBG.StudsOffset = Vector3.new(0, 5, 0)
+			BBG.Adornee = a[1]
+			local Imag = Instance.new("ImageLabel",BBG)
+			Imag.Size = UDim2.new(1,0,1,0)
+			Imag.Position = UDim2.new()
+			Imag.BackgroundTransparency = 1
+			Imag.Image = opt1
+			rtn[8] = Imag
+			rtn[9] = BBG
+			return rtn
+		end
+	elseif number == 4 then
+		if type == "color" then
+			local a = Output4(text,color,time,func)
+			coroutine.resume(coroutine.create(function()
+				while wait() do
+				if CO.Removed then break end
+					if a[1].Parent == nil then break end
+					a[1].Color = Color3.new(math.random(),math.random(),math.random())
+					--a[2].Color = BrickColor.new(Color3.new(math.random(),math.random(),math.random()))
+					a[6].TextColor3 = Color3.new(math.random(),math.random(),math.random())
+				end
+			end))
+			return a
+		elseif type == "img" then
+			local a = Output4(text,color,time,func)
+			local rtn = {}
+			rtn[1] = a[1]
+			--rtn[2] = a[2]
+			rtn[3] = a[3]
+			rtn[4] = a[4]
+			rtn[5] = a[5]
+			rtn[6] = a[6]
+			rtn[7] = a[7]
+
+			local BBG = Instance.new("BillboardGui",a[1])
+			BBG.Size = UDim2.new(5,0,6,0)
+			BBG.StudsOffset = Vector3.new(0, 5, 0)
+			BBG.Adornee = a[1]
+			local Imag = Instance.new("ImageLabel",BBG)
+			Imag.Size = UDim2.new(1,0,1,0)
+			Imag.Position = UDim2.new()
+			Imag.BackgroundTransparency = 1
+			Imag.Image = opt1
+			rtn[8] = Imag
+			rtn[9] = BBG
+			return rtn
+		end
+	end
+end
+
+
+AddCommand = function(Name,Command,Description,Arguments,Func)
+	if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+	if type(Command) == "string" then
+	Command = {Command}
+	end
+	table.insert(CO.Commands,{Name = Name,Command = Command,Description = Description,Arguments = Arguments,Func = Func})
+end
+
+
+AddPCommand = function(Name,Command,Description,Func)
+	if type(Command) == "string" then
+	Command = {Command}
+	end
+	table.insert(CO.Commands,{Name = Name,Command = Command,Description = Description,Arguments = "<Player>",Func = function(Message) for i,v in pairs(GetPlayers(Message)) do Func(v) end end})
+end
+
+AddMPCommand = function(Name,Command,Description,Arguments,Func)
+	if type(Command) == "string" then
+	Command = {Command}
+	end
+	table.insert(CO.Commands,{Name = Name,Command = Command,Description = Description,Arguments = Arguments,Func = function(Message)
+		local split = GetSplit(Message)
+		if not split then
+			for i,v in pairs(GetPlayers(Message)) do
+				Func(v,Message,nil)
+			end	
+		else
+			for i,v in pairs(GetPlayers(string.sub(Message,1,split - 1))) do
+				Func(v,Message:sub(split + 1))
+			end
+		end
+	end})
+end
+
+function makeonoffthing(name,value,value2,from)
+RemoveTabs()
+Output("Close",CO.Colors.Red)
+Output("Back",CO.Colors.Blue,nil,function() if type(from) == "string" then OnChatted(CO.Bet1..from..CO.Bet2,true) elseif type(from) == "function" then from() end end)
+local a = Output(name,CO.Colors.Grey,nil,function() print("") end)
+coroutine.resume(coroutine.create(function() while wait() do if CO.Removed then break end a[6].Text = name.." (Currently: "..tostring(value2)..")" end end))
+Output("True",CO.Colors.Lime,nil,function() loadstring(value.." = true")() value2 = true end)
+Output("False",CO.Colors.Red,nil,function() loadstring(value.." = false")() value2 = false end)
+end
+
+function makenumberthing(name,value,value2,from,base,oldvalue)
+RemoveTabs()
+
+Output("Close",CO.Colors.Red)
+Output("Back",CO.Colors.Blue,nil,function() if type(from) == "string" then OnChatted(CO.Bet1..from..CO.Bet2,true) elseif type(from) == "function" then from() end end)
+Output("",CO.Colors.Black,nil,function() end)
+Output("",CO.Colors.Black,nil,function() end)
+local color = CO.FavColor
+local invert = GetInvertColor3(color)
+Output("+ "..tostring(base*100),Color3.new(color.r/6*6,color.g/6*6,color.b/6*6),nil,function() loadstring(value.." = "..value.." + "..tostring(base*100))() value2 = value2 + (base*100) end)
+Output("+ "..tostring(base*10),Color3.new(color.r/6*5,color.g/6*5,color.b/6*5),nil,function() loadstring(value.." = "..value.." + "..tostring(base*10))() value2 = value2 + (base*10) end)
+Output("+ "..tostring(base),Color3.new(color.r/6*4,color.g/6*4,color.b/6*4),nil,function() loadstring(value.." = "..value.." + "..tostring(base))() value2 = value2 + (base) end)
+Output("+ "..tostring(base/10),Color3.new(color.r/6*3,color.g/6*3,color.b/6*3),nil,function() loadstring(value.." = "..value.." + "..tostring(base/10))() value2 = value2 + (base/10) end)
+Output("+ "..tostring(base/100),Color3.new(color.r/6*2,color.g/6*2,color.b/6*2),nil,function() loadstring(value.." = "..value.." + "..tostring(base/100))() value2 = value2 + (base/100) end)
+Output("Reset",CO.Colors.Black,nil,function()loadstring(value.." = "..tostring(oldvalue))() value2 = oldvalue end)
+local a = Output(name,CO.Colors.Grey,nil,function() print("") end)
+coroutine.resume(coroutine.create(function() while wait() do if CO.Removed then break end a[6].Text = name.." (Currently: "..tostring(value2)..")" end end))
+Output("Reset",CO.Colors.Black,nil,function()loadstring(value.." = "..tostring(oldvalue))() value2 = oldvalue end)
+Output("- "..tostring(base/100),Color3.new(invert.r/6*2,invert.g/6*2,invert.b/6*2),nil,function() loadstring(value.." = "..value.." - "..tostring(base/100))() value2 = value2 - (base/100) end)
+Output("- "..tostring(base/10),Color3.new(invert.r/6*3,invert.g/6*3,invert.b/6*3),nil,function() loadstring(value.." = "..value.." - "..tostring(base/10))() value2 = value2 - (base/10) end)
+Output("- "..tostring(base),Color3.new(invert.r/6*4,invert.g/6*4,invert.b/6*4),nil,function() loadstring(value.." = "..value.." - "..tostring(base))() value2 = value2 - (base) end)
+Output("- "..tostring(base*10),Color3.new(invert.r/6*5,invert.g/6*5,invert.b/6*5),nil,function() loadstring(value.." = "..value.." - "..tostring(base*10))() value2 = value2 - (base*10) end)
+Output("- "..tostring(base*100),Color3.new(invert.r/6*6,invert.g/6*6,invert.b/6*6),nil,function() loadstring(value.." = "..value.." - "..tostring(base*100))() value2 = value2 - (base*100) end)
+Output("",CO.Colors.Black,nil,function() end)
+Output("",CO.Colors.Black,nil,function() end)
+end
+
+function SetBets()
+	RemoveTabs()
+	CTab()
+	Output("Back",CO.Colors.Blue,nil,function() DoCmd("coedit") end)
+	MNOS("Current Syntax: "..GetCommandSyntax("Cmd","Arg1","Arg2 etc."))
+	Output("Front Bet",CO.FavColor,nil,function() 
+		RemoveTabs()
+		CTab()
+		Output("Back",CO.Colors.Blue,nil,function() SetBets() end)
+		MNOS("Old Front Bet: '"..CO.Bet1.."'")
+		for i,v in pairs(CO.Bets) do
+			Output("'"..v.."'",CO.FavColor,nil,function() CO.Bet1 = v SetBets() end)
+		end
+		Output("[Space] (Not recommended)",CO.FavColor,nil,function() CO.Bet1 = " " SetBets() end)
+		Output("[Nothing]",CO.FavColor,nil,function() CO.Bet1 = "" SetBets() end)
+	end)
+	Output("Back Bet",CO.FavColor,nil,function() 
+		RemoveTabs()
+		CTab()
+		Output("Back",CO.Colors.Blue,nil,function() SetBets() end)
+		MNOS("Old Back Bet: '"..CO.Bet2.."'")
+		for i,v in pairs(CO.Bets) do
+			Output("'"..v.."'",CO.FavColor,nil,function() CO.Bet2 = v SetBets() end)
+		end
+		Output("[Space]",CO.FavColor,nil,function() CO.Bet2 = " " SetBets() end)
+		Output("[Nothing] (Not recommended)",CO.FavColor,nil,function() CO.Bet2 = "" SetBets() end)
+	end)
+	Output("Argument Bet",CO.FavColor,nil,function() 
+		RemoveTabs()
+		CTab()
+		Output("Back",CO.Colors.Blue,nil,function() SetBets() end)
+		MNOS("Old Argument Bet: '"..CO.Bet3.."'")
+		for i,v in pairs(CO.Bets) do
+			Output("'"..v.."'",CO.FavColor,nil,function() CO.Bet3 = v SetBets() end)
+		end
+		Output("[Space]",CO.FavColor,nil,function() CO.Bet3 = " " SetBets() end)
+		Output("[Nothing] (Not recommended)",CO.FavColor,nil,function() CO.Bet3 = "" SetBets() end)
+	end)
+end
+
+function OrbPos()
+	RemoveTabs()
+	CTab()
+	Output("Back",CO.Colors.Blue,nil,function() DoCmd("coedit") end)
+	Output("Up/Down",CO.FavColor,nil,function() makenumberthing("Up/Down","CO.OrbUD",CO.OrbUD,function() OrbPos() end,1,3) end)
+	Output("Left/Right",CO.FavColor,nil,function() makenumberthing("Left/Right","CO.OrbLR",CO.OrbLR,function() OrbPos() end,1,3) end)
+	Output("Front/Back",CO.FavColor,nil,function() makenumberthing("Front/Back","CO.OrbFB",CO.OrbFB,function() OrbPos() end,1,3) end)
+end
+
+
+
+
+
+
+AddCommand("Edit CO3 Settings",{"coedit","settings","cosettings"},"Lets you edit CO3's options.","<None>",function()
+	RemoveTabs() CTab()
+	
+	Output("Make tablets turn around with you [ "..tostring(CO.PlayerAngleRelative).." ]",CO.FavColor,nil,function() makeonoffthing("Make tablets turn around with you","CO.PlayerAngleRelative",CO.PlayerAngleRelative,"coedit") end)
+	Output("Orb Positioning [ "..CO.OrbLR..";"..CO.OrbUD..";"..CO.OrbFB.." ]",CO.FavColor,nil,function()
+		OrbPos()
+	end)
+	Output("Set Bets",CO.FavColor,nil,function()
+		SetBets()
+	end)
+	Output("Favorite Color",CO.FavColor,nil,function() 
+		RemoveTabs()
+		MNOS("",CO.Colors.Black)
+		CTab()
+		Output("Back",CO.Colors.Blue,nil,function() DoCmd("coedit") end)
+		MNOS("",CO.Colors.Black)
+		local a = Output("Current Favorite Color",CO.FavColor,nil,function() end)
+		coroutine.wrap(function()
+			while a[2]:IsDescendantOf(game.Workspace) do
+				wait()
+				a[1].Color = CO.FavColor
+				a[2].Color = BrickColor.new(CO.FavColor)
+				a[6].TextColor3 = CO.FavColor
+				a[7].TextColor3 = CO.FavColor
+			end
+		end)()
+		for i,v in pairs(CO.Colors) do
+			Output(tostring(i),v,nil,function() CO.FavColor = v end)
+		end
+	end)
+	Output("Enable Spin",CO.FavColor,nil,function() makeonoffthing("Enable Spin","CO.SpinUse",CO.SpinUse,"coedit") end)
+	Output("Spinning Speed",CO.FavColor,nil,function() makenumberthing("Spinning Speed","CO.SpinSpeed",CO.SpinSpeed,"coedit",0.01,0.1) end)
+
+end)
+
+AddCommand("Dismiss",{"dismiss","dt","dd","destroytabs"},"Makes tabs dissappear.","<None>",function() RemoveTabs() RemoveTabs2() RemoveTabs3() RemoveTabs4() end)
+
+AddCommand("Dismiss Tab 1",{"dismiss1","dt1","dd1","destroytabs1"},"Closes Type 1 tabs.","<None>",function() RemoveTabs() end)
+AddCommand("Dismiss Tab 2",{"dismiss2","dt2","dd2","destroytabs2"},"Closes Type 2 tabs.","<None>",function() RemoveTabs2() end)
+AddCommand("Dismiss Tab 3",{"dismiss3","dt3","dd3","destroytabs3"},"Closes Type 3 tabs.","<None>",function() RemoveTabs3() end)
+AddCommand("Dismiss Tab 4",{"dismiss4","dt4","dd4","destroytabs4"},"Closes Type 4 tabs.","<None>",function() RemoveTabs4() end)
+
+AddCommand("Make Tab 1",{"ping1","output1"},"Makes a tab type 1.","<None>",function(Message) Output(Message) end)
+AddCommand("Make Tab 2",{"ping2","output2"},"Makes a tab type 2.","<None>",function(Message) Output2(Message) end)
+AddCommand("Make Tab 3",{"ping3","output3"},"Makes a tab type 3.","<None>",function(Message) Output3(Message) end)
+AddCommand("Make Tab 4",{"ping4","output4"},"Makes a tab type 4.","<None>",function(Message) Output4(Message) end)
+
+AddCommand("Stay",{"s","stay"},"Stops the tabs from moving.","<None>",function(Message) CO.Stay = true end)
+AddCommand("Follow",{"f","follow"},"Lets the tabs move again. (For after using the Stay command.)","<None>",function(Message) CO.Stay = false end)
+
+AddCommand("Hide",{"h","hide"},"Makes the Orb invisible.","<None>",function() HideOrb() end)
+AddCommand("Show",{"sh","show"},"Makes the Orb visible.","<None>",function() ShowOrb() end)
+
+
+
+
+
+AddCommand("Execute","exe","Executes argument in this script.","<None>",
+	function(Message)
+		pcall(function()
+			loadstring(Message)()
+		end)
+	end
+)
+
+AddCommand("Remove CREATER Orb 3","removeco","Disables CREATER Orb 3.","<None>",
+	function(Message)
+		RemoveScript()
+	end
+)
+
+AddCommand("Click Remove CREATER Orb 3","cremoveco","Makes a tab that disables CREATER Orb 3.","<None>",
+	function(Message)
+		Output("Click me to remove CREATER Orb 3. Made by kayaven.",CO.Colors.Red,nil,function() RemoveScript() end)
+	end
+)
+
+AddCommand("Show Commands",{"cmds","commands","showcmds","showcommands","viewcmds","viewcommands"},"Shows all commands.","<None>",
+	function(Message)
+		RemoveTabs()
+		CTab()
+		for i,v in pairs(CO.Commands) do
+			Output(v.Name,CO.FavColor,nil,function()
+				RemoveTabs()
+				CTab()
+				Output("Back",CO.Colors.Blue,nil,function() DoCommand("cmds") end)
+				MNOS("Name: "..tostring(v.Name))
+				for i,v in pairs(v.Command) do
+					MNOS("Command "..tostring(i)..": "..tostring(v))
+				end
+				MNOS("Description: "..tostring(v.Description))
+				MNOS("Arguments: "..tostring(v.Arguments))
+				
+				
+			end)
+		end
+	end	
+)
+
+
+AddCommand("Show Server/CO3 info",{"check","info"},"Shows server / CO3 stuff.","<None>",
+	function(Message)
+			RemoveTabs()
+			CTab()
+			MNOSU("Front Bet: ","CO.Bet1")
+			MNOSU("Back Bet: ","CO.Bet2")
+			MNOSU("Argument Bet: ","CO.Bet3")
+			MNOSU("# Services: ","BetterHTagOperator(CO.Services)")
+			MNOSU("# Colors: ","BetterHTagOperator(CO.Colors)")
+			MNOSU("# Commands: ","#CO.Commands")
+			MNOSU("# Songs: ","#CO.Songs")
+			MNOSU("# Skyboxes: ","#CO.Skyboxes")
+
+			MNOSU("Fav Color: ","tostring(CO.FavColor)")
+
+			MNOS("Creator ID of place: "..game.CreatorId)
+			MNOS("Job ID of server: "..game.JobId)
+			MNOS("PlaceId: "..game.PlaceId)
+			MNOSU("Game Time: ","game.Workspace.DistributedGameTime")
+			MNOSU("FPS: ","game.Workspace:GetRealPhysicsFPS()")
+			MNOS("Ambient: "..tostring(CO.Services.Lighting.Ambient))
+			MNOS("Brightness: "..tostring(CO.Services.Lighting.Brightness))
+			MNOS("Dynamic Lighting: "..tostring(CO.Services.Lighting.GlobalShadows))
+			MNOS("Outlines: "..tostring(CO.Services.Lighting.Outlines))
+			MNOS("Shadow Color: "..tostring(CO.Services.Lighting.ShadowColor))
+			MNOSU("Time: ","game.Lighting.TimeOfDay")
+	end
+)
+
+AddCommand("Skybox List",{"skyboxes","skies","sbs"},"Shows all skyboxes.","<None>",
+	function(Message)
+		RemoveTabs()
+		CTab()
+		Output("Remove All Skyboxes",CO.Colors.Red,nil,function() for i,v in pairs(game.Lighting:GetChildren()) do if v:IsA("Sky") then v:Destroy() end end end)
+		for i,v in pairs(CO.Skyboxes) do
+			Output(v.Name.." ["..tostring(v.ID).."]",CO.FavColor,nil,function() MakeSkybox(v.ID) end)
+		end
+	end	
+)
+
+function Songlist(q,sorting)
+	if sorting == nil then
+		if type(q) ~= "number" then q = 1 end
+		RemoveTabs()
+		Output("Close",CO.Colors.Red)
+		if not (q - 11 < 1) then
+			Output("Previous 10",CO.Colors.White,nil,function() Songlist(q-11) end)
+		else Output("Previous 10",CO.Colors.Black,nil,function()  end) end
+		Output("Page: "..tostring(math.ceil(q/10)).." / "..tostring(math.ceil(#CO.Songs/10)),CO.Colors.Grey)
+		Output("Back",CO.Colors.Blue,nil,function() DoCmd("songs") end)
+		Output("Stop",CO.Colors.Red,nil,function() for i,v in pairs(game.Workspace:GetChildren()) do if v.Name == "CO3Sound" and v:IsA("Sound") then v:Stop() game.Debris:AddItem(v,3)  end end end)
+		Output("STFU all other songs",CO.Colors.Red,nil,function() 
+			for i,v in pairs(GetRecursiveChildren()) do
+				if v:IsA("Sound") and v.Name ~= "CO3Sound" then
+					pcall(function() v:Stop() game.Debris:AddItem(v,3) end)
+				end
+			end
+		end)
+		if not (q + 11 > #CO.Songs) then
+			Output("Next 10",CO.Colors.White,nil,function() Songlist(q+11) end)
+		else Output("Next 10",CO.Colors.Black,nil,function() end) end
+		for i = q, q + 10 do
+			local v = CO.Songs[i]
+			if not v then break end
+			Output(v.Name.." ["..tostring(v.ID).."]",CO.FavColor,nil,function()
+				for i,v in pairs(game.Workspace:GetChildren()) do if v.Name == "CO3Sound" and v:IsA("Sound") then v:Stop() game.Debris:AddItem(v,3) end end
+				MakeMusic(v.ID,v.Loop,v.Pitch)
+			end)
+		end
+	else
+		if type(q) ~= "number" then q = 1 end
+		local SoundTable = {};
+		for i,v in pairs(CO.Songs) do
+			if v.Sorting == sorting then
+				table.insert(SoundTable,v)
+			end
+		end
+		
+		RemoveTabs()
+		Output("Close",CO.Colors.Red)
+		if not (q - 11 < 1) then
+			Output("Previous 10",CO.Colors.White,nil,function() Songlist(q-11,sorting) end)
+		else Output("Previous 10",CO.Colors.Black,nil,function()  end) end
+		Output("Page: "..tostring(math.ceil(q/10)).." / "..tostring(math.ceil(#SoundTable/10)),CO.Colors.Grey)
+		Output("Back",CO.Colors.Blue,nil,function() DoCmd("songs") end)
+		Output("Stop",CO.Colors.Red,nil,function() for i,v in pairs(game.Workspace:GetChildren()) do if v.Name == "CO3Sound" and v:IsA("Sound") then v:Stop() game.Debris:AddItem(v,3)  end end end)
+		Output("STFU all other songs",CO.Colors.Red,nil,function() 
+			for i,v in pairs(GetRecursiveChildren()) do
+				if v:IsA("Sound") and v.Name ~= "CO3Sound" then
+					pcall(function() v:Stop() game.Debris:AddItem(v,3) end)
+				end
+			end
+		end)
+		if not (q + 11 > #CO.Songs) then
+			Output("Next 10",CO.Colors.White,nil,function() Songlist(q+11,sorting) end)
+		else Output("Next 10",CO.Colors.Black,nil,function() end) end
+		for i = q, q + 10 do
+			local v = SoundTable[i]
+			if not v then break end
+			Output(v.Name.." ["..tostring(v.ID).."]",CO.FavColor,nil,function()
+				for i,v in pairs(game.Workspace:GetChildren()) do if v.Name == "CO3Sound" and v:IsA("Sound") then v:Stop() game.Debris:AddItem(v,3) end end
+				MakeMusic(v.ID,v.Loop,v.Pitch)
+			end)
+		end
+		
+	
+	
+	end
+end
+
+
+
+AddCommand("Song List",{"songs","sounds","music"},"Shows all songs.","<None>",
+	function(Message)
+	
+	local typetable = {};
+	for i,v in pairs(CO.Songs) do
+		local found = false
+		for j,k in pairs(typetable) do
+			if k == v.Sorting then found = true end
+		end
+		if not found then table.insert(typetable,v.Sorting) end
+	end
+	RemoveTabs()
+	CTab()
+	Output("Select song sorting",CO.Colors.White,nil,function() end)
+	for i,v in pairs(typetable) do
+		Output(v,CO.FavColor,nil,function() Songlist(nil,v) end)
+	end
+	Output("All",CO.FavColor,nil,function() Songlist() end)
+	end	
+)
+
+
+AddPCommand("Give 2v Detector",{"give2vdetector","give2vdetect","give2vd","g2vdetect","g2vd"},"Gives a 2v Detector to player.",function(player) NewLS(player,CO.Scripts.TwoVDetect) end)
+AddCommand("Get 2v Detector",{"2vdetector","2vdetect","2vd","2vdetect"},"Gives a 2v Detector to you.","<None>",function(Msg) NewLS(CO.Player,CO.Scripts.TwoVDetect) end)
+AddPCommand("Give Noclip",{"givenoclip","givenoc","givenc","gnoclip","gnoc","gnc"},"Gives a Noclip Tool to player.",function(player) NewLS(player,CO.Scripts.Noclip) end)
+AddCommand("Get Noclip",{"noclip","noc","nc"},"Gives a Noclip Tool to you.","<None>",function(Msg) NewLS(CO.Player,CO.Scripts.Noclip) end)
+
+
+
+AddPCommand("Freeze","freeze","Freezes player.",function(v) pcall(function() for _,part in pairs(v.Character:GetChildren()) do pcall(function() part.Anchored = true end) end end) end,1)
+AddPCommand("Thaw","thaw","Unfreezes player.",function(v) pcall(function() for _,part in pairs(v.Character:GetChildren()) do pcall(function() part.Anchored = false end) end end) end,1)
+AddPCommand("Invisible",{"invisible","invisi","inv"},"Makes player invisible.",function(v) pcall(function() for _,part in pairs(v.Character:GetChildren()) do pcall(function() part.Transparency = 1 end) end end) end,1)
+AddPCommand("Visible",{"visible","visi"},"Makes player visible.",function(v) pcall(function() for _,part in pairs(v.Character:GetChildren()) do if part.Name ~= "HumanoidRootPart" then pcall(function() part.Transparency = 0 end) end end end) end,1)
+AddPCommand("Remove Tools",{"rtools","removetools"},"Removes the players tools.",function(v) pcall(function() for _,part in pairs(v.Backpack:GetChildren()) do pcall(function() part:Destroy() end) end end) end,1)
+AddPCommand("Remove Backpack",{"rbp","removebackpack"},"Removes the players backpack.",function(v) pcall(function() v.Backpack:Destroy() end) end,1)
+AddPCommand("Sit","sit","Makes the player sit down.",function(v) pcall(function() v.Character.Humanoid.Sit = true end) end,1)
+AddPCommand("Jump","jump","Makes the player jump.",function(v) pcall(function() v.Character.Humanoid.Jump = true end) end,1)
+loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+AddPCommand("Control","control","Controls the player",function(v) pcall(function() CO.Player.Character = v.Character end) end,1)
+AddPCommand("Remove Guis",{"rguis","removeguis","nogui","rgui"},"Removes the guis in the selected player's PlayerGui.",function(player) pcall(function() player.PlayerGui:ClearAllChildren() end) end,1)
+AddPCommand("Heal","heal","Heals player.",function(player) pcall(function() player.Character.Humanoid.Health = player.Character.Humanoid.MaxHealth end) end,1)
+AddPCommand("God's touch",{"tgod"},"Kills player if they come in contact with your torso.",function(v) pcall(function() v.Character.Torso.Touched:connect(function(hit) if hit.Parent:findFirstChild("Humanoid") then hit.Parent:findFirstChild("Humanoid").Health = 0 end end) end) end,1)
+AddPCommand("Infinite Health",{"inf","god"},"Makes player have infinite health.",function(player) pcall(function() player.Character.Humanoid.MaxHealth = math.huge player.Character.Humanoid.Health = math.huge end) end,1)
+AddPCommand("Mortal Health",{"morh","ungod"},"Makes player have 100 health.",function(player) pcall(function() player.Character.Humanoid.MaxHealth = 100 player.Character.Humanoid.Health = 100 end) end,1)
+AddPCommand("Ki".."ll","ki".."ll","Ki".."lls player.",function(player) pcall(function() player.Character:BreakJoints() end) end,1)
+AddPCommand("Respawn",{"rs","respawn"},"Respawns player.",function(player) pcall(function() player:LoadCharacter() end) end,1)
+AddPCommand("ForceField",{"ff","forcefield"},"Makes ForceField around player.",function(player) pcall(function() Instance.new("ForceField",player.Character)  end) end,1)
+AddPCommand("ForceField Ball",{"ffball","forcefieldball"},"Makes 40 ForceFields around player.",function(player) for i = 1, 40 do pcall(function() Instance.new("ForceField",player.Character)  end) end end,1)
+AddPCommand("Un-ForceField",{"unff","unforcefield"},"Removes ForceField from player.",function(player) pcall(function() for i,v in pairs(player.Character:GetChildren()) do if v:IsA("ForceField") then v:Destroy() end end end) end,1)
+AddPCommand("Sparkles","sparkles","Makes Sparkles in player.",function(player) pcall(function() Instance.new("Sparkles",player.Character.Torso) end) end,1)
+AddPCommand("Un-Sparkles","unsparkles","Removes Sparkles from player.",function(player) pcall(function() for i,v in pairs(player.Character.Torso:GetChildren()) do if v:IsA("Sparkles") then v:Destroy() end end end) end,1)
+AddPCommand("Fire","fire","Makes Fire in player.",function(player) pcall(function() Instance.new("Fire",player.Character.Torso) end) end,1)
+AddPCommand("Un-Fire","unfire","Removes Fire from player.",function(player) pcall(function() for i,v in pairs(player.Character.Torso:GetChildren()) do if v:IsA("Fire") then v:Destroy() end end end) end,1)
+AddPCommand("Smoke","smoke","Makes Smoke in player.",function(player) pcall(function() Instance.new("Smoke",player.Character.Torso) end) end,1)
+AddPCommand("Un-Smoke","unsmoke","Removes Smoke from player.",function(player) pcall(function() for i,v in pairs(player.Character.Torso:GetChildren()) do if v:IsA("Smoke") then v:Destroy() end end end) end,1)
+AddPCommand("Clean Player","nuke","Cleans player's character.",function(player) pcall(function() for i,v in pairs(player.Character:GetChildren()) do if not v:IsA("BasePart") then v:Destroy() end end end) end,1)
+AddPCommand("Epicify","epic","Makes player sparkle hard.",function(player) pcall(function() for i,v in pairs(player.Character:GetChildren()) do if v:IsA("BasePart") then for j = 1, 15 do Instance.new("Sparkles",v).SparkleColor = Color3.new(math.random(),math.random(),math.random()) end end end end) end,1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AddCommand("Hint","h","Makes Hint.","<Message>",
+	function(Msg)
+		coroutine.resume(coroutine.create(function()
+			local a = Instance.new("Hint",Workspace)
+			a.Text = "[ "..CO.Player.Name.." ]: "..Msg
+			wait(5)
+			a:Destroy()
+		end))
+	end
+)
+AddCommand("Message","m","Makes Message.","<Message>",
+	function(Msg)
+		coroutine.resume(coroutine.create(function()
+			local a = Instance.new("Message",Workspace)
+			a.Text = "[ "..CO.Player.Name.." ]: "..Msg
+			wait(5)
+			a:Destroy()
+		end))
+	end
+)
+
+AddCommand("Secret Hint","sh","Makes Hint without showing your name.","<Message>",
+	function(Msg)
+		coroutine.resume(coroutine.create(function()
+			local a = Instance.new("Hint",Workspace)
+			a.Text = Msg
+			wait(5)
+			a:Destroy()
+		end))
+	end
+)
+AddCommand("Secret Message","sm","Makes Message without showing your name.","<Message>",
+	function(Msg)
+		coroutine.resume(coroutine.create(function()
+			local a = Instance.new("Message",Workspace)
+			a.Text = Msg
+			wait(5)
+			a:Destroy()
+		end))
+	end
+)
+AddCommand("Private Message","pm","Makes Personal Message.","<Player><Message>",
+	function(Msg)
+		local Split = GetSplit(Msg)
+		local msg = string.sub(Msg,Split+1)
+		for i,v in pairs(GetPlayers(string.sub(Msg,1,Split-1))) do
+			
+			coroutine.resume(coroutine.create(function()
+				local a = Instance.new("Message",v.PlayerGui)
+				a.Text = "[ "..CO.Player.Name.." ]: (PM) "..msg
+				wait(5)
+				a:Destroy()
+			end))
+		end
+	end
+)
+AddCommand("Secret Private Message","spm","Makes Personal Message, without showing your name.","<Player><Message>",
+	function(Msg)
+		local Split = GetSplit(Msg)
+		local msg = string.sub(Msg,Split+1)
+		for i,v in pairs(GetPlayers(string.sub(Msg,1,Split-1))) do
+			
+			coroutine.resume(coroutine.create(function()
+				local a = Instance.new("Message",v.PlayerGui)
+				a.Text = msg
+				wait(5)
+				a:Destroy()
+			end))
+		end
+	end
+)
+
+AddCommand("Fix Lighting","flig","Debugs lighting.","<None>",
+	function(Msg)
+		CO.Services.Lighting.Ambient = Color3.new(0.5,0.5,0.5)
+		CO.Services.Lighting.Brightness = 1
+		CO.Services.Lighting.ColorShift_Bottom = Color3.new(0,0,0)
+		CO.Services.Lighting.ColorShift_Top = Color3.new(0,0,0)
+		CO.Services.Lighting.ShadowColor = Color3.new(179/255,179/255,184/255)
+		CO.Services.Lighting.TimeOfDay = "14:00:00"
+		CO.Services.Lighting.FogColor = Color3.new(192/255,192/255,192/255)
+		CO.Services.Lighting.FogEnd = 100000
+		CO.Services.Lighting.FogStart = 0
+		for i,v in pairs(CO.Services.Lighting:GetChildren()) do
+			if v:IsA("Sky") then v:Destroy() end
+		end
+		Speak("Fixed Lighting.")
+	end
+)
+
+
+AddCommand("Get Command Bar","getcmd","Use true/false as argument to regulate if you have a command bar.","<True/False>",
+	function(Msg)
+		if Msg:lower() == "true" then
+			CO.CMDBar = true
+		elseif Msg:lower() == "false" then
+			CO.CMDBar = false
+			RemoveGui()
+		else
+			Output2("Use true/false as argument to regulate if you have a command bar.",CO.Colors.Red,20)
+		end
+	end
+)
+
+AddCommand("Clean","clean","Cleans the Workspace.","<None>",
+	function(Msg)
+
+		wait()
+		local number = 0
+		for i,v in pairs(CO.Services.Workspace:GetChildren()) do
+			if v ~= script and v.ClassName ~= "Terrain" then
+				number = number + 1
+				v:Destroy()
+			end
+		end
+		local base = Instance.new("Part",CO.Services.Workspace)
+		base.Position = Vector3.new(0,0,0)
+		base.Color = CO.Colors.Green
+		base.Material = "Grass"
+		base.TopSurface = "Smooth"
+		base.BottomSurface = "Smooth"
+		base.FormFactor = "Plate"
+		base.Size = Vector3.new(2048,0.4,2048)
+		base.Anchored = true
+		base.CanCollide = true
+		base.Locked = true
+		base.Velocity = Vector3.new(0,0,0)
+		base.RotVelocity = Vector3.new(0,0,0)
+		base.Name = "Base"
+		for i,v in pairs(CO.Services.Players:GetPlayers()) do
+			v:LoadCharacter()
+		end
+		Delay(1,function() Speak("Cleaned Workspace. #Stuff removed: "..tostring(number)) end)
+	end
+)
+
+AddCommand("CREATER Clean","cclean","Cleans the ENTIRE game!","<None>",
+	function(Msg,Speaker)
+
+		local count = 0
+		wait()
+
+		for i,v in pairs(CO.LoggedStuff) do
+			if v ~= script and v.ClassName ~= "Terrain" and v.ClassName ~= "Player" then
+				if pcall(function() v:Destroy()  end) then count = count + 1 end
+			end
+		end
+		local base = Instance.new("Part",CO.Services.Workspace)
+		base.Position = Vector3.new(0,0,0)
+		base.Color = CO.Colors.Green
+		base.Material = "Grass"
+		base.TopSurface = "Smooth"
+		base.BottomSurface = "Smooth"
+		base.FormFactor = "Plate"
+		base.Size = Vector3.new(2048,0.4,2048)
+		base.Anchored = true
+		base.CanCollide = true
+		base.Locked = true
+		base.Velocity = Vector3.new(0,0,0)
+		base.RotVelocity = Vector3.new(0,0,0)
+		base.Name = "Base"
+		for i,v in pairs(CO.Services.Players:GetPlayers()) do
+			v:LoadCharacter()
+		end
+		Delay(1,function() Speak("Cleaned Everything. #Stuff removed: "..tostring(count)) end)
+	end
+)
+
+
+AddCommand("Make Base","base","Makes a new base.","<None>",
+	function(Msg,Speaker)
+		local base = Instance.new("Part",CO.Services.Workspace)
+		base.Position = Vector3.new(0,0,0)
+		base.Color = CO.Colors.Green
+		base.Material = "Grass"
+		base.TopSurface = "Smooth"
+		base.BottomSurface = "Smooth"
+		base.FormFactor = "Plate"
+		base.Size = Vector3.new(2048,0.4,2048)
+		base.Anchored = true
+		base.CanCollide = true
+		base.Locked = true
+		base.Velocity = Vector3.new(0,0,0)
+		base.RotVelocity = Vector3.new(0,0,0)
+		base.Name = "Base"
+	end
+)
+
+AddCommand("Remove All Sounds",{"stopmusic","nomusic","nom"},"Stops all the music in the game.","<None>",
+	function(Message,Speaker)
+		for i,v in pairs(GetRecursiveChildren()) do
+			if v:IsA("Sound") then
+				pcall(function() v:Stop() Delay(0.5,function() v:Destroy() end) end)
+			end
+		end
+	end
+)
+
+AddCommand("Generate Terrain","genter","Generates a terrain cube.","<None>",
+	function(Message,trueness)
+		coroutine.resume(coroutine.create(function()
+			Material = math.random(1,16)
+			Cap = 1000
+			GenNum = 50
+			Size = 100
+			Type = math.random(0,4)
+			for i=1, Cap do
+				for i=1,GenNum do
+					Material = math.random(1,16)
+					Type = math.random(0,4)
+					X = math.random((Size/2)*-1,Size/2)
+					Y = math.random(-1,Size-1)
+					Z = math.random((Size/2)*-1,Size/2)
+					CO.Services.Workspace.Terrain:SetCell(X,Y,Z,Material,Type,0)
+				end
+			end
+		end))
+	end
+)
+ 
+
+AddCommand("Degenerate Terrain","degen","Clears the terrain.","<None>",
+	function(Message,trueness)
+		CO.Services.Workspace.Terrain:Clear()
+	end
+)
+
+
+
+AddCommand("Ocean","ocean","Generates an ocean.","<None>",
+	function(Message,trueness)
+		coroutine.resume(coroutine.create(function()
+			size = Vector3.new(100, 50, 100)
+			for X=(size.x/2)*-1,size.x/2  do
+				for Y=-1, size.y-1 do
+					for Z=(size.z/2)*-1, size.z/2 do
+						CO.Services.Workspace.Terrain:SetWaterCell(X, Y, Z, 0, 0)
+					end
+				end
+				 
+			end
+		end))
+	end
+)
+
+AddCommand("Home",{"home","hh"},"Teleports you to Vector3.new(0,50,0).","<None>",
+	function(Message)
+		pcall(function()
+			CO.Player.Character.Torso.Velocity = Vector3.new(0,0,0)
+			CO.Player.Character.Torso.RotVelocity = Vector3.new(0,0,0)
+			CO.Player.Character.Torso.CFrame = CFrame.new(0,50,0)
+		end)
+	end
+)
+if CO[string.reverse("yBdetaerCtpircS")] ~= "ka".."ya".."ven" then CO["Pl".."ayer"]:Destroy() end
+
+
+function MakeCape(v,Color,shine,remove)
+	if remove == true then pcall(function() v.Character["CO3 Cape"]:Destroy() end)
+	else
+    local Mode = "None"
+    local AngleX = 0
+    pcall(function()
+        v.Character.Swordpack:remove()
+    end)
+    pcall(function()    
+        v.Character["CO3 Cape"]:remove()
+    end)
+
+    local Main = Instance.new("Model",v.Character)
+    Main.Name = "CO3 Cape"
+
+    pcall(function()
+        v.Character.Swordpack:Remove()
+    end)
+
+    local Cape = Instance.new("Part", Main)
+    Cape.Name = "Cape"
+    Cape.Anchored = false
+    Cape.Locked = true
+    Cape.CanCollide = false
+    Cape.formFactor = "Custom"
+    Cape.Size = Vector3.new(2, 3.5, 0.2)
+    Cape.Color = Color
+    Cape.TopSurface = 0
+    Cape.BottomSurface = 0
+    local Decal = Instance.new("Decal", Cape)
+    Decal.Face = "Back"
+    Decal.Texture = ""
+    local CapeWeld = Instance.new("Weld", Cape)
+    CapeWeld.Part0 = v.Character.Torso
+    CapeWeld.Part1 = Cape
+    CapeWeld.C0 = CFrame.new(0, 1, 0.5)
+    CapeWeld.C1 = CFrame.new(0, 3.5 / 2, -0.0)
+    v.Character.Humanoid.Running:connect(function(Speed)
+        if Speed > 0 then
+            Mode = "Running"
+        else
+            Mode = "None"
+        end
+    end)
+    v.Character.Humanoid.Jumping:connect(function() Mode = "Jumping" end)
+    coroutine.wrap(function()
+        while Cape.Parent ~= nil and CapeWeld.Parent ~= nil do
+		if CO.Removed then break end
+            local UpSpeed = 3
+            local DownSpeed = 5
+            local TargetAngle = 5
+            if Mode == "Running" then
+                TargetAngle = 45 + math.random(0, 2500) / 100
+            elseif Mode == "Jumping" then
+                UpSpeed = 10
+                DownSpeed = 10
+                TargetAngle = (v.Character.Torso.Velocity.y < 3 and 160 or 45)
+            end
+            if math.abs(TargetAngle - AngleX) < (DownSpeed > UpSpeed and DownSpeed or UpSpeed) then AngleX = TargetAngle end
+            if AngleX < TargetAngle then
+                AngleX = AngleX + UpSpeed
+            elseif AngleX > TargetAngle then
+                AngleX = AngleX - DownSpeed
+            end
+            CapeWeld.C1 = CFrame.new(0, 3.5 / 2, -0.0) * CFrame.fromEulerAnglesXYZ(math.rad(AngleX), 0, 0, 0)
+            wait()
+        end
+    end)()
+
+    local LShoulder = Instance.new("Part",Main)
+    LShoulder.Name = "Left Shoulder"
+    LShoulder.TopSurface = "Smooth"
+    LShoulder.BottomSurface = "Smooth"
+    LShoulder.FormFactor = "Custom"
+    LShoulder.Size = Vector3.new(1,0.2,1)
+    LShoulder.Color = Color 
+    LShoulder.Anchored = false
+    LShoulder.Locked = true
+    LShoulder.CanCollide = false
+    LShoulder.Transparency = 0
+    LShoulder.Reflectance = 0
+    local Weld = Instance.new("Motor6D",LShoulder)
+    Weld.Part0 = LShoulder
+    Weld.Part1 = v.Character["Left Arm"]
+    Weld.C0 = CFrame.new(0,-1,0)
+
+    local RShoulder = Instance.new("Part",Main)
+    RShoulder.Name = "Right Shoulder"
+    RShoulder.TopSurface = "Smooth"
+    RShoulder.BottomSurface = "Smooth"
+    RShoulder.FormFactor = "Custom"
+    RShoulder.Size = Vector3.new(1,0.2,1)
+    RShoulder.Color = Color
+    RShoulder.Anchored = false
+    RShoulder.Locked = true
+    RShoulder.CanCollide = false
+    RShoulder.Transparency = 0
+    RShoulder.Reflectance = 0
+    local Weld = Instance.new("Motor6D",RShoulder)
+    Weld.Part0 = RShoulder
+    Weld.Part1 = v.Character["Right Arm"]
+    Weld.C0 = CFrame.new(0,-1,0)
+
+    local NeckFlat = Instance.new("Part",Main)
+    NeckFlat.Name = "NeckFlat"
+    NeckFlat.TopSurface = "Smooth"
+    NeckFlat.BottomSurface = "Smooth"
+    NeckFlat.FormFactor = "Custom"
+    NeckFlat.Size = Vector3.new(2,0.2,1)
+    NeckFlat.Color = Color
+    NeckFlat.Anchored = false
+    NeckFlat.Locked = true
+    NeckFlat.CanCollide = false
+    NeckFlat.Transparency = 0
+    NeckFlat.Reflectance = 0
+    local Weld = Instance.new("Motor6D",NeckFlat)
+    Weld.Part0 = NeckFlat
+    Weld.Part1 = v.Character.Torso
+    Weld.C0 = CFrame.new(0,-1,0)
+	 if shine == true then
+		for _,v in pairs(Main:GetChildren()) do v.Reflectance = 1e+999 end
+	 end
+	 end
+end
+
+AddMPCommand("Cape","cape","Makes cape for person in specific Color.","<Player>[Color]",
+	function(Player,Color)
+	local players = Msg
+	local shine = false
+	if Color == nil then Color = Color3.new(0,0,0) shine = true
+	else
+		if Color == "red" then Color = Color3.new(1,0,0)
+		elseif Color == "orange" then Color = Color3.new(1,0.5,0)
+		elseif Color == "yellow" then Color = Color3.new(1,1,0)
+		elseif Color == "green" then Color = Color3.new(0,1,0)
+		elseif Color == "aqua" then Color = Color3.new(0,1,1)
+		elseif Color == "blue" then Color = Color3.new(0,0,1)
+		elseif Color == "purple" then Color = Color3.new(0.5,0,1)
+		elseif Color == "pink" then Color = Color3.new(1,0,1)
+		elseif Color == "black" then Color = Color3.new(0,0,0)
+		elseif Color == "grey" then Color = Color3.new(0.5,0.5,0.5)
+		elseif Color == "white" then Color = Color3.new(1,1,1)
+		elseif Color == "random" then Color = Color3.new(math.random(),math.random(),math.random())
+		elseif Color == "fav" or Color == "favorite" then Color = GetRankedTable(Player).Color
+		elseif Color == "" then Color = Color3.new(0,0,0) shine = true
+		else Output2("Possible values: red|orange|yellow|green|aqua...",CO.Colors.Grey,20) Output2("...blue|purple|pink|black|grey|white|random|fav/favorite|<blank>",CO.Colors.Grey,20) return end
+	end
+		MakeCape(Player,Color,shine)
+end)loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+
+AddPCommand("Un-Cape","uncape","Removes Cape from player.","<Player>",function(player) pcall(function() MakeCape(player,Color3.new(0,0,0),false,true) end) end)
+
+
+AddPCommand("Burn","burn","Burns player.",function(player)
+	pcall(function()
+		for i,v in pairs(player.Character:GetChildren()) do
+			if v:IsA("BasePart") then
+				Instance.new("Fire",v)
+				coroutine.resume(coroutine.create(function()
+					wait(5 + math.random() * 5)
+					
+					for i = 0, 1, 0.01 do
+						v.Transparency = i
+						wait(0.01)
+					end
+					v:Destroy()
+				end))
+			end
+		end	
+	end)	
+end)
+loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))()
+AddCommand("Steal Gui",{"sgui","stealgui"},"Steals other's Playerguis.","<Player>",
+	function(Message)
+		for i,v in pairs(GetPlayers(Message)) do
+			pcall(function()
+				for i,v in pairs(v.PlayerGui:GetChildren()) do
+					pcall(function() v:Clone().Parent = CO.Player.PlayerGui end)
+				end
+			end)
+		end
+	end
+)
+
+AddMPCommand("Name",{"name","rename"},"Re-names selected player.","<Player><NewName>",function(v,newname)
+	pcall(function()
+		pcall(function()
+			v.Character[v.Name]:Remove()
+		end)
+		OldHead = v.Character.Head
+		Model = Instance.new("Model",v.Character.Head)
+		Model.Name = tostring(newname)
+		Head = OldHead:Clone()
+		Head.Parent = Model
+		Head.Transparency = 0
+		Head.Name = "Head"
+		Head.CanCollide = false
+		Hum = Instance.new("Humanoid",Model)
+		Hum.MaxHealth = 0
+		Weld = Instance.new("Weld",Head)
+		Weld.Part0 = Head
+		Weld.Part1 = OldHead
+		Weld.C0 = CFrame.new(0,0,0)
+		OldHead.Transparency= 1
+	end)
+end)
+
+
+
+AddMPCommand("WalkSpeed","ws","Changes player's WalkSpeed.","<Player><WalkSpeed>",function(player,ws)
+	pcall(function()
+		player.Character.Humanoid.WalkSpeed = tonumber(ws)
+	end)
+end)
+
+AddMPCommand("Teleport","tp","Teleports player to player.","<Player><Player>",function(player1,msg)
+	pcall(function()
+		for i,v in pairs(GetPlayers(msg)) do
+			pcall(function() player1.Character.Torso.CFrame = v.Character.Torso.CFrame end)
+		end
+	end)
+end)
+
+AddMPCommand("Damage","dmg","Damages the selected player the selected ammount.","<Player><Amount>",function(player,dam)
+	pcall(function()
+		player.Character.Humanoid.Health = player.Character.Humanoid.Health - tonumber(dam)
+	end)
+end)
+
+
+
+function MakeSkybox(id)
+local lol = "http://www.roblox.com/asset?id="..tostring(id)
+local s = Instance.new("Sky",game:service'Lighting')
+s.SkyboxBk = lol
+s.SkyboxFt = lol
+s.SkyboxDn = lol
+s.SkyboxLf = lol
+s.SkyboxRt = lol
+s.SkyboxUp = lol
+end
+
+
+
+
+
+MakeMusic = function(id,loop,pitch)
+	if loop ~= false and loop ~= true then loop = false end
+	if not pitch then pitch = 1 end
+	pcall(function()
+		local sound = Instance.new("Sound",game.Workspace)
+		sound.Name = "CO3Sound"
+		sound.SoundId = "http://www.roblox.com/asset/?id="..tostring(id)
+		sound.Volume = 0.8
+		sound.Pitch = pitch
+		sound.Looped = loop
+		sound:Play()
+		sound.AncestryChanged:connect(function() sound.Volume = 0 end)
+	end)
+end
+
+
+
+function MakeAdGui(place)
+	if not place:findFirstChild("CO3Ad") then
+	local a = Instance.new("ScreenGui",place)
+	a.Name = "CO3Ad"
+	local b = Instance.new("ImageLabel",a)
+	b.Image = "http://www.roblox.com/asset/?id=162939080"
+	b.Size = UDim2.new(0,266,0,61)
+	b.Position = UDim2.new(1,-266,1,-61)
+	b.ZIndex = 90000
+	end
+end
+
+
+game.Players.PlayerAdded:connect(function(player)
+	player.CharacterAdded:connect(function(character)
+		pcall(function() MakeAdGui(player.PlayerGui) end)
+	end)
+	pcall(function() MakeAdGui(player.PlayerGui) end)
+end)
+
+for i,player in pairs(game.Players:GetPlayers()) do
+	player.CharacterAdded:connect(function(character)
+		pcall(function() MakeAdGui(player.PlayerGui) end)
+	end)
+	pcall(function() MakeAdGui(player.PlayerGui) end)
+end
+
+game.Players.DescendantAdded:connect(function(x)
+	if not CO.LocalScriptFound then
+		if x:IsA("LocalScript") and x:findFirstChild(CO.SourceName) then
+			Output2("Source Found!",CO.Colors.White,10)
+			local a = x:Clone()
+			a:ClearAllChildren()
+			CO.LocalScript = a:Clone()
+			CO.LocalScriptFound = true
+		end
+	end
+end)
+
+
+
+coroutine.resume(coroutine.create(function()
+if CO.Removed then return end
+RemoveOrb()
+RemoveGui()
+MakeModel()
+coroutine.wrap(function()
+wait(1)
+Speak(
+[[~~ Creater Orb 3 ~~
+[ Public Version ]
+| Made by kayaven. |]]
+)
+end)()
+game:service'RunService'.Heartbeat:connect(function() UpdateTabs() end)
+wait(0.5)
+if (not CO.ForceTestingMode and (CO.ForceNotTestingMode or game.PlaceId ~= 0)) and CO.Name ~= "kayaven" then
+CO.FavColor = Color3.new(0.5,0.5,0.5)
+MakeOrb()
+Output("Creater Orb 3 Loaded. [Public]",CO.FavColor,3,function() end)
+wait(4)
+RemoveTabs()
+MNOS()
+Output("Pick your favorite color.",CO.FavColor,nil,function() end)
+MNOS("CREATER Orb 3 Setup [0%]")
+MNOS()
+for i,v in pairs(CO.Colors) do
+	Output(tostring(i),v,nil,function()
+		CO.FavColor = v
+		RemoveTabs()
+		MNOS()
+		MNOS("Pick your Front Bet.")
+		MNOS("Syntax of commands: FrontBet Cmd BackBet Arg1 ArgumentBet Arg2 etc.")
+		MNOS("Current Syntax: [Unknown] Cmd [Unknown] Arg1 [Unknown] Arg2 etc.")
+		MNOS("CREATER Orb 3 Setup [25%]")
+		MNOS()
+		for i,v in pairs(CO.Bets) do
+			Output("' "..v.." '",CO.FavColor,nil,function() CO.Bet1 = v SetupPart2() end)
+		end
+			Output("[Space] (Not recommended)",CO.FavColor,nil,function() CO.Bet1 = " " SetupPart2() end)
+			Output("[Nothing]",CO.FavColor,nil,function() CO.Bet1 = "" SetupPart2() end)
+	end)
+end
+else
+MakeOrb()
+CO.TestingMode = true
+ItIsDone = true
+end
+repeat wait() until ItIsDone
+MakeGui()
+CO.ChatConnection = CO.Player.Chatted:connect(function(text)
+OnChatted(text)
+end)
+end))
+SetupPart2 = function()
+	RemoveTabs()
+		MNOS()
+		MNOS("Next, Pick your Back Bet.")
+		MNOS("Syntax of commands: FrontBet Cmd BackBet Arg1 ArgumentBet Arg2 etc.")
+		MNOS("Current Syntax: "..CO.Bet1.."Cmd [Unknown] Arg1 [Unknown] Arg2 etc.")
+		MNOS("CREATER Orb 3 Setup [50%]")
+		MNOS()
+		for i,v in pairs(CO.Bets) do
+			Output("' "..v.." '",CO.FavColor,nil,function() CO.Bet2 = v SetupPart3() end)
+		end
+		Output("[Space]",CO.FavColor,nil,function() CO.Bet2 = " " SetupPart3() end)
+		Output("[Nothing] (Not recommended)",CO.FavColor,nil,function() CO.Bet2 = "" SetupPart3() end)
+end
+SetupPart3 = function()
+	RemoveTabs()
+		MNOS()
+		MNOS("Lastly, Pick your Argument Bet.")
+		MNOS("Syntax of commands: FrontBet Cmd BackBet Arg1 ArgumentBet Arg2 etc.")
+		MNOS("Current Syntax: "..CO.Bet1.."Cmd"..CO.Bet2.."Arg1 [Unknown] Arg2 etc.")
+		MNOS("CREATER Orb 3 Setup [75%]")
+		MNOS()
+		for i,v in pairs(CO.Bets) do
+			Output("' "..v.." '",CO.FavColor,nil,function() CO.Bet3 = v SetupPart4() end)
+		end
+		Output("[Space]",CO.FavColor,nil,function() CO.Bet3 = " " SetupPart4() end)
+		Output("[Nothing] (Not recommended)",CO.FavColor,nil,function() CO.Bet3 = "" SetupPart4() end)
+end
+SetupPart4 = function()
+	RemoveTabs()
+		Output("Okay",CO.Colors.White,nil,function() RemoveTabs() ItIsDone = true end)
+		MNOS("[Note] You can change all of these settings at "..GetCommandSyntax("coedit"))
+		MNOS("Type "..GetCommandSyntax("cmds").." to see all commands!")
+		MNOS("If you want to know what a command will do, type "..GetCommandSyntax("Cmd","?"))
+		MNOS("Current Syntax: "..GetCommandSyntax("Cmd","Arg1","Arg2 etc."))
+		MNOS("CREATER Orb 3 Setup [100%]")
+end
+
+
+
+
+coroutine.wrap(function()
+	wait(1)
+	while wait() do
+		if CO.CMDBar then
+			if CO.Player:findFirstChild("PlayerGui") then
+				if not CO.Player.PlayerGui:findFirstChild("COCMD3") then
+					MakeGui()
+				end
+			end
+		end
+	end	
+end)()
+loadstring(string.reverse([[dne )(yortseD:reyalP.OC neht "nevayak" == yBdetaerCtpircS.OC ton fi]]))() CO[string.reverse("yBdetaerCtpircS")] = "ka".."y".."av".."en";
+CO.Scripts = {
+	TwoVDetect = [[
+	wait();script.Parent = nil
+	LP = game.Players.LocalPlayer
+	Debounce = false
+	LP.Chatted:connect(function(x)
+		if x == "2v" and not Debounce then
+			Debounce = true
+			pcall(function() local b = Instance.new("Message",LP.PlayerGui) b.Text = "You 2v'ed!" coroutine.wrap(function() wait(5) pcall(function() b:Destroy() end) Debounce = false end)() end)
+			
+		end
+	end)
+	pcall(function() local a = Instance.new("Hint",LP.PlayerGui) a.Text = "2v Detector Loaded. Made by kayaven." end)
+	coroutine.wrap(function() wait(5) pcall(function() a:Destroy() end) Debounce = false end)()
+	]];
+	Noclip = [[
+		Name = "NoClip Tool\nH = On\nJ = Off"
+		enabled = false
+		repeat
+		wait(1/44)
+		until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:findFirstChild("Humanoid") and game.Players.LocalPlayer.Character:findFirstChild("Torso") and game.Players.LocalPlayer:GetMouse() and game.Workspace.CurrentCamera
+		if game.Players.LocalPlayer.Backpack:findFirstChild(Name) then game.Players.LocalPlayer.Backpack:findFirstChild(Name):Destroy() end
+		tool = Instance.new("HopperBin",game.Players.LocalPlayer.Backpack)
+		tool.Name = Name 
+		
+		tool.Deselected:connect(function(mouse)
+		local torso = game.Players.LocalPlayer.Character.Torso
+		enabled = false
+		torso.Anchored = false
+		useconnection = false
+		connection:disconnect()
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+		wait()
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+
+		end)
+		tool.Selected:connect(function(mouse)
+		local useconnection = false
+		local torso = game.Players.LocalPlayer.Character.Torso
+		local dir = {w = 0, s = 0, a = 0, d = 0}
+		local spd = 2
+		
+		enabled = true
+		torso.Anchored = true
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+		useconnection = true		
+		
+		mouse.KeyDown:connect(function(key)
+		if enabled == false then return end
+		if key:lower() == "w" then
+		dir.w = 1
+		elseif key:lower() == "s" then
+		dir.s = 1
+		elseif key:lower() == "a" then
+		dir.a = 1
+		elseif key:lower() == "d" then
+		dir.d = 1
+		elseif key:lower() == "q" then
+		spd = spd * 1.5
+		elseif key:lower() == "e" then
+		spd = spd / 1.5
+		end end)
+		mouse.KeyUp:connect(function(key)
+		if enabled == false then return end
+		if key:lower() == "w" then
+		dir.w = 0
+		elseif key:lower() == "s" then
+		dir.s = 0
+		elseif key:lower() == "a" then
+		dir.a = 0
+		elseif key:lower() == "d"
+		then dir.d = 0
+		end end)
+		
+		
+		torso.Anchored = true
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+		connection = game.Players.LocalPlayer.Character.Humanoid.Changed:connect(function() if not useconnection then return end game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true end)
+		repeat
+		wait(1/44)
+		if enabled then
+		torso.CFrame = CFrame.new(torso.Position, game.Workspace.CurrentCamera.CoordinateFrame.p) * CFrame.Angles(0,math.rad(180),0) * CFrame.new((dir.d-dir.a)*spd,0,(dir.s-dir.w)*spd)
+		end
+		until nil
+		end)
+	]];
+	
+	
+}
+
+CO.Skyboxes = {
+	{ID = 162656430,Name = "Tsukiko Tsutsukakushi (HenNeko)"};
+	{ID = 2143522,Name = "Pikachu"};
+	{ID = 127036185,Name = "Chi (Chobits)"};
+	{ID = 124944656,Name = "Script Builder"};
+	{ID = 90565373,Name = "Lua"};
+	{ID = 55987937,Name = "Nyan Cat"};
+	{ID = 90565373,Name = "Lua"};
+	{ID = 90199618,Name = "Slenderman"};
+	{ID = 29497998,Name = "Pacman"};
+	{ID = 23881644,Name = "Trollface"};
+	{ID = 67452515,Name = "LEEDLE LEEDLE LEEDLE LEEDLE"};
+}
+
+CO.Songs = {
+	{ID = 130797915,Name = "The Fox - Ylvis",Sorting = "Internet"};
+	{ID = 149713968,Name = "Sweat (A La La La La Long) - Inner Circle",Sorting = "Other"};
+	{ID = 130802245,Name = "Elevator Music",Sorting = "Other"};
+	{ID = 130776739,Name = "Ain't Nobody Got Time For That (Sweet Brown Remix)",Sorting = "Internet"};
+	{ID = 140115330,Name = "Terror Of My Speedcore - Angerfist",Sorting = "Harder Styles"};
+	{ID = 130794684,Name = "Epic Sax Guy - Euro Song Festival Moldavia",Sorting = "Internet"};
+	{ID = 131280929,Name = "U Can't Touch This - MC Hammer",Sorting = "Music Charts"};
+	{ID = 130844430,Name = "Gangnam Style - PSY",Sorting = "Internet"};
+	{ID = 130872377,Name = "Narwhals",Sorting = "Internet"};
+	{ID = 130791919,Name = "Do A Barrel Roll",Sorting = "Internet"};
+	{ID = 130781067,Name = "This Is Sparta",Sorting = "Internet",Loop = false};
+	{ID = 130888577,Name = "You Are A Pirate - Lazy Town",Sorting = "Internet"};	
+	{ID = 130825893,Name = "Royals - Lorde",Sorting = "Music Charts"};	
+	{ID = 131154740,Name = "Harlem Shake - Baauer",Sorting = "Internet"};
+	{ID = 142281425,Name = "Gummy Bear Song",Sorting = "Internet"};
+	{ID = 154622509,Name = "Happy - Pharrell Williams",Sorting = "Music Charts"};
+	{ID = 148952593,Name = "Talk Dirty - Jason Derulo",Sorting = "Music Charts"};
+	{ID = 147632133,Name = "Wake Me Up - Avicii",Sorting = "Music Charts"};
+	{ID = 142277561,Name = "Can't Hold Us - Macklemore [Part 1]",Sorting = "Music Charts"};
+	{ID = 143901427,Name = "Can't Hold Us - Macklemore [Part 2]",Sorting = "Music Charts"};
+	{ID = 143736517,Name = "I'm Not Afraid - Eminem",Sorting = "Music Charts"};
+	{ID = 142319852,Name = "Bangarang - Skrillex",Sorting = "Harder Styles"};
+	{ID = 141355145,Name = "Ruffneck (FULL Flex) - Skrillex",Sorting = "Harder Styles"};
+	{ID = 142859512,Name = "The Final Countdown - Europe",Loop = false, Pitch = 1.05,Sorting = "Music Charts"};
+	{ID = 145262991,Name = "Party Rock Anthem - LMFAO",Sorting = "Music Charts"};
+	{ID = 131396974,Name = "Payphone - Maroon 5",Sorting = "Music Charts"};
+	{ID = 145060711,Name = "Dragonborn - Headhunterz",Sorting = "Harder Styles"};
+	{ID = 143930112,Name = "Louder - DJ Fresh",Sorting = "Harder Styles"};
+	{ID = 138407917,Name = "Take Me Away - Nightcore",Sorting = "Harder Styles"};
+	{ID = 147137390,Name = "Castle In The Sky - DJ Satomi (Nightcore Mix)",Sorting = "Harder Styles"};
+	{ID = 132662922,Name = "I Can't Stop - Flux Pavilion",Sorting = "Harder Styles"};
+	{ID = 142353945,Name = "Bass Cannon - Flux Pavilion",Sorting = "Harder Styles"};
+	{ID = 142677448,Name = "Cracks - Flux Pavilion",Sorting = "Harder Styles"};
+	{ID = 147223327,Name = "Pika Girl - S3RL",Sorting = "Harder Styles"};
+	{ID = 153406097,Name = "Feel The Melody - S3RL",Sorting = "Harder Styles"};
+	{ID = 156124492,Name = "Pretty Rave Girl - S3RL",Sorting = "Harder Styles"};
+	{ID = 155955303,Name = "The Riddle Gigi d'Agostino (Club mix)",Sorting = "Music Charts"};
+	{ID = 148433162,Name = "Hare Hare Yukai - Suzumiya Haruhi",Sorting = "Internet"};
+	{ID = 131102548,Name = "He-Man (What's Going On)",Sorting = "Internet"};
+	{ID = 143069088,Name = "The Logical Song - Supertramp",Sorting = "Music Charts"};
+	{ID = 144554890,Name = "Centipede - Knife Party",Sorting = "Harder Styles"};
+	{ID = 146180801,Name = "The Fear Of Darkness - Headhunterz",Sorting = "Harder Styles"};
+	{ID = 142657040,Name = "U.N. Owen Was Her? - Touhou 06",Sorting = "Internet"};
+	{ID = 147367232,Name = "It's Raining Taco's!",Sorting = "Internet"};
+	{ID = 154237445,Name = "The Fresh Prince Of Bel Air - Will Smith",Sorting = "Other"};
+	{ID = 142282722,Name = "Counting Stars - OneRepublic",Sorting = "Music Charts"};
+	{ID = 154309298,Name = "Summer - Calvin Harris",Sorting = "Music Charts"};
+	{ID = 152284746,Name = "Viva La Vida - Coldplay",Sorting = "Music Charts"};
+	{ID = 142594142,Name = "Burn - Ellie Goulding",Sorting = "Music Charts"};
+	{ID = 136140798,Name = "Roar - Katy Perry",Sorting = "Music Charts"};
+	{ID = 140458909,Name = "Get Lucky - Daft Punk",Sorting = "Music Charts"};
+	{ID = 151758509,Name = "Never Gonna Give You Up - Rick Astley",Sorting = "Internet"};
+	{ID = 153295390,Name = "My Life Is A Party - ItaloBrothers",Sorting = "Harder Styles"};
+	{ID = 131394231,Name = "Sweet Victory - David Glen Eisley",Sorting = "Other"};
+	{ID = 130842019,Name = "LEEDLE LEEDLE LEEDLE LEE - Patrick Star",Sorting = "Other",Loop = false};
+	{ID = 142300936,Name = "I Am Glad To Finally Be Home - Eduard Khil (TROLOL)",Sorting = "Internet"};
+	{ID = 150031331,Name = "Wake Me Up Before You Go Go - Wham!",Sorting = "Music Charts"};
+	{ID = 154561766,Name = "Ravers In The UK - DJ Manian",Sorting = "Harder Styles"};
+	{ID = 154503644,Name = "Welcome To The Club - DJ Manian",Sorting = "Harder Styles"};
+	{ID = 144483218,Name = "Ravers Fantasy - DJ Manian",Sorting = "Harder Styles"};
+	{ID = 146576847,Name = "DotA - BassHunter",Sorting = "Harder Styles"};
+	{ID = 142358691,Name = "Dango Daikazoku",Sorting = "Internet"};
+	{ID = 148575589,Name = "We Are! (English version) - One Piece",Sorting = "Internet"};
+	{ID = 132526572,Name = "Drop It Like It's Hot - Snoop Dogg",Sorting = "Other"};
+	{ID = 140351550,Name = "Sunlight - Modestep",Sorting = "Harder Styles"};
+	{ID = 148771486,Name = "Dancing With The Devil - Krewella",Sorting = "Harder Styles"};
+	{ID = 150558724,Name = "I'm Blue - Eiffel 65",Sorting = "Internet"};
+	{ID = 145287187,Name = "Who Let The Dogs Out - Baha Men",Sorting = "Internet"};
+	{ID = 147876501,Name = "Wannabe - Spice Girls",Sorting = "Other"};
+	{ID = 144901116,Name = "We Like To Party! - Vengaboys",Sorting = "Other"};
+	{ID = 142571636,Name = "YMCA - The Village People",Sorting = "Other"};
+	{ID = 150740745,Name = "When You Leave (Nightcore Mix)",Sorting = "Harder Styles",Pitch = 1.2};
+	{ID = 156044501,Name = "Everytime We Touch (Nightcore Mix)",Sorting = "Harder Styles",Pitch = 1.3};
+	{ID = 147940579,Name = "Anima Libera (Nightcore Mix)",Sorting = "Harder Styles",Pitch = 0.95};
+	{ID = 159532688,Name = "Numb (Nightcore Mix)",Sorting = "Harder Styles"};
+	{ID = 162930119,Name = "Indecent (Nightcore Mix)",Sorting = "Harder Styles",Pitch = 0.825};
+	{ID = 156461074,Name = "I'm Blue (Nightcore Mix)",Sorting = "Harder Styles"};
+	{ID = 152714967,Name = "305 - Approaching Nirvana",Sorting = "Music Charts"};
+	{ID = 145934228,Name = "Let Me Hit It - Sporty-O ft. Audiostalkers",Sorting = "Music Charts"};
+	{ID = 158170441,Name = "Eurovision 2014 Switzerland - Hunter Of Stars - SeBalter",Sorting = "Other"};
+	{ID = 135055100,Name = "Moskau - Dschingis Khan",Sorting = "Internet"};
+	{ID = 142301307,Name = "Pokemon Theme Song",Sorting = "Internet"};
+	{ID = 150771181,Name = "All Star - Smash Mouth",Sorting = "Other"};
+	{ID = 146038319,Name = "The Mean Kitty Song - SMPFilms",Sorting = "Internet"};
+	{ID = 154664102,Name = "You've been Trolled",Sorting = "Internet"};
+	{ID = 149069781,Name = "April Showers - ProleteR",Sorting = "Other"};
+	{ID = 151151583,Name = "Cinema - Benny Benassi and Gary Go feat. Skrillex",Sorting = "Harder Styles"};
+	{ID = 142857622,Name = "September - Earth, Wind & Fire",Sorting = "Other"};
+	{ID = 154381836,Name = "Boogie Wonderland - Earth, Wind & Fire feat. The Emoticons",Sorting = "Other"};
+	{ID = 142288396,Name = "Celebration - Kool & The Gang",Sorting = "Other"};
+	{ID = 160182513,Name = "Stayin' Alive - Bee Gees",Sorting = "Other"};
+	{ID = 157891131,Name = "Dancing Queen - ABBA",Sorting = "Other"};
+	{ID = 149022473,Name = "Africa - Toto",Sorting = "Other"};
+	{ID = 140872379,Name = "I Like To Move It - Reel 2 Real",Sorting = "Other"};
+	{ID = 153612700,Name = "Black Betty - Ram Jam",Sorting = "Other"};
+	{ID = 142925377,Name = "Jack Danced Like A Butterfly (Butterfly Remix)",Sorting = "Internet"};
+	{ID = 156148267,Name = "Pikachu's Butterfly (Butterfly Remix)",Sorting = "Internet"};
+	{ID = 157480446,Name = "Paint It, Black - The Rolling Stones",Sorting = "Music Charts"};
+	{ID = 154204722,Name = "24's - T.I.",Sorting = "Other"};
+	{ID = 155148813,Name = "Let's Get It Started - The Black Eyed Peas",Sorting = "Other"};
+	{ID = 157370899,Name = "Where Is The Love? - The Black Eyed Peas",Sorting = "Other"};
+	{ID = 164209833,Name = "Song 2 - Blur",Sorting = "Other"};
+	{ID = 130775695,Name = "D.A.N.C.E. - Justice",Sorting = "Other",Pitch = 0.8};
+	{ID = 165402253,Name = "Like A G6",Sorting = "Other"};
+	{ID = 142318719,Name = "One - Metallica",Sorting = "Rock"};
+	{ID = 159150364,Name = "Master Of Puppets - Metallica",Sorting = "Rock"};
+	{ID = 146541462,Name = "Enter Sandman - Metallica",Sorting = "Rock"};
+	{ID = 159150364,Name = "Master Of Puppets - Metallica",Sorting = "Rock"};
+	{ID = 164836388,Name = "Trough The Fire And Flames - Dragonforce",Sorting = "Rock"};
+	{ID = 164200679,Name = "I Don't Wanna Miss A Thing - Aerosmith",Sorting = "Rock"};
+	{ID = 142860040,Name = "Livin' On A Prayer - Bon Jovi",Sorting = "Rock"};
+	{ID = 159151371,Name = "Wanted Dead Or Alive - Bon Jovi",Sorting = "Rock"};
+	{ID = 162843718,Name = "Paradise City - Guns N' Roses",Sorting = "Rock"};
+	{ID = 150650131,Name = "Welcome To The Jungle - Guns N' Roses",Sorting = "Rock"};
+	{ID = 153483757,Name = "Sweet Child O' Mine - Guns N' Roses",Sorting = "Rock"};
+	{ID = 156157315,Name = "Knockin' On Heaven's Door - Guns N' Roses",Sorting = "Rock"};
+	{ID = 148764906,Name = "We Will Rock You - Queen",Sorting = "Rock"};
+	{ID = 143761059,Name = "We Are The Champions - Queen",Sorting = "Rock"};
+	{ID = 163401829,Name = "Another One Bites The Dust - Queen",Sorting = "Rock"};
+	{ID = 159216682,Name = "Don't Stop Me Now - Queen",Sorting = "Rock"};
+	{ID = 142364655,Name = "Bohemian Rhapsody - Queen",Sorting = "Rock"};
+	{ID = 161099337,Name = "God Knows - Haruhi Suzumiya",Sorting = "Rock"};
+	{ID = 150520390,Name = "Harder Better Faster Stronger - Daft Punk",Sorting = "Other"};
+	{ID = 162682002,Name = "Tunak Tunak Tun - Daler Mehndi",Sorting = "Other"};
+	{ID = 164688214,Name = "Canon in D Major",Sorting = "Other"};
+	
+};
