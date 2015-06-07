@@ -4,7 +4,8 @@
 wait();if game.PlaceId ~= 0 then script.Parent = nil end
 CO = {
 	Name = game.Players.LocalPlayer
-	FavColor = Color3.new(0.5,0.5,0.5); -- Your favorite Color.
+	FavColor = Color3.new(0.5,0.5,0.5);
+}
 		
 	OrbLR = 3;
 	OrbUD = 3; -- Position of orb relative to you.
