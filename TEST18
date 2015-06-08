@@ -1,57 +1,91 @@
-local Orb = Instance.new("Part",workspace)
-Orb.BrickColor = BrickColor.Random()
-Orb.BottomSurface = "Smooth"
-Orb.TopSurface = "Smooth"
-Orb.Shape = "Ball"
-Orb.Name = "Orb"
-Orb.FormFactor = "Custom"
-Orb.Size = Vector3.new(1,1,1)
-Orb.Locked = true
-Orb.Anchored = true
+--Scripted by AnimeWiki
+
+local player = game:GetService("Players").LocalPlayer or owner
+player.Character:WaitForChild("Humanoid")
 
 
-local i = 0
+local part = Instance.new("Part")
 
-game:GetService("RunService").Heartbeat:connect(function()
-    if i >= 360 then
-        i = 0 
-        else i = i + 1
-    end    
-    Orb.CFrame = CFrame.new(owner.Character.Torso.CFrame.p) * CFrame.Angles(0,math.rad(i),0) *CFrame.new(0,0,-5)
-end)
-
-function fade(p)
-    wait(0.4)
-    for i = 1,20 do
-
-        game:service'RunService'.Heartbeat:wait()
-        p.Transparency = p.Transparency + 0.1 if p.Transparency == 1 then break end
-    end
+local function partChanged()
+part.Parent = game:GetService("Workspace")
+part.Shape = "Ball"
+part.FormFactor = "Custom"
+part.TopSurface = "Smooth"
+part.BottomSurface = "Smooth"
+part.Anchored = true
+part.Locked = true
+part.Size = Vector3.new(.2,.2,.2)
+part.CanCollide = false
+part.BrickColor = BrickColor.White()
 end
 
---function check()
-   -- if not workspace:FindFirstChild("
---end
+partChanged()
 
-spawn(function() while true do  
-        Orb = workspace.Orb
-        pos1 = Orb.Position
-        wait()
-        pos2 = Orb.Position
-        dist = (pos1 - pos2).magnitude
-        local trail = Instance.new("Part", Orb) 
-        trail.Name = "Trail"
-        trail.FormFactor = 3
-        trail.CFrame = CFrame.new(pos1, pos2) * CFrame.new(0, 0, -dist / 2)
-        trail.CanCollide = false
-        trail.Size = Vector3.new(0.2,0.2,dist)
-        trail.Anchored = true
-        trail.Locked = true
-        game:service'Debris':AddItem(trail, 3)
-        local z = Instance.new("BlockMesh", trail)
-        z.Scale = Vector3.new(1,1,1)
-        spawn(function()
-            fade(trail)
-        end)
-    end
+
+
+
+workspace.DescendantRemoving:connect(function(v)
+if v == part then
+part = v:Clone()
+partChanged()
+end	
 end)
+
+local point
+
+
+local function update()
+while wait() do
+for i=1,360,3 do
+if not point and player.Character then
+point = player.Character:FindFirstChild("Torso")	
+end
+if point.Parent.Name == player.Name and player.Character then	
+point = player.Character:FindFirstChild("Torso")
+end
+if part then
+part.CFrame =  CFrame.new(point.CFrame.p)   *CFrame.fromEulerAnglesXYZ(-math.sin(math.rad(i)),math.rad(i),0) *CFrame.new(0,7,-5)
+end
+wait()	
+end	
+end	
+end
+
+coroutine.wrap(update)()
+
+
+local function createTrail()	
+local trail = part:Clone()
+trail.Shape = "Block"
+trail.FormFactor = "Custom"
+trail.Transparency = 0.5
+trail.Parent = game:GetService("Workspace")
+coroutine.wrap(function()
+wait(1)
+trail:remove()
+end)()
+return trail	
+end
+
+coroutine.wrap(function()
+while wait() do
+for i=15,1,-1 do
+if part then	
+local trail = createTrail()
+trail.Size = Vector3.new(i/20,i/20,i/20)
+trail.BrickColor = BrickColor.Random()
+--trail.Transparency = i/10
+wait()
+end
+end	
+for i=1,5,1 do
+if part then	
+local trail = createTrail()
+trail.Size = Vector3.new(i/10,i/10,i/10)
+trail.BrickColor = BrickColor.Random()
+--trail.Transparency = i/10
+wait()	
+end
+end
+end	
+end)()
