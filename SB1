@@ -1,0 +1,541 @@
+--[[
+	Mobius_ Script Builder Core
+--]]
+script.Parent=nil;
+--//ID for my thing is 186061544 to load local
+local _ENV=getfenv(0);
+
+local Mobius={
+	Players={};
+	Scripts={};
+	LocalScripts={};
+	Cache={}; --//If I ever get round to it!
+	Commands={
+	};
+	Functions={
+		ClientInvoke=function(player, type, invoke)  end;
+		Connect=function(player) table.insert(Mobius.Players,{Name=player.Name,Scripts={},LocalScripts={}}) end;
+		AddLocalScript=function(player,name,src) table.insert(Mobius.LocalScript,{Name=tostring(name),Src=tostring(src),Player=player}) for i,v in pairs(Mobius.Players) do if player.Name==v.Name then table.insert(v.LocalScripts,{Name=tostring(name),Src=tostring(src),Player=player}) end end end;
+		Update=function(src) local HTTP=game:GetService("HttpService") local json = HTTP:JSONEncode{["AccessKey"]="key_asd_1248935";["Source"]=src;["CacheAvoidance"]=tick()} local avid = HTTP:PostAsync('http://mobius.t15.org/Roblox/update.php',json); return avid; end;
+	};
+    SB_Functions={};
+    PlayerScripts={};
+	Logs={};
+	Banned={};
+	Fake={
+		G={};
+		Shared={};		
+	}
+};
+_G.Fake=Mobius.Fake.G;
+_G.Shared=Mobius.Fake.Shared;
+
+local Connection=Instance.new("Model",game.ReplicatedStorage);
+Connection.Name="Connections";
+
+setmetatable(Mobius.Fake.G,{
+	__metatable="Locked!",
+	__newindex=function(t,k,v)
+		if type(v) == 'table' then
+			if getmetatable(v) ~= nil then return error('Script Ended!',0) end;
+			rawset(_G.Fake,k,v);
+			setmetatable(_G.Fake[k],{__metatable="Locked!"});
+			local Thread=coroutine.create(function(t,v) while wait() do if getmetatable(t) ~= v then return error("Script Ended!") end end end)
+			return coroutine.resume(Thread);
+		else
+			rawset(_G.Fake,k,v);
+		end
+	end;
+})
+setmetatable(Mobius.Fake.Shared,{
+	__metatable="Locked!",
+	__newindex=function(t,k,v)
+		if type(v) == 'table' then
+			if getmetatable(v) ~= nil then return error('Script Ended!',0) end;
+			rawset(_G.Shared,k,v);
+			setmetatable(_G.Shared[k],{__metatable="Locked!"});
+		else
+			rawset(_G.Shared,k,v);
+		end
+	end;
+})
+setmetatable(_G,{__metatable="Locked!"})
+setmetatable(shared,{__metatable="Locked!"})
+
+NewCmd=function(Name,Desc,Type,Calls,Func)
+    if Type == "SB_FUNCTION" then
+        Mobius.SB_Functions[Name]={Name=Name,Desc=Desc,Type=Type,Calls=Calls,Function=Func}
+    elseif Type == "GENERAL_COMMAND" then
+        Mobius.Commands[Name]={Name=Name,Desc=Desc,Type=Type,Calls=Calls,Function=Func}
+    elseif type(Type) ~= "string" then
+        print("Error: Type is not string")
+    else
+        print("Error: Undefined type ~ NewCmd")
+    end
+end
+
+-- We need some sort of temp output system. Lol Give me yours. XD
+-- How can i make mine better
+-- So it should all be red?
+-- How can i use LogService and check if its the Right script.
+-- Well just give it some value like print(scriptname,player,"") so LogService will get script name so you can just use GMATCH and remove scriptname and player to get what you want.
+-- Hmm what about when someone changes the name.
+-- Also what do you mean by more functionality.
+-- Stuff like Anti, where you can disable certain colours also the anchor
+
+
+
+NewCmd("Quick LocalScript","Allows you to make a localscript quickly","SB_FUNCTION",{"l"},function(msg,speaker)
+	local Runs=0;
+	for i,v in pairs(Mobius.Players[speaker.Name].LocalScripts) do
+		Runs=Runs+1
+	end
+	InvokeConsole(speaker,"Run","[LocalScript "..tostring(Runs+1).."] Running")
+	local HTTP=game:GetService("HttpService");
+	local Source=[[local function CalcPos() local a=0; for i,v in pairs(game.Players.LocalPlayer.PlayerGui.OutputGui.Frame.ScrollingFrame:GetChildren()) do if v.Name=="LocalScript" then local d={}; else a=a+15 end end a=a-12 return a end local function GetSChildren(Scroll) local retrn = {} if Scroll and type(Scroll)=="userdata" then for i,v in pairs(Scroll:GetChildren()) do if v.ClassName=="TextLabel" then table.insert(retrn,v) end end end return retrn end local function Time() local time = tick() local hours = math.floor(time / 3600) % 24 local minutes = math.floor(time / 60) % 60 local seconds = math.floor(time) % 60 local time=string.format("%.2d:%.2d:%.2d",hours, minutes, seconds) return time end local function AddLine(Col,Message) local Line=Instance.new("TextLabel",game.Players.LocalPlayer.PlayerGui.OutputGui.Frame.ScrollingFrame); Line.Position=UDim2.new(0,0,0,tonumber(CalcPos())); Line.Size=UDim2.new(1,0,0,10); Line.BackgroundTransparency=1; Line.Text=tostring(Message); Line.Font="Arial" Line.FontSize="Size14" Line.TextXAlignment="Left" Line.TextWrapped=true Line.TextColor3=Col Line.TextStrokeTransparency=0.8 Line.TextStrokeColor3=Col if script.Parent then local Scroll = game.Players.LocalPlayer.PlayerGui.OutputGui.Frame.ScrollingFrame Scroll.CanvasSize = UDim2.new(0,0,0,(#GetSChildren(Scroll)*15)) coroutine.wrap(function() Scroll.CanvasPosition = Vector2.new(0,#Scroll:GetChildren()*15) wait() Scroll.CanvasPosition = Scroll.CanvasPosition + Vector2.new(0,15) end)() end end local print=function(...) local Args={...}; for i=1,select('#',...),1 do Args[i]=tostring(Args[i]); end; local Return=table.concat(Args," "); AddLine(BrickColor.new("White").Color,"> "..tostring(Return)) end; local warn=function(...) local Args={...}; for i=1,select('#',...),1 do Args[i]=tostring(Args[i]); end local Return=table.concat(Args," "); AddLine(BrickColor.new("Bright orange").Color,Time().." - "..tostring(Return)) end;game:GetService("ScriptContext").Error:connect(function(message, trace, scripts) if scripts == script then AddLine(BrickColor.Red().Color,Time().." - "..tostring(message).."\n"..trace) end end)]]
+	Source=tostring(Source..msg)
+	local json = HTTP:JSONEncode{["AccessKey"]="key_asd_1248935";["Source"]=Source;["CacheAvoidance"]=tick()};
+	local ID = HTTP:PostAsync('http://mobius.t15.org/Roblox/update.php',json);
+	local a=game:GetService("InsertService"):LoadAssetVersion(ID).Localscript
+	a.Name="LocalScript"..Runs
+	a.Parent=speaker:findFirstChild("Backpack") or speaker.Character or Instance.new("Backpack",speaker)
+	a.Disabled=false	
+	table.insert(Mobius.Players[speaker.Name].LocalScripts,{Script=a})
+end)
+
+NewCmd("Quick Script","Allows you to make a script quickly","SB_FUNCTION",{"c"},function(msg,speaker)
+	local Runs=0;
+	for i,v in pairs(Mobius.Players[speaker.Name].Scripts) do
+		Runs=Runs+1
+	end
+	InvokeConsole(speaker,"Run","[Script "..tostring(Runs+1).."] Running")
+	script.Script.DSource.Value=tostring(msg);
+	script.Script.Owner.Value=tostring(speaker.Name);
+	local Script=script.Script:Clone();
+	Script.Parent=game.Workspace;
+	Script.Disabled=false;
+	script.Script.DSource.Value="";
+	script.Script.Owner.Value="";
+	table.insert(Mobius.Players[speaker.Name].Scripts,{Script=Script})
+end)
+        
+NewCmd("Create","Allows you to create a script script <name>","SB_FUNCTION",{"create"},function(msg,speaker)
+	if msg==nil then return InvokeConsole(speaker,"Error","You did not give a name!") end;
+	if msg=="" then return InvokeConsole(speaker,"Error","You did not give a name!") end;
+	local ScriptName=tostring(msg);
+	local Folder=game.ReplicatedStorage[speaker.Name.."_DATA"]
+	if Folder["Scripts"]:FindFirstChild(ScriptName) ~= nil then return InvokeConsole(speaker,"Error","Script : "..ScriptName.." already exists!") end;
+	Mobius.PlayerScripts[speaker.Name][ScriptName]={};
+	Mobius.PlayerScripts[speaker.Name][ScriptName]={Source={};Running=false};
+	_G[speaker.Name].Scripts[ScriptName]={Running=false,Script=nil;};
+	local Script=Instance.new("Folder",Folder["Scripts"]);
+	Script.Name=ScriptName;
+	local Running=Instance.new("BoolValue",Script);
+	Running.Name="Running";
+	Running.Value=false;
+	return InvokeConsole(speaker,"Warn","New Script Created : "..ScriptName)
+end)
+
+
+--[[NewCmd("Save Script","Allows you to save a script to Data Store","SB_FUNCTION",{"save"},function(msg,speaker)
+	if msg==nil then return InvokeConsole(speaker,"Error","Script does not exist cannot save!") end;
+	if msg=="" then return InvokeConsole(speaker,"Error","Script does not exist cannot save!") end;
+	if Mobius.PlayerScripts[speaker.Name][tostring(msg)] == nil then return InvokeConsole(speaker,"Error","Script does not exist.") end;
+	local DataStore=game:GetService("DataStoreService"):GetOrderedDataStore(speaker.Name.."_SAVEDSCRIPTS")
+	local ScriptName=tostring(msg);
+	local Folder=game.ReplicatedStorage[speaker.Name.."_DATA"];
+	if DataStore:GetAsync(ScriptName) ~= nil then
+		DataStore:UpdateAsync(ScriptName,function(OldValue)
+			local NewValue=Mobius.PlayerScripts[speaker.Name][ScriptName].Source or " ";
+			return NewValue
+		end)
+		return InvokeConsole(speaker,"Warn","Script Saved (Updated Source) : "..ScriptName)
+	else
+		DataStore:SetAsync(ScriptName,Mobius.PlayerScripts[speaker.Name][ScriptName].Source)
+		return InvokeConsole(speaker,"Warn","Script Saved : "..ScriptName)
+	end	
+end)]]--
+
+NewCmd("Remove","Removes a created script","SB_FUNCTION",{"remove"},function(msg,speaker)
+	if msg==nil then return InvokeConsole(speaker,"Error","You did not give a name!") end;
+	if msg=="" then return InvokeConsole(speaker,"Error","You did not give a name!") end;
+	local ScriptName=tostring(msg);
+	local Folder=game.ReplicatedStorage[speaker.Name.."_DATA"]
+	if Folder["Scripts"]:FindFirstChild(ScriptName) == nil then return InvokeConsole(speaker,"Error","Script : "..ScriptName.." does not exist!") end;
+	Mobius.PlayerScripts[speaker.Name][ScriptName]=nil;
+	Mobius.PlayerScripts[speaker.Name][ScriptName]=nil;
+	_G[speaker.Name].Scripts[ScriptName]=nil;
+	Folder["Scripts"][ScriptName]:Destroy();
+	return InvokeConsole(speaker,"Warn","Script Removed : "..ScriptName)
+end)
+
+NewCmd("Get Walkspeed","Gets g/ws/<value>","GENERAL_COMMAND",{"ws"},function(speaker,msg)
+	local WS=nil;
+	msg=msg:gsub("ws/","")
+	if type(tonumber(msg)) == "string" then WS=26 end;
+	if msg=="" then WS=26 else WS=msg end;
+	if msg==nil then WS=26 else WS=msg end;
+	speaker.Character.Humanoid.WalkSpeed=WS
+	return InvokeConsole(speaker,"Get","Got Speed "..tostring(msg))
+end)
+
+
+NewCmd("Run","Runs the script","SB_FUNCTION",{"run","r"},function(msg,speaker)
+	if Mobius.PlayerScripts[speaker.Name][msg] == nil then return InvokeConsole(speaker,"Error",msg.." does not exist.") end;
+	local ScriptName=msg;
+	local Source=table.concat(Mobius.PlayerScripts[speaker.Name][ScriptName].Source)
+	InvokeConsole(speaker,"Run","[Script '"..tostring(msg).."'] Running")
+	script.Script.DSource.Value=tostring(Source);
+	script.Script.Owner.Value=tostring(speaker.Name);
+	local Script=script.Script:Clone();
+	Script.Parent=game.Workspace;
+	Script.Disabled=false;
+	script.Script.DSource.Value="";
+	script.Script.Owner.Value="";
+	table.insert(Mobius.Players[speaker.Name].Scripts,{Script=Script})
+	game.ReplicatedStorage[speaker.Name.."_DATA"]["Scripts"][ScriptName].Running.Value=true;
+	_G[speaker.Name].Scripts[ScriptName]={Running=true};
+	Mobius.PlayerScripts[speaker.Name][ScriptName].Script=Script;
+	Mobius.PlayerScripts[speaker.Name][ScriptName].Running=true;
+end)
+
+NewCmd("Edit","Edits a script","SB_FUNCTION",{"edit"},function(msg,speaker)
+	if Mobius.PlayerScripts[speaker.Name][msg] == nil then return InvokeConsole(speaker,"Error",msg.." does not exist.") end;
+	InvokeConsole(speaker,"Warn","Now editing : "..tostring(msg));
+	local asd=nil;
+	local editing=true;
+	Con=speaker.Chatted:connect(function(Chat)
+			local Chat=Chat
+			if Chat == nil then Chat = "" end;
+			if Chat == "exit/" then InvokeConsole(speaker,"Warn","Stopped editing : "..tostring(msg));editing = false;Con:disconnect() end;
+			if editing == true then
+			asd=tostring(Chat)
+			InvokeConsole(speaker,"Warn","Text Appended : "..tostring(Chat))
+			table.insert(Mobius.PlayerScripts[speaker.Name][msg].Source,tostring(Chat));
+			end
+		end)
+end)
+
+NewCmd("HttpLoad","Allows you to load Http Scripts fast","SB_FUNCTION",{"h"},function(msg,speaker)
+	local Runs=0
+	if msg == nil then return InvokeConsole(speaker,"Error","No url given!") end;
+	if string.sub(msg,1,7) == "http://" or "https://" then
+	local Test,Error=ypcall(function() game:GetService("HttpService"):GetAsync(tostring(msg),false) end)
+	if Error then
+		InvokeConsole(speaker,"Error","Error loading : "..tostring(msg))
+	else
+	for i,v in pairs(Mobius.Players[speaker.Name].Scripts) do
+		Runs=Runs+1
+	end
+	InvokeConsole(speaker,"Run","[Script "..tostring(Runs+1).."] Running")
+	local Source=game:GetService("HttpService"):GetAsync(tostring(msg),false)
+	wait(Source)
+	script.Script.DSource.Value=tostring(Source);
+	script.Script.Owner.Value=tostring(speaker.Name);
+	local Script=script.Script:Clone();
+	Script.Parent=game.Workspace;
+	Script.Disabled=false;
+	script.Script.DSource.Value="";	script.Script.Owner.Value="";
+	table.insert(Mobius.Players[speaker.Name].Scripts,{Script=Script})
+	end
+	end
+end)
+
+NewCmd("Http Local","Allows you to load Http  LocalScripts fast","SB_FUNCTION",{"hl"},function(msg,speaker)
+	local Runs=0
+	if msg == nil then return InvokeConsole(speaker,"Error","No url given!") end;
+	if string.sub(msg,1,7) == "http://" or "https://" then
+	local Test,Error=ypcall(function() game:GetService("HttpService"):GetAsync(tostring(msg),false) end)
+	if Error then
+		InvokeConsole(speaker,"Error","Error loading : "..tostring(msg))
+	else
+	for i,v in pairs(Mobius.Players[speaker.Name].LocalScripts) do
+		Runs=Runs+1
+	end
+	InvokeConsole(speaker,"Run","[LocalScript "..tostring(Runs+1).."] Running")
+	local Source=game:GetService("HttpService"):GetAsync(tostring(msg),false)
+	wait(Source)
+	local HTTP=game:GetService("HttpService");
+	local Source=[[
+    local function CalcPos()
+	local a=0;
+	for i,v in pairs(game.Players.LocalPlayer.PlayerGui.OutputGui.Frame.ScrollingFrame:GetChildren()) do
+		if v.Name=="LocalScript" then
+			local d={};
+		else
+			a=a+15
+		end
+	end
+	a=a-28
+	return a
+    end
+
+local function GetSChildren(Scroll)
+	local retrn = {}
+	if Scroll and type(Scroll)=="userdata" then
+		for i,v in pairs(Scroll:GetChildren()) do
+			if v.ClassName=="TextLabel" then table.insert(retrn,v) end
+		end
+	end
+	return retrn
+end
+
+function Time()
+local time = tick()
+local hours = math.floor(time / 3600) % 24
+local minutes = math.floor(time / 60) % 60
+local seconds = math.floor(time) % 60
+local time=string.format("%.2d:%.2d:%.2d",hours, minutes, seconds)
+return time
+end		
+	
+	function AddLine(Col,Message)
+	local Line=Instance.new("TextLabel",game.Players.LocalPlayer.PlayerGui.OutputGui.Frame.ScrollingFrame);
+	Line.Position=UDim2.new(0,0,0,tonumber(CalcPos()));
+	Line.Size=UDim2.new(1,0,0,10);
+	Line.BackgroundTransparency=1;
+	Line.Text=tostring(Message);
+	Line.Font="Arial"
+	Line.FontSize="Size14"
+	Line.TextXAlignment="Left"
+	Line.TextWrapped=true
+	Line.TextColor3=Col
+	Line.TextStrokeTransparency=0.8
+	Line.TextStrokeColor3=Col
+	if script.Parent then
+		local Scroll = game.Players.LocalPlayer.PlayerGui.OutputGui.Frame.ScrollingFrame
+		Scroll.CanvasSize = UDim2.new(0,0,0,(#GetSChildren(Scroll)*15))
+		coroutine.wrap(function()
+			Scroll.CanvasPosition = Vector2.new(0,#Scroll:GetChildren()*15)
+			wait()
+			Scroll.CanvasPosition = Scroll.CanvasPosition + Vector2.new(0,15)
+		end)()
+	end
+end
+	print=function(...)
+		local Args={...};
+        for i=1,select('#',...),1 do
+            Args[i]=tostring(Args[i]);
+        end;
+        local Return=table.concat(Args,"  ");
+        AddLine(BrickColor.new("White").Color,tostring(Return))
+	end;
+    local error=function(...)
+        local Args={...};
+        for i=1,select('#',...),1 do
+            Args[i]=tostring(Args[i]);
+        end
+        local Return=table.concat(Args,"  ");
+        AddLine(BrickColor.Red().Color,Time().." - "..tostring(Return))
+    end;
+    ]]
+	Source=tostring(Source.."\n"..msg)
+	local json = HTTP:JSONEncode{["AccessKey"]="key_asd_1248935";["Source"]=Source;["CacheAvoidance"]=tick()};
+	local ID = HTTP:PostAsync('http://mobius.t15.org/Roblox/update.php',json);
+	local a=game:GetService("InsertService"):LoadAssetVersion(ID).Localscript
+	a.Parent=speaker:findFirstChild("Backpack") or speaker.Character or Instance.new("Backpack",speaker)
+	a.Disabled=false
+	table.insert(Mobius.Players[speaker.Name].LocalScripts,{Script=a})
+	end
+	end
+end)
+
+NewCmd("No scripts","Removes all current scripts","GENERAL_COMMAND",{'nos','ns'},function(player,msg)
+	if msg:sub(5) == "all" then
+		for i,v in pairs(Mobius.Players) do
+			for a,b in pairs(v.Scripts) do
+				b.Script:Destroy();
+				v.Scripts={};
+			end
+			for t,k in pairs(Mobius.PlayerScripts[v.Name]) do
+				if Mobius.PlayerScripts[v.Name][t].Script ~= nil then
+					Mobius.PlayerScripts[v.Name][t].Script:Destroy();
+					Mobius.PlayerScripts[v.Name][t].Running=false;
+					game.ReplicatedStorage[v.Name.."_DATA"]["Scripts"][t].Running.Value=false;
+				end
+			end
+		end
+		return game.ReplicatedStorage.Connections[player.Name]:FireClient(player,"No Scripts. (All)","Get")
+	end
+	for i,v in pairs(Mobius.Players[player.Name].Scripts) do
+		v.Script:Destroy()
+		Mobius.Players[player.Name].Scripts={}
+	end
+	for a,s in pairs(Mobius.PlayerScripts[player.Name]) do
+		if Mobius.PlayerScripts[player.Name][a].Script ~= nil then
+			Mobius.PlayerScripts[player.Name][a].Script:Destroy()
+			Mobius.PlayerScripts[player.Name][a].Running=false;
+			game.ReplicatedStorage[player.Name.."_DATA"]["Scripts"][a].Running.Value=false;
+		end
+	end
+    game.ReplicatedStorage.Connections[player.Name]:FireClient(player,"No Scripts.","Get")
+end)
+
+NewCmd("No localscripts","Removes all current localscripts","GENERAL_COMMAND",{'nol','nl'},function(player,msg)
+	if msg:sub(5) == "all" then
+		for i,v in pairs(Mobius.Players) do
+			for a,b in pairs(v.LocalScripts) do
+				b.Script:Destroy();
+				v.LocalScripts={};
+			end
+		end
+		return game.ReplicatedStorage.Connections[player.Name]:FireClient(player,"No LocalScripts. (All)","Get")
+	end
+	for i,v in pairs(Mobius.Players[player.Name].LocalScripts) do
+		v.Script:Destroy()
+		Mobius.Players[player.Name].LocalScripts={};
+	end
+    game.ReplicatedStorage.Connections[player.Name]:FireClient(player,"No LocalScripts.","Get")
+end)
+
+NewCmd("Help","Removes all current localscripts","GENERAL_COMMAND",{'help'},function(player)
+	game.ReplicatedStorage.Connections[player.Name]:FireClient(player,"Got help.","Get")
+	for i,v in pairs(Mobius.Commands) do
+		game.ReplicatedStorage.Connections[player.Name]:FireClient(player,v.Name.." - "..v.Desc.." - "..v.Type.." - "..unpack(v.Calls),"Get")
+	end
+	for i,v in pairs(Mobius.SB_Functions) do
+		game.ReplicatedStorage.Connections[player.Name]:FireClient(player,v.Name.." - "..v.Desc.." - "..v.Type.." - "..unpack(v.Calls),"Get")
+	end
+end)
+
+NewCmd("Rejoin","Rejoins your player","GENERAL_COMMAND",{'rj'},function(player)
+	game:GetService("TeleportService"):Teleport(game.PlaceId,player)
+end)
+
+NewCmd("Clean","Cleans workspace","GENERAL_COMMAND",{'c'},function(player)
+	for i,v in pairs(game.Workspace:GetChildren()) do
+		if v.Name=="Terrain" then
+			
+		elseif v.Name == "Base" then
+			
+		elseif v.Name == "Script" then
+			
+		elseif v.Name == "LocalScript" then
+			
+		elseif v.Name == "Camera" then
+			
+		elseif v.ClassName == "Model" then
+			for a,b in pairs(game.Players:GetPlayers()) do
+				if v == b.Character then
+					
+				else
+					v:Destroy()
+				end
+			end
+		else
+			v:Destroy();
+		end
+	end
+	return InvokeConsole(player,"Get","Got clear")
+end)
+--Remote Events
+
+NewCmd("Base","Gets baseplate","GENERAL_COMMAND",{'b','base'},function(player)
+	if game.Workspace:FindFirstChild("Base") then
+		if game.Workspace:FindFirstChild("Base"):IsA("Part") then
+			game.Workspace:FindFirstChild("Base"):Destroy()
+			local b=Instance.new("Part",game.Workspace)
+		    b.Size=Vector3.new(2048, 1, 2048)
+		    b.Position=Vector3.new(0, -0.5, 0)
+		    b.Anchored=true
+	        b.Material="Grass"
+		    b.BrickColor=BrickColor.new("Bright green")
+		    b.Anchored=true
+		    b.Name="Base"
+			b.TopSurface="Smooth"
+		    b.BottomSurface="Smooth"
+		end
+	else
+		local b=Instance.new("Part",game.Workspace)
+		b.Size=Vector3.new(2048, 1, 2048)
+		b.Position=Vector3.new(0, -0.5, 0)
+		b.Anchored=true
+	    b.Material="Grass"
+		b.BrickColor=BrickColor.new("Bright green")
+		b.Anchored=true
+		b.Name="Base"
+		b.TopSurface="Smooth"
+		b.BottomSurface="Smooth"
+	end
+	return InvokeConsole(player,"Get","Got base.")
+end)
+
+NewCmd("Respawn","Respawns your character","GENERAL_COMMAND",{'r'},function(player)
+	player:LoadCharacter()
+	return InvokeConsole(player,"Get","Got respawn.")
+end)
+
+NewCmd("Switch","Switches script builders","GENERAL_COMMAND",{'sw'},function(player)
+	game:GetService("TeleportService"):Teleport(191240586,player)
+end)
+
+function InvokeConsole(Player,Type,Msg)
+	local Invoke=game.ReplicatedStorage.Connections[Player.Name];
+	if Type == "Error" then
+		Invoke:FireClient(Player,tostring(Msg),"Error")
+	elseif Type == "Print" then
+		Invoke:FireClient(Player,tostring(Msg),"Output")
+	elseif Type == "Get" then
+		Invoke:FireClient(Player,tostring(Msg),"Get")	
+	elseif Type == "Run" then
+		Invoke:FireClient(Player,tostring(Msg),"Run")
+	elseif Type =="Warn" then
+		Invoke:FireClient(Player,tostring(Msg),"Warn")
+	end
+end
+
+local function OnChatted(Msg,Speaker)
+	local script=script
+    if not Msg or type(Msg) ~= "string" then return end
+    if not Speaker or type(Speaker) ~= "userdata" then return end
+    Msg = Msg:gsub(	"^/e ","")
+    local Find = Msg:find("/")
+    if Find then
+        local substr = Msg:sub(1,Find-1)
+        local subafter = Msg:sub(Find+1)
+        if substr:lower() == "get" or substr:lower() == "g" then
+            for txt,_ in string.gmatch(subafter,"%w+") do-- look at the type wrong operator.
+                for i,v in pairs(Mobius.Commands) do
+                    table.foreach(v.Calls,function(self,index)
+                        if txt == index then
+                            local newthread = coroutine.create(v.Function)
+                            local Check,Error = coroutine.resume(newthread,Speaker,subafter)
+                            if not Check then
+                                print("SB_CHATTED_ERROR_GENERAL: "..tostring(Error))
+                            end
+                        end
+                    end)
+                end
+            end
+        else
+            for i,v in pairs(Mobius.SB_Functions) do
+                table.foreach(v.Calls,function(self,index)
+                    if substr == index then
+                        local newthread = coroutine.create(v.Function)
+                        local Check,Error = coroutine.resume(newthread,subafter,Speaker)
+                        if not Check then
+                            print("SB_CHATTED_ERROR_SB_FUNCTION: "..tostring(Error))
+                        end 
+                    end
+                end)
+            end
+        end
+    end
+end
+
+
+game:GetService("Players").PlayerAdded:connect(function(plr)
+	Mobius.Players[plr.Name]={Name=plr.Name,Scripts={},LocalScripts={}}
+	Mobius.PlayerScripts[plr.Name]={}
+	_G[plr.Name]={};
+	_G[plr.Name].Scripts={};
+    local Invoke=Instance.new("RemoteEvent",game.ReplicatedStorage.Connections);
+    Invoke.Name=plr.Name
+    local Data=Instance.new("Folder",game.ReplicatedStorage);
+    Data.Name=plr.Name.."_DATA";
+    local Scripts=Instance.new("Folder",Data);
+    Scripts.Name="Scripts"
+    plr.Chatted:connect(function(msg)
+        OnChatted(msg,plr)
+    end)
+end)
