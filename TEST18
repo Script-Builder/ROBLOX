@@ -1,7 +1,5 @@
---Scripted by clv2
-
-
 local Orb = Instance.new("Part",workspace)
+Orb.BrickColor = BrickColor.Random()
 Orb.BottomSurface = "Smooth"
 Orb.TopSurface = "Smooth"
 Orb.Shape = "Ball"
@@ -42,7 +40,6 @@ spawn(function() while true do
         pos2 = Orb.Position
         dist = (pos1 - pos2).magnitude
         local trail = Instance.new("Part", Orb) 
-        trail.BrickColor = BrickColor.Random()
         trail.Name = "Trail"
         trail.FormFactor = 3
         trail.CFrame = CFrame.new(pos1, pos2) * CFrame.new(0, 0, -dist / 2)
