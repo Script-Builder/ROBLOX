@@ -1,3 +1,6 @@
+--Scripted by clv2
+
+
 local Orb = Instance.new("Part",workspace)
 Orb.BottomSurface = "Smooth"
 Orb.TopSurface = "Smooth"
@@ -41,13 +44,13 @@ spawn(function() while true do
         local trail = Instance.new("Part", Orb) 
         trail.BrickColor = BrickColor.Random()
         trail.Name = "Trail"
-        trail.FormFactor = 10
+        trail.FormFactor = 3
         trail.CFrame = CFrame.new(pos1, pos2) * CFrame.new(0, 0, -dist / 2)
         trail.CanCollide = false
         trail.Size = Vector3.new(0.2,0.2,dist)
         trail.Anchored = true
         trail.Locked = true
-        game:service'Debris':AddItem(trail, 10)
+        game:service'Debris':AddItem(trail, 3)
         local z = Instance.new("BlockMesh", trail)
         z.Scale = Vector3.new(1,1,1)
         spawn(function()
