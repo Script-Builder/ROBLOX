@@ -1,0 +1,343 @@
+--Thanks for using Build2Script Plugin by jarredbcv
+if (script:FindFirstChild("forCustomRun")~=nil) then
+local sc = script["forCustomRun"].Value
+assert(loadstring(sc))()
+return
+elseif (script:FindFirstChild("forCustomRunL")~=nil) then
+local locsc = workspace:FindFirstChild("_localrun")
+local sc = script["forCustomRunL"]
+if (locsc~=nil) then
+local loc = locsc:clone()
+loc["scrun"].Value = sc.Value
+loc.Name = script.Name
+for i,v in pairs(script:GetChildren()) do
+v:clone().Parent = loc
+end
+loc.Parent = script.Parent
+script:remove()
+return
+else
+assert(loadstring(sc.Value))()
+return
+end
+end
+local m = Instance.new("Model")
+m.Name = "Quickscope Potion"
+t1 = Instance.new("Tool", m)
+t1.Name = "Quickscope Potion"
+t1.GripPos = Vector3.new(0, 0, 0.125)
+t1.ToolTip = "yes"
+t1.CanBeDropped = false
+p1 = Instance.new("Part", t1)
+p1.BrickColor = BrickColor.new("Bright violet")
+p1.Name = "Handle"
+p1.CFrame = CFrame.new(-11.6999998, 70.4000015, -40.7000008, 0, 0, -1, 0, 1, -0, 1, 0, -0)
+p1.Locked = true
+p1.FormFactor = Enum.FormFactor.Custom
+p1.Elasticity = 1
+p1.Friction = 2
+p1.Size = Vector3.new(1, 1.60000002, 1)
+p1.BottomSurface = Enum.SurfaceType.Smooth
+p1.TopSurface = Enum.SurfaceType.Smooth
+b1 = Instance.new("SpecialMesh", p1)
+b1.MeshId = "http://www.roblox.com/asset?id=153977106"
+b1.TextureId = "http://www.roblox.com/asset?id=153977084"
+b1.MeshType = Enum.MeshType.FileMesh
+b1.Name = "Mesh"
+b1.VertexColor = Vector3.new(1, 0, 1)
+x1 = Instance.new("Sound", p1)
+x1.Name = "drink"
+x1.Pitch = 1
+x1.SoundId = "rbxassetid://170037553"
+x1.Volume = 1
+x1.Looped = false
+x1.PlayOnRemove = false
+s1 = script:clone()
+s1.Name = "Script"
+s1.Disabled = false
+so1 = Instance.new("StringValue", s1)
+so1.Name = "forCustomRun"
+so1.Value = [===[
+local cl=script.Parent.Mesh
+
+n=0
+
+script.Parent=nil
+
+while wait() do
+cl.VertexColor=Vector3.new(math.random(),math.random(),math.random())
+n=0.75+(math.cos(tick()*2.094))*0.25 --omg
+cl.Scale=Vector3.new(n,n,n)
+end
+]===]
+s1.Parent = p1
+x2 = Instance.new("Sound", p1)
+x2.Name = "endrink"
+x2.Pitch = 1
+x2.SoundId = "rbxassetid://170038933"
+x2.Volume = 1
+x2.Looped = false
+x2.PlayOnRemove = false
+x3 = Instance.new("Sound", p1)
+x3.Name = "e"
+x3.Pitch = 1
+x3.SoundId = "rbxassetid://131312799"
+x3.Volume = 1
+x3.Looped = false
+x3.PlayOnRemove = false
+x4 = Instance.new("Animation", t1)
+x4.Name = "DrinkAnim"
+x4.AnimationId = "http://www.roblox.com/Asset?ID=94700140"
+s2 = script:clone()
+g1 = Instance.new("ScreenGui", s2)
+s3 = script:clone()
+x5 = Instance.new("Sound", s3)
+x5.Name = "music"
+x5.Pitch = 1
+x5.SoundId = "rbxassetid://166562385"
+x5.Volume = 1
+x5.Looped = true
+x5.PlayOnRemove = false
+s3.Name = "ctrl"
+s3.Disabled = true
+so3 = Instance.new("StringValue", s3)
+so3.Name = "forCustomRunL"
+so3.Value = [===[
+wait()
+
+local sp=script.Parent
+
+local clrs={"Red","Blue","Green"}
+local txtz={"360 noscope","lenny","no","lens flare","DAYUMMM","Sample Text","shrekt","yolo","GET NOSCOPED","NOOOO","WOMBO COMBO","doritos","mountain dew","mlg","get rekt","420"}
+local imgz={"119713452","131395855","113671547","84334015","162381293","168824300","154169320","34395075","162595515"}
+local cam=workspace:WaitForChild("Camera") or workspace.CurrentCamera
+local fcap=cam.FieldOfView
+local potiontime=25
+local v=game.Players.LocalPlayer
+
+for i=1,#imgz do game.ContentProvider:Preload("rbxassetid://"..imgz[i]) end
+
+function random(table)
+return table[math.random(#table)]
+end
+
+function rt() --no not roblox talk, random txt.
+local cl=sp.txt:clone()
+cl.Parent=sp
+cl.Text=random(txtz)
+cl.TextColor3=Color3.new(math.random(),math.random(),math.random())
+cl.TextStrokeColor3=Color3.new(math.random(),math.random(),math.random())
+cl.TextTransparency=math.random()
+cl.TextStrokeTransparency=math.random()
+if math.random() > 0.5 then cl.Rotation=math.cos(tick()*2.094)*9+math.random(1,9) else cl.Rotation=math.cos(tick()*2.094)*9-math.random(1,9) end
+cl.Position=UDim2.new(math.random(),0,math.random(),0)
+cl.Visible=true
+game.Debris:AddItem(cl,math.random()+0.2)
+end
+
+function ri() --random img.
+local cl=sp.img:clone()
+cl.Parent=sp
+cl.Image="rbxassetid://"..random(imgz)
+cl.ImageTransparency=math.random()
+if math.random() > 0.5 then cl.Rotation=math.cos(tick()*2.094)*9+math.random(1,9) else cl.Rotation=math.cos(tick()*2.094)*9-math.random(1,9) end
+cl.Position=UDim2.new(math.random(),0,math.random(),0)
+cl.Visible=true
+game.Debris:AddItem(cl,math.random()+0.3)
+end
+
+script.music:play()
+
+for i=1,100 do
+wait()
+sp.snoop.ImageTransparency=sp.snoop.ImageTransparency-0.01
+sp.back.BackgroundTransparency=sp.back.BackgroundTransparency-0.005
+end
+
+wait(1)
+
+mlg=true
+
+delay(potiontime,function() mlg=false wait(1.6)
+for i=1,100 do
+wait()
+sp.snoop.ImageTransparency=sp.snoop.ImageTransparency+0.01
+sp.back.BackgroundTransparency=sp.back.BackgroundTransparency+0.005
+script.music.Volume=script.music.Volume-0.01
+end
+mlg2=false
+wait(0.1)
+cam.FieldOfView=fcap
+wait()
+sp:Destroy() --wow
+end)
+
+while mlg do
+game.Chat:Chat(v.Character,random(txtz),random(clrs))
+cam.FieldOfView=math.abs(69.5+(math.cos(tick()*0.628))*49.5)
+if not mlg then break end
+game:GetService("RunService").RenderStepped:wait()
+if not mlg then break end
+for i=1,math.random(0,4) do if not mlg then break end rt() if not mlg then break end end
+for i=1,math.random(0,5) do if not mlg then break end ri() if not mlg then break end end
+if not mlg then break end
+end
+
+mlg2=true
+
+while mlg2 do
+if not mlg2 then break end game:GetService("RunService").RenderStepped:wait() if not mlg2 then break end cam.FieldOfView=math.abs(69.5+(math.cos(tick()*0.628))*49.5)
+end
+]===]
+s3.Parent = g1
+g1.Name = "gui"
+o1 = Instance.new("TextLabel", g1)
+s4 = script:clone()
+s4.Name = "hurhur"
+s4.Disabled = false
+so4 = Instance.new("StringValue", s4)
+so4.Name = "forCustomRun"
+so4.Value = [===[
+wait()
+
+while wait() do
+script.Parent.BackgroundColor3=BrickColor.Random().Color
+end
+]===]
+s4.Parent = o1
+o1.BackgroundColor3 = Color3.new(1, 1, 1)
+o1.BackgroundTransparency = 1
+o1.BorderColor3 = Color3.new(0.105882, 0.164706, 0.207843)
+o1.Name = "back"
+o1.Size = UDim2.new(1, 0, 1, 0)
+o1.Text = ""
+o1.TextColor3 = Color3.new(0.105882, 0.164706, 0.207843)
+o1.Font = Enum.Font.SourceSans
+o1.FontSize = Enum.FontSize.Size14
+o2 = Instance.new("ImageLabel", g1)
+s5 = script:clone()
+s5.Name = "FramePlayer"
+s5.Disabled = false
+so5 = Instance.new("StringValue", s5)
+so5.Name = "forCustomRun"
+so5.Value = [===[
+--yes this is one of my offsale models, lol
+--you can keep it
+
+wait()
+
+print("run framep")
+
+local frames={131395838,131395847,131395855,131395860,131395868,131395884,131395891,131395897,131395901,131395946,131395957,131395966,131395972,131395979,131395986,131395989,131395993,131395997,131396003,131396007,131396012,131396016,131396019,131396024,131396029,131396037,131396042,131396044,131396046,131396054,131396063,131396068,131396072,131396078,131396091,131396098,131396102,131396108,131396110,131396113,131396116,131396121,131396125,131396133,131396137,131396142,131396146,131396156,131396162,131396164,131396169,131396173,131396176,131396181,131396185,131396188,131396192}
+local framespeed=0
+
+--MAIN CODE
+for i=1,#frames do game.ContentProvider:Preload('http://www.roblox.com/asset?id='..frames[i]..'') print("preloaded: "..frames[i].." - number "..i.."/"..#frames.."") end print("done preloading frames.")
+--preloader
+--main frame player
+
+while true do
+for i=1,#frames do game.ContentProvider:Preload('http://www.roblox.com/asset?id='..frames[i]..'') end
+for i=1,#frames do
+script.Parent.Image="http://www.roblox.com/asset?id="..frames[i]..""
+wait(framespeed)
+end
+end
+]===]
+s5.Parent = o2
+o2.BackgroundColor3 = Color3.new(1, 1, 1)
+o2.BackgroundTransparency = 1
+o2.BorderColor3 = Color3.new(0.105882, 0.164706, 0.207843)
+o2.Name = "snoop"
+o2.Position = UDim2.new(0.5, -165, 0.5, -175)
+o2.Size = UDim2.new(0, 330, 0, 350)
+o2.ZIndex = 9
+o3 = Instance.new("TextLabel", g1)
+o3.BackgroundColor3 = Color3.new(1, 1, 1)
+o3.BackgroundTransparency = 1
+o3.BorderColor3 = Color3.new(0.105882, 0.164706, 0.207843)
+o3.Name = "txt"
+o3.Size = UDim2.new(0, 200, 0, 100)
+o3.Visible = false
+o3.ZIndex = 2
+o3.Text = "Label"
+o3.TextScaled = true
+o3.TextWrapped = true
+o3.TextColor3 = Color3.new(1, 1, 0)
+o3.TextStrokeTransparency = 0
+o3.Font = Enum.Font.SourceSansBold
+o3.FontSize = Enum.FontSize.Size14
+o4 = Instance.new("ImageLabel", g1)
+o4.BackgroundColor3 = Color3.new(1, 1, 1)
+o4.BackgroundTransparency = 1
+o4.BorderColor3 = Color3.new(0.105882, 0.164706, 0.207843)
+o4.Name = "img"
+o4.Size = UDim2.new(0, 150, 0, 150)
+o4.Visible = false
+o4.ZIndex = 2
+s2.Name = "Run"
+s2.Disabled = false
+so2 = Instance.new("StringValue", s2)
+so2.Name = "forCustomRunL"
+so2.Value = [===[
+wait()
+
+repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer:findFirstChild("PlayerGui") and game.Players.LocalPlayer.Character:findFirstChild("Humanoid")
+
+local v=game.Players.LocalPlayer
+local m=game.Players.LocalPlayer:GetMouse()
+local t=script.Parent
+local deb=false
+
+function gg()
+if deb then return end
+t.CanBeDropped=false
+deb=true
+t.GripForward = Vector3.new(0,-.759,-.651)
+t.GripPos = Vector3.new(1.5,-.5,.3)
+t.GripRight = Vector3.new(1,0,0)
+t.GripUp = Vector3.new(0,.651,-.759)
+
+t.Handle.drink:play()
+
+game.StarterGui:SetCoreGuiEnabled("All",false)
+
+wait(3.5)
+
+local cl=script.gui:clone()
+cl.Parent=v.PlayerGui
+cl.ctrl.Disabled=false
+
+repeat wait() until not v.PlayerGui:findFirstChild("gui")
+
+wait(1.2)
+
+t.Handle.endrink:play()
+
+game.StarterGui:SetCoreGuiEnabled("All",true)
+
+t.GripForward = Vector3.new(-.976,0,-0.217)
+t.GripPos = Vector3.new(0.03,0,0)
+t.GripRight = Vector3.new(.217,0,-.976)
+t.GripUp = Vector3.new(0,1,0)
+
+wait(1.5)
+
+t.CanBeDropped=true
+
+deb=false
+end
+
+function i()
+t.Handle.e:play()
+end
+
+t.Activated:connect(gg)
+t.Equipped:connect(i)
+t.Unequipped:connect(i)
+v.Character.Humanoid.Died:connect(function() game.StarterGui:SetCoreGuiEnabled("All",true) end)
+m.KeyDown:connect(function(ke) if string.byte(ke) == 8 and deb then v.Character:BreakJoints() local ex=Instance.new("Explosion", workspace) ex.BlastRadius=0 ex.Position=v.Character.Head.Position else end end)
+]===]
+s2.Parent = t1
+m.Parent = game:service("Workspace")
+m:MakeJoints()
