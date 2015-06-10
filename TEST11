@@ -13,7 +13,8 @@ local music={
 [12]={'Sugar-Maroon Five',221896283};
 [13]={'Summer',154309298};
 [14]={'Animals',177956804};
-[15]={'Dr. Dre Next Episode Remix',225665123}
+[15]={'Dr. Dre Next Episode Remix',225665123};
+[16]={'MLG LOLS'}
 }
 
 local plr=game.Players:WaitForChild('gavinsharp100')
