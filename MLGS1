@@ -1,0 +1,2000 @@
+--Made by WALSIN3 go line 5 and put you name regular script
+
+if script == nil then return end
+ 
+Player = script:FindFirstChild("Player") ~= nil and script.Player.Value or game:GetService("Players"):FindFirstChild("gavinsharp100")
+Name = "Sniper"
+MC = BrickColor.new("Black")
+DC = BrickColor.new("Black")
+GC = BrickColor.new("Brick yellow")
+BC = BrickColor.new("Dark stone grey")
+MR = 0
+GR = 0
+HP = true
+selected = false
+canDual = false
+dual = false
+Button1Down = false
+damage = 100000000000000000000000000000000000000000000
+canFire = true
+canFire2 = false
+readyTime = 1.8
+automatic = false
+burst = false
+burstCount = 0
+burstCountMax = 2
+canSilence = true
+silenced = false
+canZoom = true
+zoom = false
+switchToSingle = true
+switchToBurst = true
+switchToAutomatic = true
+ 
+ammoGui = Instance.new("ScreenGui")
+ammoGui.Name = Name
+local frame = Instance.new("Frame")
+frame.Name = "Frame"
+frame.Size = UDim2.new(0, 165, 0, 60)
+frame.Position = UDim2.new(0, 0, 1, -400)
+frame.BackgroundColor3 = Color3.new(1, 1, 1)
+frame.BorderColor3 = Color3.new(0, 0, 0)
+frame.Parent = ammoGui
+local label = Instance.new("TextLabel")
+label.Name = "Weapon"
+label.Text = "Weapon: " ..Name
+label.Size = UDim2.new(1, 0, 0, 20)
+label.Position = UDim2.new(0, 0, 0, 0)
+label.BackgroundColor3 = Color3.new(1, 0, 0)
+label.BorderColor3 = Color3.new(0, 0, 0)
+label.Parent = frame
+local label = Instance.new("TextLabel")
+label.Name = "MagazinePrefix"
+label.Text = "    Magazine:"
+label.TextXAlignment = "Left"
+label.Size = UDim2.new(1, 0, 0, 20)
+label.Position = UDim2.new(0, 0, 0, 20)
+label.BackgroundColor3 = Color3.new(1, 1, 1)
+label.BorderColor3 = Color3.new(0, 0, 0)
+label.Parent = frame
+local label = Instance.new("TextLabel")
+label.Name = "Magazine"
+label.Text = "0/0"
+label.TextXAlignment = "Right"
+label.Size = UDim2.new(1, 0, 0, 20)
+label.Position = UDim2.new(0, -10, 0, 20)
+label.BackgroundTransparency = 1
+label.BorderSizePixel = 0
+label.Parent = frame
+local label = Instance.new("TextLabel")
+label.Name = "AmmoPrefix"
+label.Text = "    Ammunition:"
+label.TextXAlignment = "Left"
+label.Size = UDim2.new(1, 0, 0, 20)
+label.Position = UDim2.new(0, 0, 0, 40)
+label.BackgroundColor3 = Color3.new(1, 1, 1)
+label.BorderColor3 = Color3.new(0, 0, 0)
+label.Parent = frame
+local label = Instance.new("TextLabel")
+label.Name = "Ammo"
+label.Text = "0/0"
+label.TextXAlignment = "Right"
+label.Size = UDim2.new(1, 0, 0, 20)
+label.Position = UDim2.new(0, -10, 0, 40)
+label.BackgroundTransparency = 1
+label.BorderSizePixel = 0
+label.Parent = frame
+ 
+function updateGui()
+ if selected == false then return end
+ if Player:FindFirstChild("PlayerGui") == nil then Instance.new("PlayerGui").Parent = Player end
+ if Player.PlayerGui:FindFirstChild(Name) == nil then
+  ammoGui:Clone().Parent = Player.PlayerGui
+ end
+ Player.PlayerGui[Name].Frame.Magazine.Text = tostring(magazine.Value).. "/" ..tostring(magazineMax.Value)
+ Player.PlayerGui[Name].Frame.Ammo.Text = tostring(ammo.Value).. "/" ..tostring(ammoMax.Value)
+end
+ 
+function makeParts(format)
+ local model = Instance.new("Model")
+ model.Name = Name
+ local pm = Instance.new("Part")
+ pm.Name = "Handle"
+ pm.formFactor = "Symmetric"
+ pm.Size = Vector3.new(1, 1, 1)
+ pm.BrickColor = GC
+ pm.Reflectance = GR
+ pm.CanCollide = false
+ pm.Transparency = 1
+ pm.Locked = true
+ pm.TopSurface = 0
+ pm.BottomSurface = 0
+ pm.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.28, 1.1, 0.19)
+ m.Offset = Vector3.new(0, -0.25, 0.07)
+ m.Parent = pm
+ if format ~= nil then
+  local w = Instance.new("Weld")
+  w.Part0 = pm
+  if format == "RightHand" then
+   w.Part1 = Player.Character:FindFirstChild("Right Arm")
+   w.C0 = CFrame.new(0, 1.15, 0.7)
+   w.C1 = CFrame.new()
+  elseif format == "RightHolster" then
+   w.Part1 = Player.Character:FindFirstChild("Torso")
+   w.C0 = CFrame.new(-0.66, -0.7, 0.3) * CFrame.fromEulerAnglesXYZ(math.rad(-135), math.rad(90), 0)
+   w.C1 = CFrame.new()
+   model.Name = Name.. " (Holstered)"
+  end
+  w.Parent = pm
+  model.Parent = Player.Character
+ end
+ --[[
+ sniper1  http://www.roblox.com/asset/?id=1868836
+ equip    http://www.roblox.com/asset/?id=13510737
+ fire1     http://www.roblox.com/asset/?id=2760979
+ fire2    http://www.roblox.com/asset/?id=13510352
+ fire3    http://www.roblox.com/asset/?id=2692806
+ fire4    http://www.roblox.com/asset/?id=2691586
+ fire5    http://www.roblox.com/asset/?id=2920959
+ fire6    http://www.roblox.com/asset/?id=2697431
+ fire7    http://www.roblox.com/asset/?id=2920959
+ reload1   http://www.roblox.com/asset/?id=2691591
+ reload2   http://www.roblox.com/asset/?id=2697432
+ reload3  http://www.roblox.com/asset/?id=2920960
+ reload4  http://www.roblox.com/asset/?id=2761842
+ shotgun1 http://www.roblox.com/asset/?id=2697294
+ --]]
+ local s = Instance.new("Sound")
+ s.Name = "Fire"
+ s.SoundId = "http://www.roblox.com/asset/?id=164147183"
+ s.Volume = 1
+ s.Pitch = 1
+ s.Looped = false
+ s.Parent = pm
+ local s = Instance.new("Sound")
+ s.Name = "Fire2"
+ s.SoundId = "http://roblox.com/asset/?id=164147183"
+ s.Volume = 1
+ s.Pitch = 1.4
+ s.Looped = false
+ s.Parent = pm
+ local s = Instance.new("Sound")
+ s.Name = "Equip"
+ s.SoundId = "http://www.roblox.com/asset/?id=164147183"
+ s.Volume = 1
+ s.Pitch = 0.6
+ s.Looped = false
+ s.Parent = pm
+ local s = Instance.new("Sound")
+ s.Name = "Reload"
+ s.SoundId = "http://www.roblox.com/asset/?id=2761842"
+ s.Volume = 1
+ s.Pitch = 1.2
+ s.Looped = false
+ s.Parent = pm
+ local s = Instance.new("Sound")
+ s.Name = "Empty"
+ s.SoundId = "http://www.roblox.com/asset/?id=2697295"
+ s.Volume = 1
+ s.Pitch = 5
+ s.Looped = false
+ s.Parent = pm
+ local s = Instance.new("Sound")
+ s.Name = "Switch"
+ s.SoundId = "http://www.roblox.com/asset/?id=2697295"
+ s.Volume = 1
+ s.Pitch = 10
+ s.Looped = false
+ s.Parent = pm
+ local p = Instance.new("Part")
+ p.Name = "ShellOut"
+ p.formFactor = "Custom"
+ p.Size = Vector3.new(0.2, 0.2, 0.2)
+ p.Transparency = 1
+ p.Locked = true
+ p.CanCollide = false
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(-0.06, 0.62, -0.06) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+ w.C1 = CFrame.new()
+ w.Parent = p--]]
+ local p = Instance.new("Part")
+ p.Name = "Grip"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 0.38, 0.8)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.15, -0.5) * CFrame.fromEulerAnglesXYZ(math.rad(15), 0, 0)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "GripWood"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.36, 0.36, 0.6)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.15, -0.56) * CFrame.fromEulerAnglesXYZ(math.rad(15), 0, 0)
+ w.C1 = CFrame.new()
+ w.Parent = p--]]
+ local p = Instance.new("Part")
+ p.Name = "Magazine"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.25, 0.5, 0.5)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.5, -0.24)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Trigger Housing"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = MC
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.2, 0.4, 0.04)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.1, -0.36)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Trigger"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BrickColor.new("Dark stone grey")
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.18, 0.18, 0.18)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.02, -0.25)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Body1" --------------
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 2, 0.38)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 1.2, -0.12)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Body2"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.32, 1.4, 0.2)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 1.48, -0.08)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "GripAngle1"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Wedge"
+ m.Scale = Vector3.new(0.3, 0.14, 0.6)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.38, 0.5) * CFrame.fromEulerAnglesXYZ(math.rad(270), 0, math.rad(180))
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "GripAngle2"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Wedge"
+ m.Scale = Vector3.new(0.3, 0.06, 0.8)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.34, 0.8) * CFrame.fromEulerAnglesXYZ(math.rad(270), 0, math.rad(180))
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "GripTrigHous"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 0.4, 0.1)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0, -0.4)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "GripCover"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 1, 0.3)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.1, -0.08)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BoltBlock" --------------
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.28, 1, 0.3)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.3, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BoltShaftI"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BC
+ p.Reflectance = MR
+ p.Transparency = 0
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.26, 1, 0.26)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.06, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BoltKnobI"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BC
+ p.Reflectance = MR
+ p.Transparency = 0
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.3, 0.14, 0.14)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0.2, -0.3, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BoltShaftO"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BC
+ p.Reflectance = MR
+ p.Transparency = 1
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.26, 1, 0.26)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.06, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BoltKnobO"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BC
+ p.Reflectance = MR
+ p.Transparency = 1
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.3, 0.14, 0.14)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0.2, -0.4, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Barrel 1"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.2, 4, 0.2)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 2.6, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Muzzle"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.24, 0.8, 0.24)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 4.2, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local s = Instance.new("Smoke")
+ s.Enabled = false
+ s.Name = "Smoke"
+ s.RiseVelocity = -5
+ s.Opacity = 0.5
+ s.Color = Color3.new(75 / 225, 75 / 225, 75 / 225)
+ s.Size = 2.4
+ s.Parent = p
+ local f = Instance.new("Fire")
+ f.Enabled = false
+ f.Name = "Fire"
+ f.Heat = -20
+ f.Size = 3.6
+ f.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "MuzzleHole"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BrickColor.new("Really black")
+ p.Reflectance = MR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.18, 0.8, 0.18)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 4.203, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Silencer"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BrickColor.new("Black")
+  p.CanCollide = false
+ p.Transparency = 1
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.28, 3, 0.28)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 4, 0.06)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "GripStock"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.CanCollide = false
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 0.8, 0.3)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.6, -0.75) * CFrame.fromEulerAnglesXYZ(math.rad(20), 0, 0)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part") -- Standard Stock
+ p.Name = "StockT"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 1.4, 0.25)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.6, -0.1)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "CheekRest" --------------
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("SpecialMesh")
+ m.MeshType = "Brick"
+ m.Scale = Vector3.new(0.26, 0.6, 0.3)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.84, -0.04)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Stock1"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.34, 0.4, 0.7)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -1.38, -0.3) --* CFrame.fromEulerAnglesXYZ(math.rad(270), 0, math.rad(180))
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Stock2"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = GC
+ p.Reflectance = GR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.3, 0.4, 0.5)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.38, -1) * CFrame.fromEulerAnglesXYZ(math.rad(270), 0, math.rad(180))
+ w.C1 = CFrame.new()
+ w.Parent = p--]]
+ local p = Instance.new("Part") -------------- SCOPE
+ p.Name = "Scope Base"
+ p.formFactor = "Symmetric"
+ p.CanCollide = false
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.1, 0.14, 0.4)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.1, 0.18)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Scope Base"
+ p.formFactor = "Symmetric"
+ p.CanCollide = false
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.1, 0.14, 0.4)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.48, 0.18)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Scope End 1" --End = Back
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.24, 0.375, 0.24)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.2, 0.38)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Scope Center 1"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.2, 0.8, 0.2)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.3, 0.38)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Scope Front 1"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.28, 0.7, 0.28)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.94, 0.38)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Scope Window F"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BrickColor.new("White")
+ p.Reflectance = 0.3
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.27, 0.7, 0.27)
+ m.Offset = Vector3.new(0, -0.003 ,0)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 0.94, 0.38)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "Scope Window B"
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = BrickColor.new("White")
+ p.Reflectance = 0.3
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.23, 0.375, 0.23)
+ m.Offset = Vector3.new(0, 0.003 ,0)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, -0.2, 0.38)
+ w.C1 = CFrame.new()
+ w.Parent = p--]]
+ local p = Instance.new("Part") ---Bipod
+ p.Name = "BipodM" --------------
+ p.CanCollide = false
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("BlockMesh")
+ m.Scale = Vector3.new(0.17, 0.25, 0.2)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0, 2, -0.35)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BipodArm"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.CanCollide = false
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.15, 1, 0.15)
+ m.Offset = Vector3.new(0, -0.44 ,0)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(-0.09, 2, -0.4)
+ w.C1 = CFrame.new()
+ w.Parent = p
+ local p = Instance.new("Part")
+ p.Name = "BipodArm"
+ p.formFactor = "Symmetric"
+ p.Size = Vector3.new(1, 1, 1)
+ p.CanCollide = false
+ p.BrickColor = DC
+ p.Reflectance = MR
+ p.Locked = true
+ p.TopSurface = 0
+ p.BottomSurface = 0
+ p.Parent = model
+ local m = Instance.new("CylinderMesh")
+ m.Scale = Vector3.new(0.15, 1, 0.15)
+ m.Offset = Vector3.new(0, -0.44 ,0)
+ m.Parent = p
+ local w = Instance.new("Weld")
+ w.Part0 = p
+ w.Part1 = pm
+ w.C0 = CFrame.new(0.09, 2, -0.4)
+ w.C1 = CFrame.new()
+ w.Parent = p--]]
+ return model
+end
+ 
+function removeParts(format)
+ if format == "RightHand" then
+  pcall(function() Player.Character[Name]:Remove() end)
+ elseif format == "LeftHand" then
+  pcall(function() Player.Character[Name.. " (Left)"]:Remove() end)
+ elseif format == "RightHolster" then
+  pcall(function() Player.Character[Name.. " (Holstered)"]:Remove() end)
+ elseif format == "LeftHolster" then
+  pcall(function() Player.Character[Name.. " (Holstered, Left)"]:Remove() end)
+ end
+end
+ 
+function SetAngle(Joint, Angle, Character)
+ if Character == nil then return false end
+ local Joints = {
+  Character.Torso:FindFirstChild("Right Shoulder 2"),
+  Character.Torso:FindFirstChild("Left Shoulder 2"),
+  Character.Torso:FindFirstChild("Right Hip 2"),
+  Character.Torso:FindFirstChild("Left Hip 2")
+ }
+ if Joints[Joint] == nil then return false end
+ if Joint == 1 or Joint == 3 then
+  Joints[Joint].DesiredAngle = Angle
+ end
+ if Joint == 2 or Joint == 4 then
+  Joints[Joint].DesiredAngle = -Angle
+ end
+end
+ 
+function ForceAngle(Joint, Angle, Character)
+ if Character == nil then return false end
+ local Joints = {
+  Character.Torso:FindFirstChild("Right Shoulder 2"),
+  Character.Torso:FindFirstChild("Left Shoulder 2"),
+  Character.Torso:FindFirstChild("Right Hip 2"),
+  Character.Torso:FindFirstChild("Left Hip 2")
+ }
+ if Joints[Joint] == nil then return false end
+ if Joint == 1 or Joint == 3 then
+  Joints[Joint].DesiredAngle = Angle
+  Joints[Joint].CurrentAngle = Angle
+ end
+ if Joint == 2 or Joint == 4 then
+  Joints[Joint].DesiredAngle = -Angle
+  Joints[Joint].CurrentAngle = -Angle
+ end
+end
+ 
+function SetSpeed(Joint, Speed, Character)
+ if Character == nil then return false end
+ local Joints = {
+  Character.Torso:FindFirstChild("Right Shoulder 2"),
+  Character.Torso:FindFirstChild("Left Shoulder 2"),
+  Character.Torso:FindFirstChild("Right Hip 2"),
+  Character.Torso:FindFirstChild("Left Hip 2")
+ }
+ if Joints[Joint] == nil then return false end
+ Joints[Joint].MaxVelocity = Speed
+end
+ 
+function DisableLimb(Limb, Character)
+ if Character == nil then return false end
+ if Character:FindFirstChild("Torso") == nil then return false end
+ local Joints = {
+  Character.Torso:FindFirstChild("Right Shoulder"),
+  Character.Torso:FindFirstChild("Left Shoulder"),
+  Character.Torso:FindFirstChild("Right Hip"),
+  Character.Torso:FindFirstChild("Left Hip")
+ }
+ local Limbs = {
+  Character:FindFirstChild("Right Arm"),
+  Character:FindFirstChild("Left Arm"),
+  Character:FindFirstChild("Right Leg"),
+  Character:FindFirstChild("Left Leg")
+ }
+ if Joints[Limb] == nil then return false end
+ if Limbs[Limb] == nil then return false end
+ local Joint = Instance.new("Motor")
+ Joint.Parent = Character.Torso
+ Joint.Part0 = Character.Torso
+ Joint.Part1 = Limbs[Limb]
+ if Limb == 1 then
+  Joint.C0 = CFrame.new(1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  Joint.C1 = CFrame.new(0, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  Joint.Name = "Right Shoulder 2"
+ elseif Limb == 2 then
+  Joint.C0 = CFrame.new(-1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  Joint.C1 = CFrame.new(0, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  Joint.Name = "Left Shoulder 2"
+ elseif Limb == 3 then
+  Joint.C0 = CFrame.new(0.5, -1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  Joint.C1 = CFrame.new(0, 1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  Joint.Name = "Right Hip 2"
+ elseif Limb == 4 then
+  Joint.C0 = CFrame.new(-0.5, -1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  Joint.C1 = CFrame.new(0, 1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  Joint.Name = "Left Hip 2"
+ end
+ Joint.MaxVelocity = Joints[Limb].MaxVelocity
+ Joint.CurrentAngle = Joints[Limb].CurrentAngle
+ Joint.DesiredAngle = Joints[Limb].DesiredAngle
+ Joints[Limb]:Remove()
+end
+ 
+function ResetLimbCFrame(Limb, Character)
+ if Character == nil then return false end
+ if Character.Parent == nil then return false end
+ if Character:FindFirstChild("Torso") == nil then return false end
+ local Joints = {
+  Character.Torso:FindFirstChild("Right Shoulder 2"),
+  Character.Torso:FindFirstChild("Left Shoulder 2"),
+  Character.Torso:FindFirstChild("Right Hip 2"),
+  Character.Torso:FindFirstChild("Left Hip 2")
+ }
+ local Limbs = {
+  Character:FindFirstChild("Right Arm"),
+  Character:FindFirstChild("Left Arm"),
+  Character:FindFirstChild("Right Leg"),
+  Character:FindFirstChild("Left Leg")
+ }
+ if Joints[Limb] == nil then return false end
+ if Limbs[Limb] == nil then return false end
+ if Limb == 1 then
+  Joints[Limb].C0 = CFrame.new(1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  Joints[Limb].C1 = CFrame.new(0, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+ elseif Limb == 2 then
+  Joints[Limb].C0 = CFrame.new(-1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  Joints[Limb].C1 = CFrame.new(0, 0.5, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+ elseif Limb == 3 then
+  Joints[Limb].C0 = CFrame.new(0.5, -1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  Joints[Limb].C1 = CFrame.new(0, 1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+ elseif Limb == 4 then
+  Joints[Limb].C0 = CFrame.new(-0.5, -1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  Joints[Limb].C1 = CFrame.new(0, 1, 0) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+ end
+end
+ 
+function EnableLimb(Limb, Character)
+ if Character == nil then return false end
+ if Character:FindFirstChild("Torso") == nil then return false end
+ local Joints = {
+  Character.Torso:FindFirstChild("Right Shoulder 2"),
+  Character.Torso:FindFirstChild("Left Shoulder 2"),
+  Character.Torso:FindFirstChild("Right Hip 2"),
+  Character.Torso:FindFirstChild("Left Hip 2")
+ }
+ local Limbs = {
+  Character:FindFirstChild("Right Arm"),
+  Character:FindFirstChild("Left Arm"),
+  Character:FindFirstChild("Right Leg"),
+  Character:FindFirstChild("Left Leg")
+ }
+ if Joints[Limb] == nil then return false end
+ if Limbs[Limb] == nil then return false end
+ if Limb == 1 then
+  Joints[Limb].Name = "Right Shoulder"
+ elseif Limb == 2 then
+  Joints[Limb].Name = "Left Shoulder"
+ elseif Limb == 3 then
+  Joints[Limb].Name = "Right Hip"
+ elseif Limb == 4 then
+  Joints[Limb].Name = "Left Hip"
+ end
+ Animate = Character:FindFirstChild("Animate")
+ if Animate == nil then return false end
+ Animate = Animate:Clone()
+ Character.Animate:Remove()
+ Animate.Parent = Character
+end
+ 
+function playAnimation(format, mouse)
+ if format == "equip" then
+  EnableLimb(1, Player.Character)
+  EnableLimb(2, Player.Character)
+  DisableLimb(2, Player.Character)
+  SetSpeed(2, 0.1, Player.Character)
+  ForceAngle(2, 0, Player.Character)
+  SetAngle(2, math.rad(-50), Player.Character)
+  wait(0.25)
+  if Player.Character:FindFirstChild(Name.. " (Holstered)") == nil then makeParts("RightHolster") end
+  Player.Character[Name.. " (Holstered)"].Handle.Weld:Remove()
+  local w = Instance.new("Weld")
+  w.Part0 = Player.Character[Name.. " (Holstered)"].Handle
+  w.Part1 = Player.Character:FindFirstChild("Left Arm")
+  w.C0 = CFrame.new(0.5, -0.25, -0.75) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  w.C1 = CFrame.new() * CFrame.fromEulerAnglesXYZ(math.rad(50), 0, 0)
+  w.Parent = Player.Character[Name.. " (Holstered)"].Handle
+  SetAngle(2, 0, Player.Character)
+  wait(0.25)
+  DisableLimb(1, Player.Character)
+  ForceAngle(1, 0, Player.Character)
+  delay(0.3, function() Player.Character[Name.. " (Holstered)"].Handle.Equip:Play() end)
+  for i = 0, 1, 0.05 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new((-0.5 * i) + (1.5 * (1 - i)), 1.2 * i, 0.8 * i) * CFrame.fromEulerAnglesXYZ(math.rad(300 + ((1 - i) * 50)), math.rad(10), math.rad(-90) * i)
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new((-0.9 * i) + (-1.5 * (1 - i)), -0.35 * i, 0.51 * i) * CFrame.fromEulerAnglesXYZ(math.rad(-90 * i), math.rad(-5 * i), 0)
+     w.C0 = CFrame.new(0.5 - (i * (0.5 * 2)), -0.25 - (i * (-0.25 * 2)), -0.75 - (i * (-0.75 * 2))) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90 + (i * 180)), 0)
+     w.C1 = CFrame.new() * CFrame.fromEulerAnglesXYZ(math.rad(50 - i * 25), 0, -math.rad(i * 15))
+     wait()
+    else return false end
+   else return false end
+  end
+  return playAnimation("hold")
+ end
+if format == "unequip" then
+  Player.Character[Name].Handle.Weld:Remove()
+  local w = Instance.new("Weld")
+  w.Part0 = Player.Character[Name].Handle
+  w.Part1 = Player.Character:FindFirstChild("Left Arm")
+  w.C0 = CFrame.new(0.5, -0.25, -0.75) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  w.C1 = CFrame.new() * CFrame.fromEulerAnglesXYZ(math.rad(50), 0, 0)
+  w.Parent = Player.Character[Name].Handle
+  for i = 1, 0, -0.05 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new((-0.5 * i) + (1.5 * (1 - i)), 1.2 * i, 0.8 * i) * CFrame.fromEulerAnglesXYZ(math.rad(300 + ((1 - i) * 50)), math.rad(10), math.rad(-90) * i)
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new((-0.9 * i) + (-1.5 * (1 - i)), -0.35 * i, 0.51 * i) * CFrame.fromEulerAnglesXYZ(math.rad(-90 * i), math.rad(-5 * i), 0)
+     w.C0 = CFrame.new(0.5 - (i * (0.5 * 2)), -0.25 - (i * (-0.25 * 2)), -0.75 - (i * (-0.75 * 2))) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90 + (i * 180)), 0)
+     w.C1 = CFrame.new() * CFrame.fromEulerAnglesXYZ(math.rad(50 - i * 25), 0, -math.rad(i * 15))
+     wait()
+    else return false end
+   else return false end
+  end
+  w.C0 = CFrame.new(0.5, -0.25, -0.75) * CFrame.fromEulerAnglesXYZ(0, math.rad(-90), 0)
+  w.C1 = CFrame.new() * CFrame.fromEulerAnglesXYZ(math.rad(50), 0, 0)
+  ResetLimbCFrame(1, Player.Character)
+  ResetLimbCFrame(2, Player.Character)
+  EnableLimb(1, Player.Character)
+  EnableLimb(2, Player.Character)
+  DisableLimb(2, Player.Character)
+  SetSpeed(2, 0.1, Player.Character)
+  ForceAngle(2, 0, Player.Character)
+  SetAngle(2, math.rad(-50), Player.Character)
+  wait(0.25)
+  SetAngle(2, 0, Player.Character)
+  removeParts("RightHand")
+  makeParts("RightHolster")
+  wait(0.25)
+  makeParts("RightHand")
+  removeParts("RightHolster")
+  return true
+ end
+ if format == "hold" then
+  if Player.Character:FindFirstChild("Torso") ~= nil then
+   if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+    Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+    Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5, 1.2, 0.8) * CFrame.fromEulerAnglesXYZ(math.rad(300), math.rad(10), math.rad(-90))
+    Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+    Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90), math.rad(-5), 0)
+   else return false end
+  else return false end
+ end
+ if format == "reload" then
+  Player.Character[Name].Handle.Equip:Play()
+  for i = 0, 10, 5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5 - (i / 25), 0.2, 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(300 - i), math.rad(10 - i), math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  wait(0.1)
+  Player.Character[Name].BoltKnobI.Transparency = 1
+  Player.Character[Name].BoltShaftI.Transparency = 1
+  Player.Character[Name].BoltShaftO.Transparency = 0
+  Player.Character[Name].BoltKnobO.Transparency = 0
+  for i = 0, 10, 1.5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.9, 0.2 - (i / 25), 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(290), 0, math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  Player.Character[Name].Handle.Equip:Stop()
+  Player.Character[Name].Handle.Reload:Play()
+  Player.Character[Name].Magazine.Transparency = 1
+  magazineDrop = Player.Character[Name].Magazine:Clone()
+  magazineDrop.Transparency = 0
+  magazineDrop.CanCollide = true
+  magazineDrop.Parent = game.Workspace
+  coroutine.resume(coroutine.create(function(part) wait(4.5) for i = 0, 1, 0.1 do part.Transparency = i wait() end part:Remove() end), magazineDrop)
+  delay(0.1, function() magazineDrop.CanCollide = true end)
+  for i = 0, 25, 5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5 + (i / 60), 1.2 - (i / 20), 0.8 + (i / 35)) * CFrame.fromEulerAnglesXYZ(math.rad(300 - i), math.rad(10 + -i * 3.5), math.rad(-90))
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90 + i), math.rad(-5), 0)
+     wait()
+    else return false end
+   else return false end
+  end
+  magazineNew = Player.Character[Name].Magazine:Clone()
+  magazineNew.Name = "New Magazine"
+  magazineNew.Transparency = 0
+  magazineNew.Parent = Player.Character[Name]
+  local w = Instance.new("Weld")
+  w.Part0 = magazineNew
+  w.Part1 = Player.Character:FindFirstChild("Left Arm")
+  w.C0 = CFrame.new(0, 1.1, 0)
+  w.C1 = CFrame.new() * CFrame.fromEulerAnglesXYZ(0, math.rad(90), 0)
+  w.Parent = magazineNew
+  wait(0.2)
+  for i = 25, 0, -5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5 + ((i + 10) / 60), 1.2 - ((i + 10) / 20), 0.8 + (i / 35)) * CFrame.fromEulerAnglesXYZ(math.rad(300 - (i - 10)), math.rad(10 + -i * 3.5), math.rad(-90))
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90 + i), math.rad(-5), 0)
+     wait()
+    else return false end
+   else return false end
+  end
+  Player.Character[Name].Magazine.Transparency = 0
+  Player.Character[Name]["New Magazine"]:Remove()
+  wait(0.8)
+  Player.Character[Name].Handle.Reload:Stop()
+  Player.Character[Name].Handle.Equip:Play()
+  for i = 10, 0, -1.5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.9, 0.2 - (i / 25), 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(290), 0, math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  Player.Character[Name].BoltKnobI.Transparency = 0
+  Player.Character[Name].BoltShaftI.Transparency = 0
+  Player.Character[Name].BoltShaftO.Transparency = 1
+  Player.Character[Name].BoltKnobO.Transparency = 1
+  for i = 10, 0, -5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5 - (i / 25), 0.2, 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(300 - i), math.rad(10 - i), math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  for i = 10, 0, -5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5, 1.2, 0.8) * CFrame.fromEulerAnglesXYZ(math.rad(300), math.rad(10 + i), math.rad(-90))
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90 - i), math.rad(-5), 0)
+     wait()
+    else return false end
+   else return false end
+  end
+  Player.Character[Name].Handle.Equip:Stop()
+ end
+ if format == "fire" then
+  if Player.Character[Name]:FindFirstChild("Handle") ~= nil then
+   if silenced then
+    Player.Character[Name].Handle.Fire:Stop()
+    Player.Character[Name].Handle.Fire.Volume = math.random(3, 8) / 10
+    Player.Character[Name].Handle.Fire.Pitch = math.random(20, 25) / 10
+    Player.Character[Name].Handle.Fire:Play()
+    --coroutine.resume(coroutine.create(function() for i =  0.8, 0, -0.075 do Player.Character[Name].Handle.Fire.Volume = i wait() end Player.Character[Name].Handle.Fire.Volume = 0 end))
+    CamShake(10, 2000)
+   else
+    Player.Character[Name].Handle.Fire:Stop()
+    Player.Character[Name].Handle.Fire.Volume = math.random(9, 10) / 10
+    Player.Character[Name].Handle.Fire.Pitch = 1
+    Player.Character[Name].Handle.Fire:Play()
+    --Player.Character[Name].Handle.Fire2:Play()
+    --coroutine.resume(coroutine.create(function() for i =  0.8, 0, -0.075 do Player.Character[Name].Handle.Fire.Volume = i wait() end Player.Character[Name].Handle.Fire.Volume = 0 end))
+    CamShake(10, 2000)
+   end
+  else return false end
+  if Player.Character[Name]:FindFirstChild("Muzzle") ~= nil then
+   coroutine.resume(coroutine.create(function() Player.Character[Name].Muzzle.Smoke.Enabled = true Player.Character[Name].Muzzle.Fire.Enabled = true wait(0.1) Player.Character[Name].Muzzle.Smoke.Enabled = false Player.Character[Name].Muzzle.Fire.Enabled = false end))
+  else return false end
+  for i = 0, 10, 5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5, 1.2, 0.8) * CFrame.fromEulerAnglesXYZ(math.rad(300), math.rad(10 + i), math.rad(-90))
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90 - i), math.rad(-5), 0)
+     wait()
+    else return false end
+   else return false end
+  end
+  --[[for i = 10, 0, -5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5, 1.2, 0.8) * CFrame.fromEulerAnglesXYZ(math.rad(300), math.rad(10 + i), math.rad(-90))
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90 - i), math.rad(-5), 0)
+     wait()
+    else return false end
+   else return false end
+  end--]]
+  wait(0.75) --Bolt Action
+  if silenced == true then
+   Player.Character[Name].Handle.Equip:Play()
+  end
+  for i = 0, 10, 5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5 - (i / 25), 0.2, 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(300 - i), math.rad(10 - i), math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  wait(0.1)
+  for i = 0, 10, 1.5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.9, 0.2 - (i / 25), 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(290), 0, math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  Player.Character[Name].BoltKnobI.Transparency = 1
+  Player.Character[Name].BoltShaftI.Transparency = 1
+  Player.Character[Name].BoltShaftO.Transparency = 0
+  Player.Character[Name].BoltKnobO.Transparency = 0
+  makeShell(Player.Character[Name]:FindFirstChild("ShellOut"))
+  for i = 10, 0, -1.5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.9, 0.2 - (i / 25), 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(290), 0, math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  Player.Character[Name].BoltKnobI.Transparency = 0
+  Player.Character[Name].BoltShaftI.Transparency = 0
+  Player.Character[Name].BoltShaftO.Transparency = 1
+  Player.Character[Name].BoltKnobO.Transparency = 1
+  for i = 10, 0, -5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5 - (i / 25), 0.2, 0.2) * CFrame.fromEulerAnglesXYZ(math.rad(300 - i), math.rad(10 - i), math.rad(-90))
+     wait()
+    else return false end
+   else return false end
+  end
+  for i = 10, 0, -5 do
+   if Player.Character:FindFirstChild("Torso") ~= nil then
+    if Player.Character.Torso:FindFirstChild("Left Shoulder 2") ~= nil and Player.Character.Torso:FindFirstChild("Right Shoulder 2") ~= nil then
+     Player.Character.Torso["Left Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Left Shoulder 2"].C1 = CFrame.new(-0.5, 1.2, 0.8) * CFrame.fromEulerAnglesXYZ(math.rad(300), math.rad(10 + i), math.rad(-90))
+     Player.Character.Torso["Right Shoulder 2"].C0 = CFrame.new()
+     Player.Character.Torso["Right Shoulder 2"].C1 =  CFrame.new(-0.9, -0.35, 0.51) * CFrame.fromEulerAnglesXYZ(math.rad(-90 - i), math.rad(-5), 0)
+     wait()
+    else return false end
+   else return false end
+  end
+ end
+ return true
+end
+ 
+function CamShake(time, freq)
+ coroutine.resume(coroutine.create(function()
+  local cam = game:GetService("Workspace").CurrentCamera
+  local time = 10
+  local seed = Vector3.new(math.random(100, 200) / freq, math.random(100, 200) / freq, 0)
+  if math.random(1, 2) == 1 then seed = Vector3.new(-seed.x, seed.y, 0) end
+  if math.random(1, 2) == 1 then seed = Vector3.new(seed.x, -seed.y, 0) end
+  cam.CoordinateFrame = (CFrame.new(cam.Focus.p) * (cam.CoordinateFrame - cam.CoordinateFrame.p) * CFrame.fromEulerAnglesXYZ(seed.x * time, seed.y * time, 0)) * CFrame.new(0, 0, (cam.CoordinateFrame.p - cam.Focus.p).magnitude)
+  for i = 1, time do
+   cam.CoordinateFrame = (CFrame.new(cam.Focus.p) * (cam.CoordinateFrame - cam.CoordinateFrame.p) * CFrame.fromEulerAnglesXYZ(-seed.x, -seed.y, 0)) * CFrame.new(0, 0, (cam.CoordinateFrame.p - cam.Focus.p).magnitude)
+   wait()
+  end
+ end))
+end
+ 
+function makeShell(part)
+ if part == nil then return false end
+ local casing = Instance.new("Part")
+ casing.Name = "Shell"
+ casing.formFactor = "Symmetric"
+ casing.Size = Vector3.new(1, 1, 1)
+ casing.CFrame = CFrame.new(part.Position) * CFrame.fromEulerAnglesXYZ(math.rad(math.random(0, 360)), math.rad(math.random(0, 360)), math.rad(math.random(0, 360)))
+ casing.BrickColor = BrickColor.new("New Yeller")
+ local mesh = Instance.new("CylinderMesh")
+ mesh.Scale = Vector3.new(0.2, 0.6, 0.2)
+ mesh.Parent = casing
+ casing.Parent = game:GetService("Workspace")
+ casing:BreakJoints()
+ casing.Velocity = (part.CFrame.lookVector * 65) + Vector3.new(0, 10, 0)
+ coroutine.resume(coroutine.create(function() wait(4.5) for i = 0, 1, 0.1 do casing.Transparency = i wait() end casing:Remove() end))
+end
+ 
+function Weld(x, y)
+ local weld = Instance.new("Weld")
+ weld.Part0 = x
+ weld.Part1 = y
+ CJ = CFrame.new(x.Position)
+ C0 = x.CFrame:inverse() * CJ
+ C1 = y.CFrame:inverse() * CJ
+ weld.C0 = C0
+ weld.C1 = C1
+ weld.Parent = x
+end
+ 
+function tagHumanoid(humanoid)
+ local tag = Instance.new("ObjectValue")
+ tag.Name = "creator"
+ tag.Value = Player
+ tag.Parent = humanoid
+ local tag = Instance.new("StringValue")
+ tag.Name = "creatorType1"
+ tag.Value = Name
+ tag.Parent = humanoid
+ local tag = Instance.new("StringValue")
+ tag.Name = "creatorType2"
+ tag.Value = "shot"
+ tag.Parent = humanoid
+end
+ 
+function untagHumanoid(humanoid)
+ if humanoid ~= nil then
+  local tag = humanoid:FindFirstChild("creator")
+  if tag ~= nil then
+   tag:Remove()
+  end
+  local tag = humanoid:FindFirstChild("creatorType1")
+  if tag ~= nil then
+   tag:Remove()
+  end
+  local tag = humanoid:FindFirstChild("creatorType2")
+  if tag ~= nil then
+   tag:Remove()
+  end
+ end
+end
+ 
+function fire(startPoint, endPoint, hit)
+ local trail = Instance.new("Part")
+ trail.Name = "Bullet Trail"
+ trail.BrickColor = BrickColor.new("Bright yellow")
+ trail.TopSurface = 0
+ trail.BottomSurface = 0
+ trail.formFactor = 0
+ trail.Size = Vector3.new(1, 1, 1)
+ trail.Transparency = 0.6
+ trail.Anchored = true
+ trail.CanCollide = false
+ trail.CFrame = CFrame.new((startPoint + endPoint) / 2, endPoint)
+ trail.Parent = game:GetService("Workspace")
+ local mesh = Instance.new("SpecialMesh")
+ mesh.MeshType = "Brick"
+ mesh.Scale = Vector3.new(0.2, 0.2, (startPoint - endPoint).magnitude)
+ mesh.Parent = trail
+ coroutine.resume(coroutine.create(function(part) for i = 1, 10 do part.Mesh.Scale = Vector3.new(part.Mesh.Scale.x - 0.01, part.Mesh.Scale.y - 0.01, part.Mesh.Scale.z) wait() end part:Remove() end), trail)
+ if hit ~= nil then
+  if hit.Parent == nil then return end
+  if hit.Parent:FindFirstChild("Humanoid") ~= nil then
+   tagHumanoid(hit.Parent.Humanoid)
+   if hit.Name == "Head" then
+    hit.Parent.Humanoid:TakeDamage(damage * 10)
+    local e = Instance.new("Explosion")
+    e.BlastPressure = 10000000
+    e.BlastRadius = 1
+    e.Position = hit.Position
+    e.Parent = game:GetService("Workspace")
+   elseif hit.Name == "Torso" then
+    hit.Parent.Humanoid:TakeDamage(damage * 2)
+    local e = Instance.new("Explosion")
+    e.BlastPressure = 10000000
+    e.BlastRadius = 0.6
+    e.Position = hit.Position
+    e.Parent = game:GetService("Workspace")
+   else
+    hit.Parent.Humanoid:TakeDamage(damage)
+    local e = Instance.new("Explosion")
+    e.BlastPressure = 10000000
+    e.BlastRadius = 0.6
+    e.Position = hit.Position
+    e.Parent = game:GetService("Workspace")
+   end
+   if HP == true then
+    hit.Parent.Humanoid.Sit = true
+   end
+   delay(0.1, function() untagHumanoid(hit.Parent.Humanoid) end)
+  end
+  if hit.Anchored == false then
+   hit.Velocity = hit.Velocity + ((endPoint - startPoint).unit * (damage * 2))
+  end
+ end
+end
+ 
+function onButton1Down(mouse)
+ if selected == false then return end
+ if Player.Character:FindFirstChild(Name) ~= nil and Button1Down == false and canFire == true and (function() if dual == true then if Player.Character:FindFirstChild(Name.. " (Left)") ~= nil then return true else return false end else return true end end)() == true then
+  if Player.Character[Name]:FindFirstChild("Handle") == nil then return end
+  if Player.Character[Name]:FindFirstChild("Muzzle") == nil then return end
+  if dual == true then if Player.Character[Name.. " (Left)"]:FindFirstChild("Handle") == nil then return end end
+  if dual == true then if Player.Character[Name.. " (Left)"]:FindFirstChild("Muzzle") == nil then return end end
+  mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+  Button1Down = true
+  canFire = false
+  canFire2 = true
+  while canFire2 == true do
+   local humanoid = Player.Character:FindFirstChild("Humanoid")
+   if humanoid == nil then
+    canFire2 = false
+    break
+   end
+   if humanoid.Health <= 0 then
+    canFire2 = false
+    break
+   end
+   local fireLeft = false
+   if automatic == false and burst == false then
+    canFire2 = false
+   elseif automatic == false and burst == true then
+    if burstCount >= burstCountMax then
+     canFire2 = false
+     burstCount = 0
+     break
+    end
+    burstCount = burstCount + 1
+   elseif automatic == true and burst == false then
+    fireLeft = true
+   end
+   if magazine.Value > 0 then
+    magazine.Value = magazine.Value - 1
+    updateGui()
+    fire(Player.Character[Name].Muzzle.Position, mouse.Hit.p, mouse.Target)
+    coroutine.resume(coroutine.create(function()
+     if dual == true then
+      playAnimation("rightFire")
+     elseif dual == false then
+      playAnimation("fire")
+     end
+    end))
+   else
+    Player.Character[Name].Handle.Empty:Play()
+   end
+   if fireLeft == true and dual == true and automatic == true then
+    if magazine.Value > 0 then
+     coroutine.resume(coroutine.create(function()
+      wait(readyTime / 2)
+      magazine.Value = magazine.Value - 1
+      updateGui()
+      fire(Player.Character[Name.. " (Left)"].Muzzle.Position, mouse.Hit.p, mouse.Target)
+      playAnimation("leftFire")
+     end))
+    else
+     coroutine.resume(coroutine.create(function()
+      wait(readyTime / 2)
+      Player.Character[Name].Handle.Empty:Play()
+     end))
+    end
+   end
+   wait(readyTime)
+  end
+  mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+  canFire = true
+ end
+end
+ 
+function onButton1Up(mouse)
+ if selected == false then return end
+ Button1Down = false
+ canFire2 = false
+ burstCount = 0
+ while canFire == false do wait() end
+ if dual == true and automatic == false then
+  if Player.Character[Name.. " (Left)"]:FindFirstChild("Handle") == nil then return end
+  if Player.Character[Name.. " (Left)"]:FindFirstChild("Muzzle") == nil then return end
+  mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+  canFire = false
+  canFire2 = true
+  while canFire2 == true do
+   local humanoid = Player.Character:FindFirstChild("Humanoid")
+   if humanoid == nil then
+    canFire2 = false
+    break
+   end
+   if humanoid.Health <= 0 then
+    canFire2 = false
+    break
+   end
+   if burst == false then
+    canFire2 = false
+   elseif burst == true then
+    if burstCount >= burstCountMax then
+     canFire2 = false
+     burstCount = 0
+     break
+    end
+    burstCount = burstCount + 1
+   end
+   if magazine.Value <= 0 then
+    Player.Character[Name].Handle.Empty:Play()
+   else
+    coroutine.resume(coroutine.create(function()
+     playAnimation("leftFire")
+    end))
+    magazine.Value = magazine.Value - 1
+    updateGui()
+    fire(Player.Character[Name.. " (Left)"].Muzzle.Position, mouse.Hit.p, mouse.Target)
+   end
+   wait(readyTime)
+  end
+  mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+  canFire = true
+ end
+end
+ 
+function onKeyDown(key, mouse)
+ if selected == false then return end
+ key = key:lower()
+ if key == "q" and Button1Down == false and canFire == true then
+  if mouse.Target == nil then return end
+  if game:GetService("Players"):GetPlayerFromCharacter(mouse.Target.Parent) ~= nil then
+   if dual == true then onKeyDown("t", mouse) end
+   onDeselected(mouse)
+   removeParts("RightHolster")
+   script.Parent.Parent = game:GetService("Players"):GetPlayerFromCharacter(mouse.Target.Parent).Backpack
+  end
+ end
+ if key == "e" and Button1Down == false and canFire == true and canSilence == true then
+  if silenced then
+   silenced = false
+   if Player.Character:FindFirstChild(Name) == nil then return end
+   if Player.Character[Name]:FindFirstChild("Muzzle") == nil then return end
+   if Player.Character[Name]:FindFirstChild("Muzzle 2") == nil then return end
+   Player.Character[Name].Muzzle.Transparency = 1
+   Player.Character[Name].Muzzle.Name = "Silencer"
+   Player.Character[Name]["Muzzle 2"].Name = "Muzzle"
+   if dual == true then
+    if Player.Character[Name.. " (Left)"]:FindFirstChild("Muzzle") == nil then return end
+    if Player.Character[Name.. " (Left)"]:FindFirstChild("Muzzle 2") == nil then return end
+    Player.Character[Name.. " (Left)"].Muzzle.Transparency = 1
+    Player.Character[Name.. " (Left)"].Muzzle.Name = "Silencer"
+    Player.Character[Name.. " (Left)"]["Muzzle 2"].Name = "Muzzle"
+   end
+  else
+   silenced = true
+   if Player.Character:FindFirstChild(Name) == nil then return end
+   if Player.Character[Name]:FindFirstChild("Silencer") == nil then return end
+   if Player.Character[Name]:FindFirstChild("Muzzle") == nil then return end
+   Player.Character[Name].Silencer.Transparency = 0
+   Player.Character[Name].Muzzle.Name = "Muzzle 2"
+   Player.Character[Name].Silencer.Name = "Muzzle"
+   if dual == true then
+    if Player.Character[Name.. " (Left)"]:FindFirstChild("Silencer") == nil then return end
+    if Player.Character[Name.. " (Left)"]:FindFirstChild("Muzzle") == nil then return end
+    Player.Character[Name.. " (Left)"].Silencer.Transparency = 0
+    Player.Character[Name.. " (Left)"].Muzzle.Name = "Muzzle 2"
+    Player.Character[Name.. " (Left)"].Silencer.Name = "Muzzle"
+   end
+  end
+ end
+ if key == "r" and Button1Down == false and canFire == true then
+  if ammo.Value > 0 and magazine.Value ~= magazineMax.Value then
+   canFire = false
+   burstCount = 0
+   mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+   if magazine.Value > 0 then ammo.Value = ammo.Value + magazine.Value magazine.Value = 0 end
+   updateGui()
+   if dual == true then
+    playAnimation("reloadDual")
+   elseif dual == false then
+    playAnimation("reload")
+   end
+   if ammo.Value - magazineMax.Value < 0 then
+    magazine.Value = ammo.Value
+    ammo.Value = 0
+   elseif ammo.Value - magazineMax.Value >= 0 then
+    ammo.Value = ammo.Value - magazineMax.Value
+    magazine.Value = magazineMax.Value
+   end
+   updateGui()
+   mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+   canFire = true
+  end
+ end
+ if key == "t" and Button1Down == false and canFire == true and canDual == true then
+  canFire = false
+  if dual == false then
+   local weapon = nil
+   for _, p in pairs(Player.Backpack:GetChildren()) do
+    if p.Name == Name and p ~= script.Parent then weapon = p break end
+   end
+   if weapon ~= nil then
+    dual = true
+    weapon.Name = "Dual"
+    weapon.Parent = script
+    silenced = false
+    removeParts("RightHand")
+    makeParts("RightHand")
+    removeParts("RightHolster")
+    makeParts("LeftHolster")
+    playAnimation("leftEquip")
+    removeParts("LeftHolster")
+    makeParts("LeftHand")
+    magazineMax.Value = math.ceil(magazineMax.Value * 2)
+    ammoMax.Value = math.ceil(ammoMax.Value * 2)
+    magazine.Value = magazine.Value + weapon.Magazine.Value
+    ammo.Value = ammo.Value + weapon.Ammo.Value
+    updateGui()
+   end
+  elseif dual == true then
+   local weapon = script:FindFirstChild("Dual")
+   if weapon ~= nil then
+    dual = false
+    weapon.Name = Name
+    weapon.Parent = Player.Backpack
+    silenced = false
+    removeParts("RightHand")
+    makeParts("RightHand")
+    playAnimation("leftUnequip")
+    removeParts("LeftHand")
+    makeParts("RightHolster")
+    playAnimation("hold")
+    weapon.Magazine.Value = math.floor(magazine.Value / 2)
+    weapon.Ammo.Value = math.floor(ammo.Value / 2)
+    magazineMax.Value = math.ceil(magazineMax.Value / 2)
+    ammoMax.Value = math.ceil(ammoMax.Value / 2)
+    magazine.Value = math.ceil(magazine.Value / 2)
+    ammo.Value = math.ceil(ammo.Value / 2)
+    updateGui()
+   end
+  end
+  canFire = true
+ end
+ if key == "y" and canZoom == true then
+  if zoom == false then
+   zoom = true
+   local pos = mouse.Hit.p
+   local target = mouse.Target
+   local cam = game:GetService("Workspace").CurrentCamera
+   focus = Instance.new("Part", workspace)
+   focus.Anchored = true
+   focus.CanCollide = false
+   focus.Transparency = 1
+   focus.TopSurface = 0
+   focus.BottomSurface = 0
+   focus.formFactor = "Plate"
+   focus.Size = Vector3.new(0, 0, 0)
+   focus.CFrame = CFrame.new(pos) * (CFrame.new(Player.Character.Torso.CFrame.p, pos) - CFrame.new(Player.Character.Torso.CFrame.p, pos).p)
+   cam.CameraSubject = focus
+   cam.CameraType = "Attach"
+   while zoom == true and selected == true do
+    local set = false
+    if target ~= nil then
+     if target.Parent ~= nil then
+      if target.Anchored == false then
+       focus.CFrame = CFrame.new(target.CFrame.p) * (CFrame.new(Player.Character.Torso.CFrame.p, target.CFrame.p) - CFrame.new(Player.Character.Torso.CFrame.p, target.CFrame.p).p)
+       set = true
+      end
+     end
+    end
+    if set == false then
+     focus.CFrame = CFrame.new(pos) * (CFrame.new(Player.Character.Torso.CFrame.p, pos) - CFrame.new(Player.Character.Torso.CFrame.p, pos).p)
+    end
+    wait()
+   end
+   if focus ~= nil then focus:Remove() focus = nil end
+   local cam = game:GetService("Workspace").CurrentCamera
+   cam.CameraSubject = Player.Character:FindFirstChild("Humanoid")
+   cam.CameraType = "Custom"
+  else
+   zoom = false
+  end
+ end
+ if key == "u" and Button1Down == false and canFire == true then
+  if automatic == false and burst == false then
+   if switchToBurst == true then
+    burst = true
+    local m = Instance.new("Message", Player)
+    m.Text = "Burst"
+    pcall(function() Player.Character[Name].Handle.Switch:Play() end)
+    delay(2.5, function() m:Remove() end)
+   elseif switchToAutomatic == true then
+    automatic = true
+    local m = Instance.new("Message", Player)
+    m.Text = "Automatic"
+    pcall(function() Player.Character[Name].Handle.Switch:Play() end)
+    delay(2.5, function() m:Remove() end)
+   end
+  elseif automatic == false and burst == true then
+   if switchToAutomatic == true then
+    automatic = true
+    burst = false
+    local m = Instance.new("Message", Player)
+    m.Text = "Automatic"
+    pcall(function() Player.Character[Name].Handle.Switch:Play() end)
+    delay(2.5, function() m:Remove() end)
+   elseif switchToSingle == true then
+    burst = false
+    local m = Instance.new("Message", Player)
+    m.Text = "Single"
+    pcall(function() Player.Character[Name].Handle.Switch:Play() end)
+    delay(2.5, function() m:Remove() end)
+   end
+  elseif automatic == true and burst == false then
+   if switchToSingle == true then
+    automatic = false
+    local m = Instance.new("Message", Player)
+    m.Text = "Single"
+    pcall(function() Player.Character[Name].Handle.Switch:Play() end)
+    delay(2.5, function() m:Remove() end)
+   elseif switchToBurst == true then
+    automatic = false
+    burst = true
+    local m = Instance.new("Message", Player)
+    m.Text = "Burst"
+    pcall(function() Player.Character[Name].Handle.Switch:Play() end)
+    delay(2.5, function() m:Remove() end)
+   end
+  end
+ end
+end
+ 
+function onSelected(mouse)
+ if selected == true then return end
+ selected = true
+ canFire = false
+ mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+ while Player.Character:FindFirstChild("WeaponActivated") ~= nil do
+  if Player.Character.WeaponActivated.Value == nil then break end
+  if Player.Character.WeaponActivated.Value.Parent == nil then break end
+  wait()
+ end
+ updateGui()
+ local weapon = Instance.new("ObjectValue")
+ weapon.Name = "WeaponActivated"
+ weapon.Value = script.Parent
+ weapon.Parent = Player.Character
+ DisableLimb(1, Player.Character)
+ DisableLimb(2, Player.Character)
+ ForceAngle(1, 0, Player.Character)
+ ForceAngle(2, 0, Player.Character)
+ if dual == true then
+  coroutine.resume(coroutine.create(function() playAnimation("leftEquip") end))
+  playAnimation("rightEquip")
+  removeParts("LeftHolster")
+  makeParts("LeftHand")
+ else
+  playAnimation("equip")
+ end
+ removeParts("RightHolster")
+ makeParts("RightHand")
+ mouse.Button1Down:connect(function() onButton1Down(mouse) end)
+ mouse.Button1Up:connect(function() onButton1Up(mouse) end)
+ mouse.KeyDown:connect(function(key) onKeyDown(key, mouse) end)
+ mouse.Icon = "http://www.roblox.com/asset/?id=49912389"
+ canFire = true
+end
+ 
+function onDeselected(mouse)
+ if selected == false then return end
+ Button1Down = false
+ while canFire == false do
+  wait()
+ end
+ selected = false
+ if dual == true then
+  if math.random(1, 2) == 1 then
+   coroutine.resume(coroutine.create(function() playAnimation("leftUnequip") end))
+   wait(math.random(1, 10) / 10)
+   playAnimation("rightUnequip")
+  else
+   coroutine.resume(coroutine.create(function() playAnimation("rightUnequip") end))
+   wait(math.random(1, 10) / 10)
+   playAnimation("leftUnequip")
+  end
+  removeParts("LeftHand")
+  makeParts("LeftHolster")
+ else
+  playAnimation("unequip")
+ end
+ removeParts("RightHand")
+ makeParts("RightHolster")
+ ForceAngle(1, 0, Player.Character)
+ ForceAngle(2, 0, Player.Character)
+ ResetLimbCFrame(1, Player.Character)
+ ResetLimbCFrame(2, Player.Character)
+ EnableLimb(1, Player.Character)
+ EnableLimb(2, Player.Character)
+ silenced = false
+ if Player.PlayerGui:FindFirstChild(Name) ~= nil then Player.PlayerGui[Name]:Remove() end
+ if Player.Character:FindFirstChild("WeaponActivated") ~= nil then
+  if Player.Character.WeaponActivated.Value == script.Parent then
+   Player.Character.WeaponActivated:Remove()
+  end
+ end
+ while Player.Character:FindFirstChild("WeaponActivated") ~= nil do
+  if Player.Character.WeaponActivated.Value == nil then break end
+  if Player.Character.WeaponActivated.Value.Parent == nil then break end
+  wait()
+ end
+end
+ 
+if script.Parent.className ~= "HopperBin" then
+ if Player == nil then print("Error: Player not found!") return end
+ Tool = Instance.new("HopperBin")
+ Tool.Name = Name
+ Tool.Parent = Player.Backpack
+ script.Name = "Main"
+ script.Parent = Tool
+elseif script.Parent.className == "HopperBin" then
+ while script.Parent.Parent.className ~= "Backpack" do
+  wait()
+ end
+ if script.Parent:FindFirstChild("MagazineMax") == nil then
+  magazineMax = Instance.new("NumberValue")
+  magazineMax.Name = "MagazineMax"
+  magazineMax.Value = 5
+  magazineMax.Parent = script.Parent
+ else
+  magazineMax = script.Parent.MagazineMax
+ end
+ if script.Parent:FindFirstChild("Magazine") == nil then
+  magazine = Instance.new("NumberValue")
+  magazine.Name = "Magazine"
+  magazine.Value = 0
+  magazine.Parent = script.Parent
+ else
+  magazine = script.Parent.Magazine
+ end
+ if script.Parent:FindFirstChild("AmmoMax") == nil then
+  ammoMax = Instance.new("NumberValue")
+  ammoMax.Name = "AmmoMax"
+  ammoMax.Value = 99999
+  ammoMax.Parent = script.Parent
+ else
+  ammoMax = script.Parent.AmmoMax
+ end
+ if script.Parent:FindFirstChild("Ammo") == nil then
+  ammo = Instance.new("NumberValue")
+  ammo.Name = "Ammo"
+  ammo.Value = script.Parent.AmmoMax.Value
+  ammo.Parent = script.Parent
+ else
+  ammo = script.Parent.Ammo
+ end
+ Player = script.Parent.Parent.Parent
+ makeParts("RightHolster")
+ script.Parent.Selected:connect(onSelected)
+ script.Parent.Deselected:connect(onDeselected)
+end
