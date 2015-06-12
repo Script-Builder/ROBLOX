@@ -249,18 +249,18 @@ end
 
 
 plr.Chatted:connect(function(msg)
-if msg:sub(1,7)=="music/ " then
+if msg:sub(1,7)=="music " then
 	if tonumber(msg:sub(8))~=nil then
 	s:Stop()
 	s.SoundId='http://www.roblox.com/asset?id='..msg:sub(8)
 	s:Play()
 	end
 end
-if msg:sub(1,5)=="songs" then
+if msg:sub(1,5)=="?" then
 sound_check()
 open_gui()
 end
-if msg:sub(1,9)=="stopmusic" then
+if msg:sub(1,9)=="nope" then
 	s:Stop()
 end
 end)
