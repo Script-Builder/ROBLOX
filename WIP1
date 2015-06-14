@@ -45,7 +45,10 @@ local message = string.sub(message,b)
 for k,v in pairs(a.cmds) do
 if string.sub(v:lower(),1,string.len(message)) == message:lower() then
 if v:lower() ~= "ban" or v:lower() ~= "kick" or v:lower() ~= "walkspeed" or v:lower() ~= "wp "then
-if v:lower() == "dt" then		
+if v:lower() == "dt" then	
+for k,v in pairs(a.bin) do
+v:remove()	
+end
 elseif v:lower() == "cmds" then
 for k,v in pairs(a.cmds) do
 createTab(v..("(!)"))
