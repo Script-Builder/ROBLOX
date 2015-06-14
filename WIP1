@@ -221,10 +221,7 @@ x = x + 1
 end	
 end)()
 
-
-createTab('Welcome To Artistic Tabs
-WIP')
-
+wait()
 local player = game:GetService("Players").LocalPlayer
 player.Character:WaitForChild("Humanoid")
 
@@ -301,3 +298,6 @@ if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 button1down = true
 end
 end)
+
+createTab('Welcome To Artistic Tabs
+WIP')
