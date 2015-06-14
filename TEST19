@@ -293,7 +293,7 @@ elseif string.sub(message:lower(),1,4) == "hide" then
 part.Transparency = 1
 elseif string.sub(message:lower(),1,4) == "show" then
 part.Transparency = 0.5		
-end)
+end
 
 
 
