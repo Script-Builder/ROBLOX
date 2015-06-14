@@ -53,7 +53,7 @@ elseif v:lower() == "cmds" then
 for k,v in pairs(a.cmds) do
 createTab(v..("(!)"))
 end
-elseif v:lover() == "toolcmds" then
+elseif v:lower() == "toolcmds" then
 createTab('color')
 createTab('Size')
 createTab('clear')
@@ -333,3 +333,5 @@ if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 button1down = true
 end
 end)
+
+createTab('Artistic Tabs by gavinsharp100')
