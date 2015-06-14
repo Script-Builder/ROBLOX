@@ -298,6 +298,3 @@ if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 button1down = true
 end
 end)
-
-createTab('Welcome To Artistic Tabs
-WIP')
