@@ -225,7 +225,6 @@ end)()
 createTab('Welcome To Artistic Tabs
 WIP')
 
-wait()
 local player = game:GetService("Players").LocalPlayer
 player.Character:WaitForChild("Humanoid")
 
