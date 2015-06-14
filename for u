@@ -1,0 +1,45 @@
+ 
+NewCommand("Music","Lists music which you can play",6,{'m','music','song'},function(msg,speaker)
+        pcall(function()
+                local Http=Core.Services.Http
+                local KeyWords = Http:UrlEncode(msg)
+                local Url = 'http://roproxy.tk/catalog/json?Keyword='..tostring(KeyWords)..'&Category=9&ResultsPerPage=11'
+                local Assets = Http:JSONDecode(Http:GetAsync(Url))
+            DestroyTablets(speaker)
+            local function List(plr)
+                DestroyTablets(speaker)
+        for i=1,#Assets do
+            AddPart(Assets[i].Name,'White',speaker,function()
+                DestroyTablets(plr)
+                AddPart('Name: '..Assets[i].Name,'White',speaker)
+                        AddPart('Id: '..Assets[i].AssetId,'White',speaker)
+                        AddPart('Publisher: '..Assets[i].Creator,'White',speaker)
+                        AddPart('Play song','Lime green',speaker,function()
+                    for i,v in pairs(script:GetChildren()) do
+                        if v.Name == "Sound" then
+                                v:Pause();
+                                v:Stop();
+                                v:Destroy();
+                        end
+                            end
+                            local sound=Instance.new('Sound',script);
+                            sound.SoundId='rbxassetid://'..Assets[i].AssetId;
+                            sound:play()
+                            AddPart('Stop song','Neon orange',speaker,function()
+                        sound:Pause();
+                        sound:Stop();
+                                sound:Destroy();
+                            end)
+                        end)
+                        AddPart('Dismiss','Really red',speaker,function()
+                            DestroyTablets(speaker)
+                        end)
+                        AddPart('Back','Really blue',speaker,function()
+                            List(plr)
+                            end)
+            end);
+        end;
+    end
+    List(speaker)
+        end)
+end)
