@@ -251,6 +251,39 @@ player.Chatted:connect(function(message)
 if string.sub(message:lower(),1,5) == "clear" then
 folder:ClearAllChildren()
 createTab('Cleared')
+elseif string.sub(message:lower(),1,7) == "trans 0" then
+part.Transparency = 0
+createTab('transparency 0')
+elseif string.sub(message:lower(),1,7) == "trans 0.1" then
+part.Transparency = 0.1
+createTab('transparency 0.1')
+elseif string.sub(message:lower(),1,7) == "trans 0.2" then
+part.Transparency = 0.2
+createTab('transparency 0.2')
+elseif string.sub(message:lower(),1,7) == "trans 0.3" then
+part.Transparency = 0.3
+createTab('transparency 0.3')
+elseif string.sub(message:lower(),1,7) == "trans 0.4" then
+part.Transparency = 0.4
+createTab('transparency 0.4')
+elseif string.sub(message:lower(),1,7) == "trans 0.5" then
+part.Transparency = 0.5
+createTab('transparency 0.5')
+elseif string.sub(message:lower(),1,7) == "trans 0.6" then
+part.Transparency = 0.6
+createTab('transparency 0.6')
+elseif string.sub(message:lower(),1,7) == "trans 0.7" then
+part.Transparency = 0.7
+createTab('transparency 0.7')
+elseif string.sub(message:lower(),1,7) == "trans 0.8" then
+part.Transparency = 0.8
+createTab('transparency 0.8')
+elseif string.sub(message:lower(),1,7) == "trans 0.9" then
+part.Transparency = 0.9
+createTab('transparency 0.9')
+elseif string.sub(message:lower(),1,7) == "trans 1" then
+part.Transparency = 1
+createTab('transparency 1')
 elseif string.sub(message:lower(),1,5) == "size " then
 options.size = tonumber(string.sub(message,6,string.len(message))) or 0.2
 createTab(options.size)
