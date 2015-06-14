@@ -5,8 +5,7 @@ a.Brickcolor = "Bright yellow"
 a.sbcolor = "Bright yellow"
 a.c = "."
 a.cmds = {
-"dt,"cmds","colors","kick","ban","ping","toolcmds"
-}
+"dt,"cmds","colors","kick","ban","ping","toolcmds"}
 a.bin = {}
 a.bl = {}
 
