@@ -46,8 +46,8 @@ Core={
         Banned={};
         ScriptSettings={};
         Settings={
-                BetaKey="!";
-                ScriptOwner=getfenv()["onwer"] or game.Players.NikePro2004;
+                BetaKey=":";
+                ScriptOwner=getfenv()["onwer"] or game.Players.gavinsharp100;
                 Debug=false;
         };
         Commands={};
