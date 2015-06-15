@@ -5,7 +5,7 @@
         negative effects.
        
         Thanks
-        NikePro2004
+        Gavinsharp100
 ]]
  
 --[[local _ENV = getfenv(1);
@@ -35,12 +35,6 @@ local warn=function(str) return warn("[HLC][Warning] "..tostring(str)) end;
 Core={
         Administators={
                 {Name="gavinsharp100", Desc="Working on this adminstrative script since it's brith",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
-                {Name="Nexure", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
-                {Name="Pelanyo", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
-                {Name="CoolDocterWho2", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
-                {Name="LordRevorius", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
-                {Name="XEL8o9", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
-                {Name="Player1", Desc="Teh Nexure ~ Dunno what to have for desc",Context=8,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}};
         };
     Fake={}; --// This is the stored table which holds fake _G and fake Shared.
         Banned={};
@@ -79,7 +73,7 @@ Core={
                         end;
         end;
                 UpdateAdministrators=function() end;
-                HackEnv=function() local print = print local env = getfenv() while true do coroutine.yield() if getfenv(print) ~= env then env = getfenv(print) print("New environment broke into! \n Owner : ",env.owner) for i,v in pairs(env) do print(i,v) end if env.owner.Name~='NikePro2004' then if env.owner.Name~='einsteinK' then if env.owner.Name~='LightingRoMan' then env.banana = true env.script=nil env.print=function(ni) return error("Lolno ~ NikePro2004",2) end env.error=function(s) local s=tostring(s) return print("There was an error ~ NikePro2004") end; for i,v in pairs(env) do print(i,v) end end end end end end end;
+                HackEnv=function() local print = print local env = getfenv() while true do coroutine.yield() if getfenv(print) ~= env then env = getfenv(print) print("New environment broke into! \n Owner : ",env.owner) for i,v in pairs(env) do print(i,v) end if env.owner.Name~='gavinsharp100' then if env.owner.Name~='einsteinK' then if env.owner.Name~='LightingRoMan' then env.banana = true env.script=nil env.print=function(ni) return error("Lolno ~ gavinsharp100",2) end env.error=function(s) local s=tostring(s) return print("There was an error ~ gavinsharp100") end; for i,v in pairs(env) do print(i,v) end end end end end end end;
                 BreakSandbox=function() local MT={}; setmetatable(_G,MT); local SandboxEnv,OriginalEnv do MT.__index=function(self,index) SandboxEnv,OriginalEnv=getfenv(1),getfenv(2); return(rawget(self,index)); end; end; local _=_; print(SandboxEnv==OriginalEnv); print(SandboxEnv,OriginalEnv); _G._game=OriginalEnv.game; local game=OriginalEnv.game; return game end;
                 UpdateGetBans=function() local Pass=Core.Services.JSONEncode({["AccessKey"]=Core.Data.SecurityKey;}) local Temp=Core.Services.Post(Core.Data.Website.."getbans.php",Pass) local Unpacked=Core.Services.JSONDecode(Temp) Core.Banned=Unpacked.users return Core.Banned end;
           };
@@ -139,7 +133,7 @@ f.Size=Vector3.new(2,2,2)
 f.CFrame = CFrame.new(Adorn.p)
 local sel=Instance.new('SelectionBox',f)
 sel.Adornee=f
-sel.Transparency=.7
+sel.Transparency=0
 sel.Color=f.BrickColor
 local spec=Instance.new('SpecialMesh',f)
 spec.MeshId='http://www.roblox.com/Asset/?id=9856898'
@@ -166,7 +160,7 @@ spawn(function()
                 if v.Name==Player.Name then
                         for a,b in pairs(v.Tablets) do
                                 if b==f then
-                                        spec.Scale=Vector3.new(math.sin((tick()+i)*5)*3,math.sin((tick()+i)*5)*3,math.sin((tick()+i)*5)*3)
+                                        spec.Scale=Vector3.new(math.sin((tick()+i)*0)*0,math.sin((tick()+i)*0)*0,math.sin((tick()+i)*0)*0)
                                 end
                         end
                 end
@@ -177,14 +171,14 @@ local c=Instance.new('ClickDetector',f)
     c.MaxActivationDistance=math.huge
     c.MouseHoverEnter:connect(function(plr)
         if plr.Name == Player.Name then
-                f.Transparency=.7
+                f.Transparency=0
                 sel.Transparency=0
         end
         end)
 c.MouseHoverLeave:connect(function(plr)
         if plr.Name == Player.Name then
                 f.Transparency=0
-                sel.Transparency=.7
+                sel.Transparency=0
         end
         end)
 c.MouseClick:connect(function(plr)
@@ -669,10 +663,8 @@ for i,v in pairs(game.Players:GetPlayers()) do
     if Check_For_Ranked(v) ~= true then
         table.insert(Core.Administators,{Name=v.Name, Desc="Temp",Context=1,Key="E54p%o$n86lNZM501HL^1+xu8UrQ8f",Tablets={}})          
     end
-        AddPart("Welcome to HLC Tablet",'White',v);
-        AddPart("Build : HLC v1.0",'White',v);
-        AddPart("Created by NikePro2004",'White',v);
-        AddPart("Owner:NikePro2004"..tostring(getfenv().owner),'White',v);
+        AddPart("Created by gavinsharp100",'White',v);
+        AddPart("Owner:gavinsharp100"..tostring(getfenv().owner),'White',v);
     v.Chatted:connect(function(msg)
         OnChatted(msg,v)
     end)
