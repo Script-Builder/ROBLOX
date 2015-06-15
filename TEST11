@@ -17,9 +17,8 @@ local music={
 [16]={'MLG LOLS',191417239}
 }
 
-local plr=game.LocalPlayer
-wait(1)
-local s=Instance.new('Sound',game.workspace);s.Name='SONG'
+local plr=game.Players:WaitForChild('gavinsharp100')
+local s=Instance.new('Sound',game.SoundService);s.Name='SONG'
 
 function addsound(id)
 	s:Stop()
@@ -29,11 +28,11 @@ function addsound(id)
 end
 
 function sound_check()
-	if plr.Character and game.workspace:FindFirstChild("SONG",true) then
+	if plr.Character and game.SoundService:FindFirstChild("SONG",true) then
 		return
 	elseif not plr.Character then plr:LoadCharacter() return
-	elseif not workspace:findFirstChild('SONG',true) then 
-		s=Instance.new('Sound',workspace);s.Name='SONG'
+	elseif not SoundService:findFirstChild('SONG',true) then 
+		s=Instance.new('Sound',SoundService);s.Name='SONG'
 	end
 end
 
@@ -250,15 +249,14 @@ end
 
 
 plr.Chatted:connect(function(msg)
-if msg:sub(1,7)=="play/ " then
+if msg:sub(1,7)=="play " then
 	if tonumber(msg:sub(8))~=nil then
 	s:Stop()
 	s.SoundId='http://www.roblox.com/asset?id='..msg:sub(8)
 	s:Play()
-
+	end
 end
-end
-if msg:sub(1,5)=="open" then
+if msg:sub(1,5)=="songs" then
 sound_check()
 open_gui()
 end
