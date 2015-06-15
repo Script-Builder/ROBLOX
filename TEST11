@@ -257,11 +257,6 @@ if msg:sub(1,7)=="play/ " then
 	end
 end
 plr.Chatted:connect(function(msg)
-if msg:sub(1,2)=="find/ " then
-find = 'http://roproxy.tk/catalog/json?Keyword='..msg:sub(8)
-print(find)
-   end
-end
 if msg:sub(1,5)=="open" then
 sound_check()
 open_gui()
