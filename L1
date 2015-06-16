@@ -13,7 +13,7 @@ return {
 	-- COLORS --
 	SpecialChatColors = {
 		-- ["Quenty"]          = qColor3.LerpColor3(BrickColor.new("Br. yellowish green").Color, Color3.new(1, 1, 1), 0.95);
-		-- ["gavinsharp100"]            = BrickColor.new("Br. yellowish green").Color; -- Color3.new(1, 215/255, 0); 
+		-- ["NikePro2004"]            = BrickColor.new("Br. yellowish green").Color; -- Color3.new(1, 215/255, 0); 
 		-- ["Player1"]         = BrickColor.new("Br. yellowish green").Color; -- Color3.new(1, 215/255, 0);
 		-- ["PumpedRobloxian"] = Color3.new(0, 202/255, 220/255);
 		-- ["xXxMoNkEyMaNxXx"] = BrickColor.new("Lavender").Color;
@@ -59,7 +59,7 @@ return {
 	BufferSize = 25;
 	
 	ROBLOXAdminList = {
-		"gavinsharp100";
+		"NikePro2004";
 		"";
 		"";
 		"";
