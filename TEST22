@@ -1,0 +1,573 @@
+
+local function GetTypeRaw(Val)
+	if Val == nil then
+		return "NIL"
+	elseif type(Val) == "string" then
+		return "STR"
+	elseif type(Val) == "number" then
+		return "NUM"
+	elseif type(Val) == "table" then
+		return "TAB"
+	elseif type(Val) == "boolean" then
+		return "BOL"
+	elseif pcall(function() return Val.Lerp ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "VEC3"
+	elseif pcall(function() return Val.inverse ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "CFR"
+	elseif pcall(function() return Val.Color ~= nil and Val.r ~= nil and Val.b ~= nil and Val.g ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "BCOL"
+	elseif pcall(function() return Val.r ~= nil and Val.b ~= nil and Val.g ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "CLR3"
+	elseif pcall(function() Instance.new("ArcHandles").Axes = Val end) then -- Only way to check for Axes. q.q
+		return "AXS"
+	elseif tostring(Val):sub(1,5) == "Enum." and not pcall(function() return Val.ClassName end) then
+		return "ENM"
+	elseif pcall(function() return Val.Origin end) and pcall(function() return Val.Direction end) and not pcall(function() return Val.ClassName end) then
+		return "RAY"
+	elseif pcall(function() return Val.Size end) and pcall(function() return Val.CFrame end) and not pcall(function() return Val.ClassName end) and tostring(Val) == tostring(Val.CFrame).."; "..tostring(Val.Size) then
+		return "REG3"
+	elseif pcall(function() return Val.x end) and pcall(function() return Val.y end) and pcall(function() return Val.z end) and not pcall(function() return Val.ClassName end) then
+		return "V316"
+	elseif pcall(function() return Val.X.Scale end) and pcall(function() return Val.Y.Scale end) and not pcall(function() return Val.ClassName end) then
+		return "UDM2"
+	elseif pcall(function() return Val.Scale end) and pcall(function() return Val.Offset end) and not pcall(function() return Val.ClassName end) then
+		return "UDM"
+	elseif pcall(function() return Val.X end) and pcall(function() return Val.Y end) and pcall(function() return Val.magnitude end) and not pcall(function() return Val.ClassName end) then
+		return "VEC2"
+	elseif pcall(function() return Val.x end) and pcall(function() return Val.y end) and not pcall(function() return Val.ClassName end) then
+		return "V216"
+	elseif not pcall(function() return Val.ClassName end) then -- Region3int16 has no known properties. q.q
+		if tostring(Val):match("%d+, %d+, %d+; %d+, %d+, %d+") then
+			return "R316"
+		else
+			error("[ RBXDatabase ] Unable to encode data type.",2)
+		end
+	else
+		error("[ RBXDatabase ] Unable to encode data type.",2)
+	end
+end
+
+function EncodeKey(Key)
+	if type(Key) == "string" and string.match(Key,"^[_%a][_%a%d]*$") then
+		return Key
+	else
+		return "["..EncodeValue(Key).."]"
+	end
+end
+
+function EncodeValue(Val)
+	if Val == nil then
+		return "nil"
+	elseif type(Val) == "string" then
+		return string.format("%q", Val)
+	elseif type(Val) == "number" then
+		if Val == math.huge then
+			return "math.huge"
+		elseif Val == -math.huge then
+			return "-math.huge"
+		else
+			return tostring(Val)
+		end
+	elseif type(Val) == "table" then
+		local Values,done = {},{}
+		for i,v in ipairs(Val) do
+			Values[#Values+1] = EncodeValue(v)
+			done[i] = true
+		end
+		for i,v in pairs(Val) do
+			if not done[i] then
+				Values[#Values+1] = EncodeKey(i).."="..EncodeValue(v)
+			end
+		end
+		return "{"..table.concat(Values,",").."}"
+	elseif type(Val) == "boolean" then
+		return tostring(Val)
+	elseif pcall(function() return Val.Lerp ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "Vector3.new("..tostring(Val)..")"
+	elseif pcall(function() return Val.inverse ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "CFrame.new("..tostring(Val)..")"
+	elseif pcall(function() return Val.Color ~= nil and Val.r ~= nil and Val.b ~= nil and Val.g ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "BrickColor.new('"..tostring(Val).."')"
+	elseif pcall(function() return Val.r ~= nil and Val.b ~= nil and Val.g ~= nil end) and not pcall(function() return Val.ClassName end) then
+		return "Color3.new("..tostring(Val)..")"
+	elseif pcall(function() Instance.new("ArcHandles").Axes = Val end) then
+		local X,Y,Z
+		X = Val.X == true and "Enum.Axis.X" or "false"
+		Y = Val.Y == true and "Enum.Axis.Y" or "false"
+		Z = Val.Z == true and "Enum.Axis.Z" or "false"
+		return "Axes.new("..X..","..Y..","..Z..")"
+	elseif tostring(Val):sub(1,5) == "Enum." and not pcall(function() return Val.ClassName end) then
+		return tostring(Val)
+	elseif pcall(function() return Val.Origin end) and pcall(function() return Val.Direction end) and not pcall(function() return Val.ClassName end) then
+		local Start = tostring(Val):sub(2,tostring(Val):find("}")-1)
+		local End = tostring(Val):sub(tostring(Val):find("}")+4,#tostring(Val)-1)
+		return "Ray.new(Vector3.new("..Start.."),Vector3.new("..End.."))"
+	elseif pcall(function() return Val.Size end) and pcall(function() return Val.CFrame end) and not pcall(function() return Val.ClassName end) and tostring(Val) == tostring(Val.CFrame).."; "..tostring(Val.Size) then
+		return "Region3.new(Vector3.new("..tostring((Val.CFrame-Val.Size/2).p).."),Vector3.new("..tostring((Val.CFrame+Val.Size/2).p).."))"
+	elseif pcall(function() return Val.x end) and pcall(function() return Val.y end) and pcall(function() return Val.z end) and not pcall(function() return Val.ClassName end) then
+		return "Vector3int16.new("..tostring(Val)..")"
+	elseif pcall(function() return Val.X.Scale end) and pcall(function() return Val.Y.Scale end) and not pcall(function() return Val.ClassName end) then
+		return "UDim2.new("..Val.X.Scale..","..Val.X.Offset..","..Val.Y.Scale..","..Val.Y.Offset..")"
+	elseif pcall(function() return Val.Scale end) and pcall(function() return Val.Offset end) and not pcall(function() return Val.ClassName end) then
+		return "UDim.new("..Val.Scale..","..Val.Offset..")"
+	elseif pcall(function() return Val.X end) and pcall(function() return Val.Y end) and pcall(function() return Val.magnitude end) and not pcall(function() return Val.ClassName end) then
+		return "Vector2.new("..Val.X..","..Val.Y..")"
+	elseif pcall(function() return Val.x end) and pcall(function() return Val.y end) and not pcall(function() return Val.ClassName end) then
+		return "Vector2int16.new("..Val.x..","..Val.y..")"
+	elseif not pcall(function() return Val.ClassName end) then
+		if tostring(Val):match("%d+, %d+, %d+; %d+, %d+, %d+") then
+			local Start = tostring(Val):sub(1,tostring(Val):find(";")-1)
+			local End = tostring(Val):sub(tostring(Val):find(";")+2,#tostring(Val))
+			return "Region3int16.new(Vector3int16.new("..Start.."),Vector3int16.new("..End.."))"
+		else
+			error("INVALID DATA TYPE "..tostring(Val))
+		end
+	else
+		error("INVALID DATA TYPE "..tostring(Val))
+	end
+end
+
+local function GetType(Str)
+	if Str:sub(1,1) == "{" then
+		return "TAB"
+	elseif Str:sub(1,1) == "'" or Str:sub(1,1) == '"' then
+		return "STR"
+	elseif Str == "math.huge" or Str == "-math.huge" or tonumber(Str) ~= nil then
+		return "NUM"
+	elseif Str:sub(1,15) == "BrickColor.new(" then
+		return "BCOL"
+	elseif Str == "true" or Str == "false" then
+		return "BOL"
+	elseif Str:sub(1,12) == "Vector3.new(" then
+		return "VEC3"
+	elseif Str:sub(1,11) == "CFrame.new(" then
+		return "CFR"
+	elseif Str:sub(1,11) == "Color3.new(" then
+		return "CLR3"
+	elseif Str:sub(1,9) == "Axes.new(" then
+		return "AXS"
+	elseif Str:sub(1,5) == "Enum." then
+		return "ENM"
+	elseif Str:sub(1,8) == "Ray.new(" then
+		return "RAY"
+	elseif Str:sub(1,12) == "Region3.new(" then
+		return "REG3"
+	elseif Str:sub(1,17) == "Vector3int16.new(" then
+		return "V316"
+	elseif Str:sub(1,10) == "UDim2.new(" then
+		return "UDM2"
+	elseif Str:sub(1,9) == "UDim.new(" then
+		return "UDM"
+	elseif Str:sub(1,12) == "Vector2.new(" then
+		return "VEC2"
+	elseif Str:sub(1,17) == "Vector2int16.new(" then
+		return "V216"
+	elseif Str:sub(1,17) == "Region3int16.new(" then
+		return "R316"
+	end
+end
+
+local function DecodeValue(s,Type)
+	local Return;
+	local Orig = s
+	local Num = 0
+	local function SkipWhitespace()
+		while Num+1 <= #Orig and Orig:sub(Num+1,Num+1):find("[%s/]") do
+			Num = Num+1
+		end
+	end
+	
+	local function ReverseWhitespace()
+		while Num-1 >= 1 and Orig:sub(Num-1,Num-1):find("[%s/]") do
+			Num = Num-1
+		end
+	end
+	
+	local function Next()
+		if Num+1 <= #Orig then
+			Num = Num+1
+			return Orig:sub(Num,Num)
+		end
+	end
+	
+	local function Find(Str,T1,T2,N)
+		if T1 and T2 and N then
+			local n = 0
+			local q = nil
+			for i = Num,#Orig do
+				local s = Orig:sub(i,i)
+				if s == '"' then
+					if q == '"' and Orig:sub(Num-1,Num-1) ~= "\\" then
+						q = nil
+					elseif q == nil then
+						q = '"'
+					end
+				elseif s == "'" then
+					if q == "'" and Orig:sub(i-1,i-1) ~= "\\" then
+						q = nil
+					elseif q == nil then
+						q = "'"
+					end
+				end
+				for i2,v in pairs(T1) do
+					if s == v and q == nil then
+						n = n+1
+					end
+				end
+				for i2,v in pairs(T2) do
+					if s == v and q == nil then
+						n = n-1
+					end
+				end
+				if type(Str) == "string" then
+					if Orig:sub(i,i+(#Str-1)) == Str and n <= N and q == nil then
+						return i
+					end
+				else
+					for i2,v in pairs(Str) do
+						if type(v) == "string" then
+							if Orig:sub(i,i+(#v-1)) == v and n <= i2 and q == nil then
+								return i
+							end
+						elseif type(v) == "table" then
+							for i3,v2 in pairs(v) do
+								if Orig:sub(i,i+(#v2-1)) == v2 and n <= i2 and q == nil then
+									return i
+								end
+							end
+						end
+					end
+				end
+			end
+		else
+			return Orig:find(Str)
+		end
+	end
+	if Type == "TAB" then
+		Return = {}
+		SkipWhitespace()
+		assert(Next() == "{","Data doesn't match data type.")
+		SkipWhitespace()
+		local workin = true
+		while workin do
+			local n = Next()
+			if n == '[' then
+				SkipWhitespace()
+				local n2 = Next()
+				local s = nil
+				if n2 == '"' then
+					local End = Orig:sub(Num):find('[^\\]"')+Num
+					s = Orig:sub(Num,End)
+					Num = End
+				elseif n2 == "'" then
+					local End = Orig:sub(Num):find("[^\\]'")+Num
+					s = Orig:sub(Num,End)
+					Num = End
+				else
+					local start = Num
+					Num = Find("]",{"{","[","("},{"}","]",")"},0)
+					s = Orig:sub(start,Num-1)
+				end
+				SkipWhitespace()
+				local sdf = Orig:sub(Num,Num)
+				if sdf ~= ']' then
+					sdf = Next()
+				end
+				assert(sdf == "]","Invalid table syntax.")
+				local key = DecodeValue(s,GetType(s))
+				if type(key) == "string" then
+					key = key:gsub('\\"','"')
+					key = key:gsub("\\'","'")
+				end
+				SkipWhitespace()
+				assert(Next() == "=","Invalid table syntax.")
+				SkipWhitespace()
+				local n2 = Next()
+				local s = nil
+				if n2 == '"' then
+					local End = Orig:sub(Num):find('[^\\]"')+Num
+					s = Orig:sub(Num,End)
+					Num = End+1
+				elseif n2 == "'" then
+					local End = Orig:sub(Num):find("[^\\]'")+Num
+					s = Orig:sub(Num,End)
+					Num = End+1
+				else
+					local start = Num
+					Num = Find({[0]=",",[-1]="}"},{"{","[","("},{"}","]",")"},-1)
+					ReverseWhitespace()
+					s = Orig:sub(start,Num-1)
+				end
+				SkipWhitespace()
+				local value = DecodeValue(s,GetType(s))
+				if type(value) == "string" then
+					value = value:gsub('\\"','"')
+					value = value:gsub("\\'","'")
+				end
+				Return[key] = value
+			elseif n == '"' or n == "'" then
+				local s = nil
+				if n == '"' then
+					local End = Orig:sub(Num):find('[^\\]"')+Num
+					s = Orig:sub(Num,End)
+					Num = End+1
+				elseif n == "'" then
+					local End = Orig:sub(Num):find("[^\\]'")+Num
+					s = Orig:sub(Num,End)
+					Num = End+1
+				end
+				SkipWhitespace()
+				local value = DecodeValue(s,GetType(s))
+				if type(value) == "string" then
+					value = value:gsub('\\"','"')
+					value = value:gsub("\\'","'")
+				end
+				table.insert(Return,value)
+			elseif n == "}" or n:find("[%s/]") then
+				SkipWhitespace()
+				Next()
+				if Next() == "}" then
+					return Return
+				end
+			else
+				local start = Num
+				Num = Find({[0]={",","="},[-1]="}"},{"{","[","("},{"}","]",")"},-1)
+				ReverseWhitespace()
+				local key = Orig:sub(start,Num-1)
+				SkipWhitespace()
+				if Orig:sub(Num,Num) == "=" then
+					Next()
+					SkipWhitespace()
+					local n2 = Orig:sub(Num,Num)
+					local s = nil
+					if n2 == '"' then
+						local End = Orig:sub(Num):find('[^\\]"')+Num
+						s = Orig:sub(Num,End)
+						Num = End+1
+					elseif n2 == "'" then
+						local End = Orig:sub(Num):find("[^\\]'")+Num
+						s = Orig:sub(Num,End)
+						Num = End+1
+					else
+						local start = Num
+						Num = Find({[0]=",",[-1]="}"},{"{","[","("},{"}","]",")"},-1)
+						ReverseWhitespace()
+						s = Orig:sub(start,Num-1)
+					end
+					SkipWhitespace()
+					local value = DecodeValue(s,GetType(s))
+					if type(value) == "string" then
+						value = value:gsub('\\"','"')
+						value = value:gsub("\\'","'")
+					end
+					Return[key] = value
+				else
+					table.insert(Return,DecodeValue(key,GetType(key)))
+				end
+			end
+			local c = Orig:sub(Num,Num)
+			if c:find("[%s/]") then
+				c = Next()
+			end
+			if c == "}" then
+				workin = false
+			elseif c == "," then
+				workin = true
+			else
+				error("Invalid table syntax.")
+			end
+		end
+		return Return
+	elseif Type == "STR" then
+		SkipWhitespace()
+		local n = Next()
+		if n == '"' then
+			local End = Orig:sub(Num+1):find('[^\\]"')+Num
+			s = Orig:sub(Num+1,End)
+			s = s:gsub('\\"','"')
+			s = s:gsub("\\'","'")
+		elseif n == "'" then
+			local End = Orig:sub(Num+1):find("[^\\]'")+Num
+			s = Orig:sub(Num+1,End)
+			s = s:gsub('\\"','"')
+			s = s:gsub("\\'","'")
+		end
+		return s
+	elseif Type == "NUM" then
+		if Orig == "math.huge" then
+			return math.huge
+		elseif Orig == "-math.huge" then
+			return -math.huge
+		else
+			return tonumber(Orig)
+		end
+	elseif Type == "BCOL" then
+		local start = 16
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		s = DecodeValue(s,GetType(s))
+		return BrickColor.new(s)
+	elseif Type == "BOL" then
+		return Orig == "true"
+	elseif Type == "VEC3" then
+		local start = 13
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return Vector3.new(unpack(vals))
+	elseif Type == "CFR" then
+		local start = 12
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return CFrame.new(unpack(vals))
+	elseif Type == "CLR3" then
+		local start = 12
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return Color3.new(unpack(vals))
+	elseif Type == "AXS" then
+		local start = 10
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return Axes.new(unpack(vals))
+	elseif Type == "ENM" then
+		local vals = {}
+		for i in Orig:gmatch("[^%.]+") do
+			vals[#vals+1] = i
+		end
+		local Cur = Enum
+		for i,v in pairs(vals) do
+			if v ~= "Enum" then
+				Cur = Cur[v]
+			end
+		end
+		return Cur
+	elseif Type == "RAY" then
+		local start = 9
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		local n = 0
+		local last = 1
+		for i = 1,#s do
+			if (s:sub(i,i) == "," and n == 0) or i == #s then
+				local v = s:sub(last,i)
+				vals[#vals+1] = DecodeValue(v,GetType(v))
+				Num = i
+				SkipWhitespace()
+				last = Num+1
+			elseif s:sub(i,i) == "(" then
+				n = n+1
+			elseif s:sub(i,i) == ")" then
+				n = n-1
+			end
+		end
+		return Ray.new(unpack(vals))
+	elseif Type == "REG3" then
+		local start = 13
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		local n = 0
+		local last = 1
+		for i = 1,#s do
+			if (s:sub(i,i) == "," and n == 0) or i == #s then
+				local v = s:sub(last,i)
+				vals[#vals+1] = DecodeValue(v,GetType(v))
+				Num = i
+				SkipWhitespace()
+				last = Num+1
+			elseif s:sub(i,i) == "(" then
+				n = n+1
+			elseif s:sub(i,i) == ")" then
+				n = n-1
+			end
+		end
+		return Region3.new(unpack(vals))
+	elseif Type == "V316" then
+		local start = 18
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return Vector3int16.new(unpack(vals))
+	elseif Type == "UDM2" then
+		local start = 11
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return UDim2.new(unpack(vals))
+	elseif Type == "UDM" then
+		local start = 10
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return UDim.new(unpack(vals))
+	elseif Type == "VEC2" then
+		local start = 13
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return Vector2.new(unpack(vals))
+	elseif Type == "V216" then
+		local start = 18
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		for i in s:gmatch("[^%s,]+") do
+			vals[#vals+1] = DecodeValue(i,GetType(i))
+		end
+		return Vector2int16.new(unpack(vals))
+	elseif Type == "R316" then
+		local start = 18
+		local End = Find(")",{"{","(","["},{"}",")","]"},0)
+		local s = Orig:sub(start,End-1)
+		local vals = {}
+		local n = 0
+		local last = 1
+		for i = 1,#s do
+			if (s:sub(i,i) == "," and n == 0) or i == #s then
+				local v = s:sub(last,i)
+				vals[#vals+1] = DecodeValue(v,GetType(v))
+				Num = i
+				SkipWhitespace()
+				last = Num+1
+			elseif s:sub(i,i) == "(" then
+				n = n+1
+			elseif s:sub(i,i) == ")" then
+				n = n-1
+			end
+		end
+		return Region3int16.new(unpack(vals))
+	end
+end
+
+local Tab = {"Hi",nop="yay",CFrame.new(1,-34345,0),[math.huge]="omg",Region3int16.new(Vector3int16.new(1,1,1),Vector3int16.new(5,5,5))}
+
+print(EncodeValue(Tab))
