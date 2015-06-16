@@ -127,7 +127,7 @@ f.FormFactor='Custom'
 if Colour == 'Random' then
                 f.BrickColor=BrickColor.Random()
         else
-        f.BrickColor=BrickColor.new
+        f.BrickColor=BrickColor.new(Colour)
 end
 f.Size=Vector3.new(2,2,2)
 f.CFrame = CFrame.new(Adorn.p)
@@ -152,8 +152,8 @@ txt.Text=Text
 txt.BackgroundTransparency=1
 txt.Size = UDim2.new(1, 0, 0.5, 0)
 txt.FontSize='Size14'
-txt.TextColor3=f.BrickColor.Color()
-txt.TextStrokeTransparency=0.5
+txt.TextColor3=f.BrickColor.Color
+txt.TextStrokeTransparency=0
 spawn(function()
     game:GetService'RunService'.Heartbeat:connect(function()
         for i,v in pairs(Core.Administators) do
@@ -209,7 +209,7 @@ Spawn(function()
     local Num=1
     plr=nil
         game:GetService'RunService'.Heartbeat:connect(function()
-                Num=Num+0.0010
+                Num=Num+0.9999
 for i,v in pairs(game.Players:GetPlayers()) do
 for a,s in pairs(Core.Administators) do
 if v.Name==s.Name then
