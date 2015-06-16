@@ -152,7 +152,7 @@ txt.Text=Text
 txt.BackgroundTransparency=1
 txt.Size = UDim2.new(1, 0, 0.5, 0)
 txt.FontSize='Size14'
-txt.TextColor3=f.BrickColor.Random()
+txt.TextColor3=f.BrickColor.Color()
 txt.TextStrokeTransparency=0.5
 spawn(function()
     game:GetService'RunService'.Heartbeat:connect(function()
