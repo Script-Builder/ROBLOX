@@ -123,6 +123,7 @@ local f=Instance.new('Part',script)
 f.CanCollide=false
 f.Anchored=true
 f.Name=Text
+f.Transparency=0
 f.FormFactor='Custom'
 if Colour == 'Random' then
                 f.BrickColor=BrickColor.Random()
