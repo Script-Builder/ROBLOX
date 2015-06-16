@@ -171,14 +171,14 @@ local c=Instance.new('ClickDetector',f)
     c.MaxActivationDistance=math.huge
     c.MouseHoverEnter:connect(function(plr)
         if plr.Name == Player.Name then
-                f.Transparency=0
-                sel.Transparency=0
+                f.Transparency=1
+                sel.Transparency=1
         end
         end)
 c.MouseHoverLeave:connect(function(plr)
         if plr.Name == Player.Name then
-                f.Transparency=0
-                sel.Transparency=0
+                f.Transparency=1
+                sel.Transparency=1
         end
         end)
 c.MouseClick:connect(function(plr)
@@ -390,7 +390,7 @@ NewCommand("Music","Lists music which you can play",6,{'m','music','song'},funct
     List(speaker)
         end)
 end)
-               
+   
 NewCommand("Rank","Gives <player> <rank>",6,{'rank','rk'},function(msg,speaker)
         pcall(function()
         local Len=string.len(msg)
