@@ -209,7 +209,7 @@ Spawn(function()
     local Num=1
     plr=nil
         game:GetService'RunService'.Heartbeat:connect(function()
-                Num=Num+0.9999
+                Num=Num+0.2359
 for i,v in pairs(game.Players:GetPlayers()) do
 for a,s in pairs(Core.Administators) do
 if v.Name==s.Name then
