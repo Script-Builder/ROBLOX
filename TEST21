@@ -317,7 +317,7 @@ NewCommand("No Character","Removes a players character",8,{'nil','nochar'},funct
     end)
 end)
  
-NewCommand("Bans","Shows ban list",8,{'b'},function(msg,speaker)
+NewCommand("Ban List","Shows ban list",8,{'b'},function(msg,speaker)
         pcall(function()
         wait(Core.CoreFunctions.UpdateGetBans())
     for i,v in pairs(Core.Banned) do
