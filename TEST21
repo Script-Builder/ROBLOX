@@ -127,7 +127,7 @@ f.FormFactor='Custom'
 if Colour == 'Random' then
                 f.BrickColor=BrickColor.Random()
         else
-        f.BrickColor=BrickColor.new(Colour)
+        f.BrickColor=BrickColor.new
 end
 f.Size=Vector3.new(2,2,2)
 f.CFrame = CFrame.new(Adorn.p)
