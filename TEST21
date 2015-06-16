@@ -40,7 +40,7 @@ Core={
         Banned={};
         ScriptSettings={};
         Settings={
-                BetaKey={;};
+                BetaKey="#";
                 ScriptOwner=getfenv()["onwer"] or game.Players.gavinsharp100;
                 Debug=false;
         };
